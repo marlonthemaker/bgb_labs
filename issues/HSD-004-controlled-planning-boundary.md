@@ -1,6 +1,6 @@
 # HSD-004 — Taskmaster Agent and Controlled Planning Boundary
 
-**Status:** Planned
+**Status:** In progress
 **Repository:** `hotel_shoreline` (optional narrow SDK interface only)
 **Depends on:** HSD-003
 **Branch:** `feat/hsd-004-controlled-planning-boundary`
@@ -72,6 +72,21 @@ and the required Google-stack evidence are captured.
 **Docs updated:**
 **Known limitations / follow-up:**
 **Next issue readiness:**
+
+## Current implementation evidence
+
+- A server-only Next route accepts the fixed event and selects a planner.
+- The deterministic planner is the credential-free default; `GeminiTaskPlanner`
+  uses Genkit and the Google GenAI plugin when `HSD_PLANNER_MODE=gemini` and a
+  server-only `GEMINI_API_KEY` are configured.
+- Integration tests cover event-to-execution success, unsafe graph rejection
+  with zero operations, and planner unavailability with zero operations.
+- Browser E2E covers receipt, planning, validation, and execution lifecycle.
+
+**Open HSD-004 gates:** an authorized real-Gemini smoke run and Cloud Run
+deployment proof. These require a Google Cloud project, credentials/secret
+configuration, and explicit deployment approval; HSD-004 must not be marked
+complete until they are captured.
 
 Comments may explain a safety invariant, provider limitation, or deployment
 trade-off only; they must not restate implementation mechanics.

@@ -2,21 +2,18 @@
 
 import { useState } from "react";
 
-import {
-	executeShorelineDemo,
-	type ShorelineDemoRun,
-	shorelineContract,
-	shorelineGraph,
-} from "../lib/shoreline";
+import { shorelineContract, shorelineGraph } from "../lib/shoreline";
+import type { TaskmasterRun } from "../lib/taskmaster";
 
 export function RunDemo() {
-	const [run, setRun] = useState<ShorelineDemoRun>();
+	const [run, setRun] = useState<TaskmasterRun>();
 	const [isRunning, setIsRunning] = useState(false);
 
 	const startRun = async () => {
 		setIsRunning(true);
 		try {
-			setRun(await executeShorelineDemo());
+			const response = await fetch("/api/taskmaster", { method: "POST" });
+			setRun((await response.json()) as TaskmasterRun);
 		} finally {
 			setIsRunning(false);
 		}
@@ -55,23 +52,27 @@ export function RunDemo() {
 	);
 }
 
-function RunOutcome({ run }: { readonly run: ShorelineDemoRun }) {
+function RunOutcome({ run }: { readonly run: TaskmasterRun }) {
 	return (
 		<>
 			<p>
-				Status: <strong>{run.run.status}</strong> · Fixture: <code>{run.fixtureVersion}</code>
+				Status: <strong>{run.status}</strong> · Planner: <code>{run.planner.framework}</code>
 			</p>
-			<ul>
-				{run.run.nodeResults.map((result) => (
-					<li key={result.nodeId}>
-						{result.nodeId}: <strong>{result.status}</strong>
-					</li>
-				))}
-			</ul>
-			<p>Operations recorded: {run.finalState.operations.length}</p>
+			{run.run ? (
+				<ul>
+					{run.run.nodeResults.map((result) => (
+						<li key={result.nodeId}>
+							{result.nodeId}: <strong>{result.status}</strong>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p>Error: {run.errorCode}</p>
+			)}
+			<p>Operations recorded: {run.operationCount}</p>
 			<ol aria-label="Ordered run events">
-				{run.run.events.map((event) => (
-					<li key={event.sequence}>{event.type}</li>
+				{run.lifecycle.map((event) => (
+					<li key={event}>{event}</li>
 				))}
 			</ol>
 		</>

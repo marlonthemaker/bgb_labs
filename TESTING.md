@@ -39,6 +39,9 @@ coverage number never substitutes for an acceptance-oriented test.
 | HSD3-F-002 | Maintenance and housekeeping adapters accept only the frozen stay, room, and towel quantity. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
 | HSD3-F-003, HSD3-T-002 | The frozen contract and graph validate, execute in order, preserve exact inputs, and produce final state/evidence. | `hotel_shoreline/src/integration/shoreline.integration.test.ts` |
 | HSD3-F-004, HSD3-UI-001 | A user-triggered fixed run renders graph, ordered evidence, statuses, outcome, and disclosure. | `hotel_shoreline/e2e/foundation.spec.ts` |
+| HSD4-P-002, HSD4-P-004 | A fixed guest-request event is planned, validated, and executed without per-step user direction. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
+| HSD4-P-003 | Unsafe and unavailable planner output produces no scenario operation. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
+| HSD4-UI-001 | The browser renders event, planning, validation, and execution lifecycle stages. | `hotel_shoreline/e2e/foundation.spec.ts` |
 
 ## Writing rule
 
