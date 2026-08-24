@@ -30,10 +30,11 @@ Validate HSD-003's application-owned tool adapters against the existing public
 dependencies to this package unless the vertical slice proves a narrow,
 domain-neutral SDK contract is missing.
 
-### HSD-004 — Structured planning boundary
+### HSD-004 — Taskmaster planning boundary
 
-Add a provider-neutral planning interface only after the first application
-adapter exists. Genkit/Gemini remains an integration concern, not core logic.
+Validate the HSD-004 application-owned Genkit/Gemini planning boundary only
+through existing neutral contracts. Genkit/Gemini and Cloud Run remain
+integration concerns, not core logic.
 
 ## Deferred until earned
 

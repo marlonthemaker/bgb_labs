@@ -13,6 +13,10 @@ and issue specification record. Preserve existing user changes.
 5. The affected package's `README.md` and `ROADMAP.md`
 6. `git status`
 
+For a submission-facing issue, also read
+[`issues/HACKATHON-CONSTRAINTS.md`](issues/HACKATHON-CONSTRAINTS.md) and verify
+its official external source before changing a claim or delivery gate.
+
 For Next.js application changes, also read `hotel_shoreline/AGENTS.md` and the
 relevant locally installed Next.js guide before editing application code.
 
@@ -22,6 +26,11 @@ relevant locally installed Next.js guide before editing application code.
 - `native_agent_sdk/` remains model-, framework-, cloud-, and hotel-neutral.
 - `hotel_shoreline/` is fictional and must retain its non-affiliation and
   non-research disclosure.
+- Keep domain boundaries explicit: the SDK owns assurance semantics; Hotel
+  Shoreline owns its fictional scenario and tool adapters; orchestration owns
+  Gemini/Genkit and Cloud Run integration; presentation only renders sanitized
+  run evidence. Do not bypass validation or let provider/cloud types cross into
+  the SDK.
 - No commit, push, deployment, package publication, or PR creation without
   explicit approval.
 

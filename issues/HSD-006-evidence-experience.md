@@ -25,6 +25,17 @@ Snapshot only stable semantic evidence, not incidental timestamps. Test empty,
 failed, partial, malformed-export, and unavailable-run states. Errors must be
 human-readable, non-sensitive, and connected to diagnostic evidence.
 
+## Domain, traceability, and delivery
+
+Presentation consumes a sanitized run projection; it cannot execute tools or
+change evidence. `HSD6-U-001` maps to lifecycle projection tests and browser
+state tests, `HSD6-U-002` to export serialization/redaction tests, and
+`HSD6-U-003` to desktop/mobile keyboard E2E checks. QA verifies an exported
+fixture contains run/contract/tool versions but no secrets or personal data.
+Update actual test paths in `TESTING.md`, all user-visible limitations, the
+roadmaps, and this Completion Record. Branch/commits/review use `TEMPLATE.md`;
+comments may only explain accessibility, redaction, or evidence invariants.
+
 ## Scope boundaries
 
 No analytics tracking, accounts, billing, broad dashboard, or claim beyond the
@@ -32,5 +43,11 @@ frozen demonstration conditions.
 
 ## Completion Record
 
-Complete after HSD-005 with actual evidence, QA output, docs, commits, review,
-and HSD-008 readiness using `TEMPLATE.md`.
+**Branch used:**
+**Commits:**
+**Review / PR:**
+**Acceptance evidence:**
+**QA commands and results:**
+**Docs updated:**
+**Known limitations / follow-up:**
+**Next issue readiness:**

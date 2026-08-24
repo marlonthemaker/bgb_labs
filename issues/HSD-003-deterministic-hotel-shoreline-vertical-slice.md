@@ -76,6 +76,18 @@ language-parity claims.
   become an explicit failed task/run outcome with a safe message and ordered
   evidence. The UI never reports success for failed work.
 
+## Planned traceability
+
+| Acceptance IDs | Intended code boundary | Test evidence | QA evidence |
+| --- | --- | --- | --- |
+| HSD3-F-001, HSD3-T-001 | Scenario fixture and run factory | Hotel Shoreline unit fixture/tool tests | Fresh-run inspection and `pnpm test:unit` |
+| HSD3-F-002 | Scenario tool adapters | Adapter replay/input unit tests | `pnpm test:unit`, `pnpm typecheck` |
+| HSD3-F-003, HSD3-T-002 | Frozen contract/graph plus SDK adapter | Deterministic vertical-slice integration test | `pnpm test:integration`, evidence review |
+| HSD3-F-004, HSD3-UI-001 | Presentation projection | Playwright fixed-request flow | `pnpm test:e2e`, responsive visual review |
+
+Names and locations become durable only when the implementation lands; update
+`TESTING.md` in the same change with the actual paths.
+
 ## Analysis gate
 
 Before implementation, inspect the current application and SDK public exports,

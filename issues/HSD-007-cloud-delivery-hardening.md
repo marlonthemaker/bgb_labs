@@ -7,8 +7,10 @@
 
 ## Outcome
 
-If deployment requirements demand it, add a minimal Cloud Run execution path
-with authenticated asynchronous work and retry-safe idempotency.
+Extend the HSD-004 Cloud Run service only if the demo needs execution beyond one
+request/response: add authenticated asynchronous work, resumable run state, and
+retry-safe idempotency. Cloud Run itself is already required and proven in
+HSD-004; this issue is optional resilience, not basic compliance.
 
 ## Acceptance criteria
 
@@ -25,12 +27,30 @@ Use emulators or deterministic ports where possible; never make tests depend on
 a live project. Test unauthorized workers, duplicate messages, poisoned input,
 timeout, retry exhaustion, and sanitized status responses.
 
+## Domain, traceability, and delivery
+
+Infrastructure transports a run; the Scenario owns the effect and the Assurance
+Runtime owns validation/evidence. `HSD7-D-001` maps to configuration and API
+boundary tests, `HSD7-D-002` to authenticated duplicate-delivery integration
+tests, `HSD7-D-003` to terminal-state tests, and `HSD7-D-004` to deployment
+review. QA captures IAM, ingress, scale/time/cost settings, and rollback proof
+without committing credentials. Update actual test paths in `TESTING.md`, docs,
+roadmaps, backlog, and Completion Record. Branch/commits/review use
+`TEMPLATE.md`; comments may only explain a security or idempotency invariant.
+
 ## Scope boundaries
 
-Optional for submission. No public admin API, customer authentication, or real
-hotel integrations. Do not deploy without explicit approval.
+Optional for submission. No public admin API, customer authentication, real
+hotel integrations, or implied durability claim. Do not deploy without explicit
+approval.
 
 ## Completion Record
 
-Complete only if chosen, with actual environment-free evidence, security review,
-QA output, docs, commits, review, and HSD-008 readiness using `TEMPLATE.md`.
+**Branch used:**
+**Commits:**
+**Review / PR:**
+**Acceptance evidence:**
+**QA commands and results:**
+**Docs updated:**
+**Known limitations / follow-up:**
+**Next issue readiness:**

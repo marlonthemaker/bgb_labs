@@ -27,6 +27,20 @@ isolation, and comparable evidence. Do not use runtime translation as a hidden
 fallback. Render any unsupported or invalid condition without language-quality
 claims.
 
+## Domain, traceability, and delivery
+
+The Scenario context owns authored variants and their review status; the
+Assurance Runtime evaluates graphs, not language quality. `HSD5-L-001` maps to
+variant/contract validation unit tests, `HSD5-L-002` to matched-run integration
+tests, `HSD5-L-003` to invalid-state tests, and `HSD5-UI-001` to a browser
+comparison flow. QA records fixture, contract, model, prompt, locale, reviewer,
+and invalid-run versions. Add actual paths to `TESTING.md`; never substitute
+model-generated translations for review.
+
+Update the root/package roadmaps, contract provenance, limitations, and this
+Completion Record. Branch/commits/review use `TEMPLATE.md`; comments may only
+explain review, representation, or comparison invariants.
+
 ## Scope boundaries
 
 Exactly three declared variants; no broad benchmark, real guests, or research
@@ -34,5 +48,11 @@ claim. Metrics are descriptive evidence only until separately specified.
 
 ## Completion Record
 
-Complete after HSD-004 with actual evidence, QA output, docs, commits, review,
-and HSD-006 readiness using `TEMPLATE.md`.
+**Branch used:**
+**Commits:**
+**Review / PR:**
+**Acceptance evidence:**
+**QA commands and results:**
+**Docs updated:**
+**Known limitations / follow-up:**
+**Next issue readiness:**

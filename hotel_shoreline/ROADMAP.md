@@ -23,12 +23,12 @@ visible plan, validation, tool events, and outcome; acceptance-traceable tests.
 The ready-for-analysis issue is
 [`HSD-003-deterministic-hotel-shoreline-vertical-slice`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
-### HSD-004 — Controlled planning boundary
+### HSD-004 — Taskmaster agent and controlled planning boundary
 
-Introduce a server-side, provider-neutral planning port behind an
-application-owned interface. A concrete Genkit/Gemini adapter is optional and
-must remain behind that port. Malformed, timed-out, or unavailable planning
-output must fail closed through the SDK without tool execution.
+Introduce a server-side, provider-neutral planning port backed by Genkit and
+Gemini 3.5+, then deploy the event-to-outcome Taskmaster flow to Cloud Run.
+Malformed, timed-out, unsafe, or unavailable planning output must fail closed
+through the SDK without tool execution.
 
 ### HSD-005 — Native-adoption comparison
 
@@ -42,8 +42,10 @@ states, and responsive presentation flow.
 
 ### HSD-007 — Cloud delivery hardening (optional)
 
-Only if submission deployment needs it, add authenticated Cloud Run execution,
-retry-safe idempotency, status handling, and least-privilege/cost controls.
+Only if the submitted flow needs it, add asynchronous/resumable execution,
+authenticated workers, retry-safe idempotency, and status handling. Cloud Run
+deployment, least-privilege identity, and basic cost controls are HSD-004
+requirements, not optional work.
 
 ### HSD-008 — Submission release
 

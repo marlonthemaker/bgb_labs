@@ -25,6 +25,16 @@ Run the full gate from a clean install, inspect the packaged artifact and
 repository status, and rehearse failure-state presentation. Treat any failed
 verification, undocumented limitation, or claim mismatch as release-blocking.
 
+## Traceability and delivery
+
+`HSD8-R-001` maps to clean-install/full-gate logs, `HSD8-R-002` to disclosure
+review, `HSD8-R-003` to the continuous-demo/E2E checklist, and `HSD8-R-004` to
+repository, dependency, and secret scans. QA is release-blocking and records
+the exact commit, deployed Cloud Run proof, video URL, package versions, and
+submission fields. Update all README/roadmap/backlog state atomically. Use the
+template’s branch, commit, review, and comment rules; no post-deadline changes
+to the submitted artifact during judging.
+
 ## Scope boundaries
 
 No new feature work except release-blocking corrections. Do not change the

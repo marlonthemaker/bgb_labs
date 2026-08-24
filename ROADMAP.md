@@ -16,10 +16,10 @@ limits, and completion record.
 | --- | --- | --- | --- |
 | Foundation | HSD-001–002 | Strict workspace and fail-closed deterministic task runtime. | SDK contracts, errors, execution evidence, and test gates pass. |
 | Deterministic proof | HSD-003 | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, browser proof. |
-| Controlled planning | HSD-004 | Provider-neutral planning produces a graph that the SDK validates. | Malformed, timed-out, and unsafe provider output fails closed. |
+| Taskmaster agent proof | HSD-004 | A Gemini/Genkit agent receives a guest-request event, plans, validates, routes, and completes it autonomously on Cloud Run. | Google stack requirement and safe failure paths are demonstrated in one continuous run. |
 | Native adoption proof | HSD-005 | Matched native-language requests expose task/decomposition differences. | Frozen conditions, review state, no research overclaim. |
 | Evidence experience | HSD-006 | Accessible run experience exports reproducible evidence. | Failure states, privacy-safe export, responsive E2E coverage. |
-| Delivery hardening | HSD-007 | Optional Cloud Run path provides safe asynchronous execution. | Authenticated worker, idempotent retries, cost/security review. |
+| Delivery hardening | HSD-007 | Optional asynchronous/resumable execution hardens the deployed task flow. | Authenticated worker, idempotent retries, cost/security review. |
 | Submission release | HSD-008 | Reproducible hackathon submission and recorded limitations. | Full verification and disclosure review. |
 
 ## Dependency flow
@@ -29,12 +29,18 @@ HSD-001 -> HSD-002 -> HSD-003 -> HSD-004 -> HSD-005 -> HSD-006 -> HSD-008
                                       \-> HSD-007 --------------------/
 ```
 
-HSD-007 is optional unless the selected hackathon deployment requires it. It
-must not delay the deterministic proof or comparison work.
+HSD-004—not HSD-007—is the minimum hackathon-compliant submission gate:
+Gemini 3.5+, a Google agent framework (Genkit), and a Google Cloud service
+(Cloud Run). HSD-007 is optional resilience work and must not delay that proof.
+See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
+official rules immediately before submitting.
 
 ## Exit principles
 
 - Do not introduce a model before the deterministic no-model slice is proven.
+- Do not call the project a Taskmaster submission until HSD-004 proves a guest
+  request event is autonomously planned, safely routed, and completed with the
+  required Google stack.
 - Do not make multilingual claims before contracts, fixture conditions, and
   review status are frozen and visible.
 - Do not add persistence or cloud queues before the local evidence flow is
