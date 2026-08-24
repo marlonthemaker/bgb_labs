@@ -19,8 +19,10 @@ and a separate research canon preserved as provenance.
 - **HSD-002 complete:** JSON-safe semantic contracts and task graphs,
   fail-closed validation (including defensive tool-registry checks), deterministic
   execution, explicit execution failures, and run-scoped idempotency.
-- **Next:** HSD-003, the deterministic Hotel Shoreline vertical slice. Its
-  approved-ready specification is in the issue index below.
+- **HSD-003 complete:** a versioned synthetic fixture, deterministic hotel tool
+  adapters, frozen English contract/graph, ordered run evidence, and browser
+  vertical slice.
+- **Next:** HSD-004, the Taskmaster agent and controlled planning boundary.
 
 Read the package roadmaps before changing behavior:
 

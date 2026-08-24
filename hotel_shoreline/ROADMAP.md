@@ -11,17 +11,19 @@ not the MR-0 research fixture. It makes one constrained workflow inspectable.
 - Visible fictional, non-affiliation, and non-research disclosure.
 - Browser E2E test for that public boundary.
 
-## Next
+## Complete
 
 ### HSD-003 — Deterministic environment and vertical slice
 
 Create an app-owned fictional fixture and a small deterministic tool set.
 Demonstrate one manually planned English compound request through the SDK.
 
-Exit criteria: versioned, synthetic, run-isolated fixture; idempotent tools;
-visible plan, validation, tool events, and outcome; acceptance-traceable tests.
-The ready-for-analysis issue is
+Completed: versioned, synthetic, run-isolated fixture; idempotent tools; visible
+plan, validation, tool events, and outcome; acceptance-traceable unit,
+integration, and browser tests. The completion record is
 [`HSD-003-deterministic-hotel-shoreline-vertical-slice`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
+
+## Next
 
 ### HSD-004 — Taskmaster agent and controlled planning boundary
 

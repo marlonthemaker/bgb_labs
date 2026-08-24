@@ -18,8 +18,8 @@ that can prove it.
 
 | Layer | Purpose | Location | Command |
 | --- | --- | --- | --- |
-| Unit | Isolated schema and validation rules | `native_agent_sdk/src/unit/` | `pnpm test:unit` |
-| Integration | SDK orchestration through deterministic fake tool ports | `native_agent_sdk/src/integration/` | `pnpm test:integration` |
+| Unit | Isolated schema, validation, fixture, and tool-adapter rules | `native_agent_sdk/src/unit/`, `hotel_shoreline/src/unit/` | `pnpm test:unit` |
+| Integration | SDK orchestration and application-owned deterministic tool ports | `native_agent_sdk/src/integration/`, `hotel_shoreline/src/integration/` | `pnpm test:integration` |
 | End-to-end | User-visible app behavior in a real browser | `hotel_shoreline/e2e/` | `pnpm test:e2e` |
 
 `pnpm test:all` runs every layer and the SDK coverage gate. New core code must
@@ -35,6 +35,10 @@ coverage number never substitutes for an acceptance-oriented test.
 | HSD2-C-002 | A graph preserves contract boundaries: identity, dependencies, tools, effects, constraints, acyclicity, and a callable tool registry. | `validation.unit.test.ts` |
 | HSD2-C-003 | Validated plans execute in deterministic order and produce run evidence. | `executor.integration.test.ts` |
 | HSD2-C-004 | Failed, blocked, skipped, rejected, unavailable-tool, thrown-tool, and replayed execution paths are explicit, ordered, and safe. | `executor.integration.test.ts` |
+| HSD3-F-001, HSD3-T-001 | Synthetic fixture state is fresh per run; invalid input is non-mutating; adapter replay is idempotent. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
+| HSD3-F-002 | Maintenance and housekeeping adapters accept only the frozen stay, room, and towel quantity. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
+| HSD3-F-003, HSD3-T-002 | The frozen contract and graph validate, execute in order, preserve exact inputs, and produce final state/evidence. | `hotel_shoreline/src/integration/shoreline.integration.test.ts` |
+| HSD3-F-004, HSD3-UI-001 | A user-triggered fixed run renders graph, ordered evidence, statuses, outcome, and disclosure. | `hotel_shoreline/e2e/foundation.spec.ts` |
 
 ## Writing rule
 
@@ -42,9 +46,8 @@ One test may cover related assertions within one acceptance criterion, but it
 must not combine unrelated failure modes. Each new production branch requires
 either an acceptance test or a documented reason it is unreachable.
 
-When HSD-003 begins, add its acceptance IDs to this table in the same change as
-its tests. The issue specification is not evidence by itself; the test must
-name the acceptance ID and assert the observable behavior.
+The issue specification is not evidence by itself; the test must name the
+acceptance ID and assert the observable behavior.
 
 ## Closure checklist
 

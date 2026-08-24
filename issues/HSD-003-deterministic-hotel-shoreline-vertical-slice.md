@@ -1,6 +1,6 @@
 # HSD-003 — Deterministic Hotel Shoreline Vertical Slice
 
-**Status:** Ready for analysis
+**Status:** Complete
 **Repository:** `hotel_shoreline` (SDK changes are out of scope unless a narrow,
 domain-neutral gap is demonstrated)
 **Branch:** `feat/hsd-003-deterministic-shoreline-slice`
@@ -123,29 +123,37 @@ test(demo): cover deterministic Shoreline execution [HSD-003]
 
 ## Documentation and delivery updates
 
-- [ ] Add HSD-003 acceptance IDs and actual test paths to `TESTING.md`.
-- [ ] Update Hotel Shoreline README/roadmap and root roadmap/index status.
-- [ ] Complete the Completion Record with actual QA output and residual risk.
-- [ ] Review HSD-004 and move it to `Ready for analysis` only after HSD-003 is
+- [x] Add HSD-003 acceptance IDs and actual test paths to `TESTING.md`.
+- [x] Update Hotel Shoreline README/roadmap and root roadmap/index status.
+- [x] Complete the Completion Record with actual QA output and residual risk.
+- [x] Review HSD-004 and move it to `Ready for analysis` only after HSD-003 is
   complete and approved.
 
 ## Completion Record
 
-Complete after review and QA; planned criteria are not evidence.
-
-**Completed date:**
-**Implementation summary:**
-**Acceptance evidence:**
-**QA commands and results:**
-**Known limitations / follow-up:**
-**Docs updated:**
-**Next issue readiness:**
+**Completed date:** 2026-08-24
+**Implementation summary:** Added `shoreline-fixture-v1`, fresh state/tool
+factories, adapter-level idempotency, the frozen English contract/graph, and a
+small run-evidence panel.
+**Acceptance evidence:** `hotel_shoreline/src/unit/shoreline.unit.test.ts`,
+`hotel_shoreline/src/integration/shoreline.integration.test.ts`, and
+`hotel_shoreline/e2e/foundation.spec.ts`.
+**QA commands and results:** `pnpm check`, `pnpm typecheck`, `pnpm test:unit`,
+`pnpm test:integration`, `pnpm test:coverage`, `pnpm test:e2e`, `pnpm build`,
+and `git diff --check` passed. HSD-003 adds 3 unit, 2 integration, and 1 E2E
+test; the existing SDK coverage gate remains above threshold.
+**Known limitations / follow-up:** The flow is local and deterministic, with no
+model, server-side planning, Cloud Run, persistence, retry, or live hotel
+operation. HSD-004 must supply the required Gemini/Genkit and Cloud Run proof.
+**Docs updated:** Root and Hotel Shoreline READMEs/roadmaps, issue index, and
+testing traceability.
+**Next issue readiness:** HSD-004 is ready for analysis only.
 
 ## Branch, commits, and review
 
-**Branch used:**
-**Commits:**
-**Review / PR:**
+**Branch used:** `feat/hsd-003-deterministic-shoreline-slice`
+**Commits:** Pending explicit approval; no commit created.
+**Review / PR:** Pending explicit approval; no PR created.
 **Commit scope check:** Confirm unrelated work is excluded before committing.
 
 ## Comment policy

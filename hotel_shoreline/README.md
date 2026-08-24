@@ -23,10 +23,12 @@ guest request
   -> outcome and run evidence
 ```
 
-The current application is only a verified foundation screen. It has no real
-hotel data, model call, cloud integration, or persistent state. HSD-003 adds a
-versioned, synthetic fixture and one manually planned English compound vertical
-slice. Its full scope and acceptance criteria are in
+The application has a verified deterministic English vertical slice: a
+versioned synthetic fixture, manually authored contract/graph, deterministic
+maintenance and housekeeping adapters, and inspectable ordered evidence. It has
+no real hotel data, model call, cloud integration, or persistent state. HSD-004
+adds the server-side Gemini/Genkit and Cloud Run Taskmaster boundary. HSD-003's
+scope and completion record are in
 [`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
 ## Development

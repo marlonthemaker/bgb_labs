@@ -1,5 +1,7 @@
 import { nativeAgentSdkVersion } from "@bomgoodbueno/native-agent-sdk";
 
+import { RunDemo } from "./run-demo";
+
 export default function Home() {
 	return (
 		<main>
@@ -15,6 +17,7 @@ export default function Home() {
 					Native Agent SDK boundary: <code>{nativeAgentSdkVersion}</code>
 				</p>
 			</section>
+			<RunDemo />
 			<aside>
 				Hotel Shoreline is a fictional demonstration built independently for a hackathon. It is not
 				affiliated with, endorsed by, or operated by Google. Demonstration results are illustrative
