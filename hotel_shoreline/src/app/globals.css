@@ -59,6 +59,73 @@ aside {
 	padding: 1.25rem;
 }
 
+.demo-panel {
+	gap: 1rem;
+	border: 1px solid #b6c8bb;
+	background: #fffdf8;
+}
+
+.section-heading,
+.run-grid {
+	display: grid;
+	gap: 1rem;
+}
+
+.section-heading {
+	align-items: start;
+}
+
+.section-heading h2,
+.run-grid h3 {
+	margin-top: 0.25rem;
+}
+
+.run-grid section {
+	border: 1px solid #d8dfd5;
+	background: #f8fbf6;
+}
+
+button {
+	border: 0;
+	border-radius: 0.5rem;
+	background: #0e4936;
+	color: #ffffff;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 700;
+	padding: 0.75rem 1rem;
+}
+
+button:disabled {
+	cursor: wait;
+	opacity: 0.7;
+}
+
+button:focus-visible {
+	outline: 3px solid #b77b27;
+	outline-offset: 3px;
+}
+
+ul,
+ol {
+	margin: 0;
+	padding-left: 1.25rem;
+}
+
+li + li {
+	margin-top: 0.4rem;
+}
+
+@media (min-width: 42rem) {
+	.section-heading {
+		grid-template-columns: 1fr auto;
+	}
+
+	.run-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
 section {
 	display: grid;
 	gap: 0.5rem;

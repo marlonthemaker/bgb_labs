@@ -10,3 +10,22 @@ test("HSD1-UI-001: presents the fictional Hotel Shoreline boundary", async ({ pa
 	).toBeVisible();
 	await expect(page.getByText("not research findings")).toBeVisible();
 });
+
+test("HSD3-UI-001: runs the fixed request and renders truthful execution evidence", async ({
+	page,
+}) => {
+	await page.goto("/");
+
+	await page.getByRole("button", { name: "Run fixed request" }).click();
+
+	await expect(page.getByText("Status:")).toContainText("succeeded");
+	await expect(page.getByText("request-maintenance: ")).toContainText("succeeded");
+	await expect(page.getByText("request-housekeeping: ")).toContainText("succeeded");
+	await expect(page.getByText("Operations recorded: 2")).toBeVisible();
+	await expect(page.getByRole("list", { name: "Ordered run events" })).toContainText(
+		"run.finished",
+	);
+	await expect(
+		page.getByText("not affiliated with, endorsed by, or operated by Google"),
+	).toBeVisible();
+});

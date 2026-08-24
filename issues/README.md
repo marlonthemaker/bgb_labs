@@ -22,8 +22,8 @@ issue and [`TESTING.md`](../TESTING.md).
 | --- | --- | --- | --- |
 | [HSD-001](HSD-001-workspace-foundation.md) | Complete | — | Workspace, package boundary, app shell, and disclosure. |
 | [HSD-002](HSD-002-assured-task-runtime.md) | Complete | HSD-001 | Validated, deterministic, evidence-producing task runtime. |
-| [HSD-003](HSD-003-deterministic-hotel-shoreline-vertical-slice.md) | Ready for analysis | HSD-002 | Synthetic fixture, typed tools, and one English vertical slice. |
-| [HSD-004](HSD-004-controlled-planning-boundary.md) | Planned | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
+| [HSD-003](HSD-003-deterministic-hotel-shoreline-vertical-slice.md) | Complete | HSD-002 | Synthetic fixture, typed tools, and one English vertical slice. |
+| [HSD-004](HSD-004-controlled-planning-boundary.md) | Ready for analysis | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
 | [HSD-005](HSD-005-native-adoption-comparison.md) | Planned | HSD-004 | Matched native-language task/decomposition comparison. |
 | [HSD-006](HSD-006-evidence-experience.md) | Planned | HSD-005 | Inspectable, exportable, presentation-ready evidence experience. |
 | [HSD-007](HSD-007-cloud-delivery-hardening.md) | Planned / optional | HSD-004 | Resumable asynchronous execution path. |
@@ -31,5 +31,6 @@ issue and [`TESTING.md`](../TESTING.md).
 
 ## Active next step
 
-HSD-003 is the only issue ready to analyze. Inspect it and report the exact
-implementation plan, risk, test strategy, and QA commands before editing.
+HSD-004 is the only issue ready to analyze. Inspect it and report the exact
+implementation plan, risk, test strategy, Google-stack configuration, and QA
+commands before editing.

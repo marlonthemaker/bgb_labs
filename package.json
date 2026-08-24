@@ -16,8 +16,8 @@
 		"test:all": "pnpm test && pnpm test:coverage && pnpm test:e2e",
 		"test:coverage": "pnpm --filter @bomgoodbueno/native-agent-sdk test:coverage",
 		"test:e2e": "playwright test",
-		"test:integration": "pnpm --filter @bomgoodbueno/native-agent-sdk test:integration",
-		"test:unit": "pnpm --filter @bomgoodbueno/native-agent-sdk test:unit",
+		"test:integration": "pnpm --filter @bomgoodbueno/native-agent-sdk test:integration && pnpm --filter @bomgoodbueno/hotel-shoreline test:integration",
+		"test:unit": "pnpm --filter @bomgoodbueno/native-agent-sdk test:unit && pnpm --filter @bomgoodbueno/hotel-shoreline test:unit",
 		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck"
 	},
 	"devDependencies": {
