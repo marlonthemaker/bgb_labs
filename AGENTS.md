@@ -1,14 +1,17 @@
 # HSD Agent Guide
 
-Work only within the active HSD issue. Preserve existing user changes.
+Work only within the active HSD issue. The root [product roadmap](ROADMAP.md)
+sets delivery order; [`issues/`](issues/README.md) is the authoritative backlog
+and issue specification record. Preserve existing user changes.
 
 ## Read first
 
 1. `README.md`
 2. `CONTRIBUTING.md`
 3. `TESTING.md`
-4. The affected package's `README.md` and `ROADMAP.md`
-5. `git status`
+4. `ROADMAP.md` and the active issue in `issues/`
+5. The affected package's `README.md` and `ROADMAP.md`
+6. `git status`
 
 For Next.js application changes, also read `hotel_shoreline/AGENTS.md` and the
 relevant locally installed Next.js guide before editing application code.
@@ -24,5 +27,24 @@ relevant locally installed Next.js guide before editing application code.
 
 ## Definition of done
 
-Every change has scoped acceptance criteria, traceable tests, a clean diff, and
-passes the full verification gate in `CONTRIBUTING.md`.
+Follow this issue lifecycle without skipping a record update:
+
+1. **Specify:** create or refine the issue from
+   [`issues/TEMPLATE.md`](issues/TEMPLATE.md). Give every observable criterion
+   a stable acceptance ID, a test strategy, boundary cases, and expected
+   failure behavior.
+2. **Test plan:** update `TESTING.md` with planned traceability before or with
+   the tests. Tests name their acceptance IDs and act as executable examples.
+3. **Implement:** make only the active issue's scoped code change. Fail closed
+   at trust boundaries and return typed, inspectable errors rather than leaking
+   raw exceptions.
+4. **QA:** run the issue's required checks plus the full gate in
+   `CONTRIBUTING.md`; inspect `git diff --check` and the final diff.
+5. **Close out:** update the issue's Completion Record, `TESTING.md`, affected
+   READMEs/roadmaps, and the issue index. Record residual risk and links to
+   follow-ups; do not silently expand scope.
+6. **Prepare next:** move only the immediate dependent issue to `Ready for
+   analysis` when its prerequisites are met. Do not begin it without approval.
+
+Every completed change has scoped acceptance criteria, traceable tests, a
+clean diff, documented error behavior, and a passing full verification gate.

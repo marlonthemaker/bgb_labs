@@ -5,6 +5,15 @@ acceptance identifier to its specification and cites that identifier in the
 test name. Tests state the condition, action, and observable outcome; comments
 only explain a non-obvious domain or safety decision.
 
+## Issue test planning
+
+Before implementation, the active issue must identify its unit, integration,
+and browser/API coverage as applicable. The issue must also identify boundary
+inputs, invalid state, dependency failure, timeout/cancellation (when present),
+and externally observable error behavior. A test does not need to duplicate a
+lower layer, but every acceptance ID needs direct evidence at the lowest layer
+that can prove it.
+
 ## Test layers
 
 | Layer | Purpose | Location | Command |
@@ -36,3 +45,10 @@ either an acceptance test or a documented reason it is unreachable.
 When HSD-003 begins, add its acceptance IDs to this table in the same change as
 its tests. The issue specification is not evidence by itself; the test must
 name the acceptance ID and assert the observable behavior.
+
+## Closure checklist
+
+When an issue is complete, record the exact tests and commands run in its
+Completion Record, update this traceability table, and document residual risk.
+Then update the affected package roadmap, root roadmap, and issue index before
+preparing the next issue.

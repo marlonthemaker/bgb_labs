@@ -1,8 +1,8 @@
 # HSD-003 — Deterministic Hotel Shoreline Vertical Slice
 
-**Status:** Ready for analysis  
+**Status:** Ready for analysis
 **Repository:** `hotel_shoreline` (SDK changes are out of scope unless a narrow,
-domain-neutral gap is demonstrated)  
+domain-neutral gap is demonstrated)
 **Branch:** `feat/hsd-003-deterministic-shoreline-slice`
 
 ## Outcome
@@ -62,6 +62,20 @@ language-parity claims.
   do not paper over it with optimistic copy.
 - Add HSD-003 entries to [`TESTING.md`](../TESTING.md) when their tests land.
 
+## Test and error strategy
+
+- **Unit:** fixture schema/version, adapter input validation, replay behavior,
+  and independent fresh-state construction.
+- **Integration:** execute the frozen graph using fresh tool adapters; assert
+  operation ordering, exact room and towel quantity, evidence, and final state.
+- **E2E:** run the fixed request through the visible application, verify the
+  evidence and outcome, and retain the disclosure.
+- **Boundary cases:** malformed task input, wrong stay/room, non-positive towel
+  quantity, duplicate idempotency key, unavailable tool, and an adapter failure.
+- **Failure behavior:** no adapter mutates state for invalid input; tool errors
+  become an explicit failed task/run outcome with a safe message and ordered
+  evidence. The UI never reports success for failed work.
+
 ## Analysis gate
 
 Before implementation, inspect the current application and SDK public exports,
@@ -94,3 +108,36 @@ git diff --check
 feat(demo): add deterministic Hotel Shoreline vertical slice [HSD-003]
 test(demo): cover deterministic Shoreline execution [HSD-003]
 ```
+
+## Documentation and delivery updates
+
+- [ ] Add HSD-003 acceptance IDs and actual test paths to `TESTING.md`.
+- [ ] Update Hotel Shoreline README/roadmap and root roadmap/index status.
+- [ ] Complete the Completion Record with actual QA output and residual risk.
+- [ ] Review HSD-004 and move it to `Ready for analysis` only after HSD-003 is
+  complete and approved.
+
+## Completion Record
+
+Complete after review and QA; planned criteria are not evidence.
+
+**Completed date:**
+**Implementation summary:**
+**Acceptance evidence:**
+**QA commands and results:**
+**Known limitations / follow-up:**
+**Docs updated:**
+**Next issue readiness:**
+
+## Branch, commits, and review
+
+**Branch used:**
+**Commits:**
+**Review / PR:**
+**Commit scope check:** Confirm unrelated work is excluded before committing.
+
+## Comment policy
+
+Keep comments only for fixture invariants, safety decisions, or a surprising
+trade-off. Explain why, not the code's mechanics, and update or remove comments
+when behavior changes.

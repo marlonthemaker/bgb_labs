@@ -26,6 +26,7 @@ Read the package roadmaps before changing behavior:
 
 - [Native Agent SDK roadmap](native_agent_sdk/ROADMAP.md)
 - [Hotel Shoreline roadmap](hotel_shoreline/ROADMAP.md)
+- [HSD product roadmap](ROADMAP.md)
 - [Testing convention](TESTING.md)
 - [Contributor guide](CONTRIBUTING.md)
 - [Issue index](issues/README.md)
