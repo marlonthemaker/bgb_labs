@@ -19,6 +19,7 @@ export interface RunEvent {
 	readonly sequence: number;
 	readonly type:
 		| "run.accepted"
+		| "run.failed"
 		| "run.rejected"
 		| "run.finished"
 		| "node.started"
@@ -72,10 +73,21 @@ export async function executeTaskGraph(input: {
 	while (results.size < graph.nodes.length) {
 		const node = graph.nodes.find(
 			(candidate) =>
-				!results.has(candidate.id) &&
-				candidate.dependsOn.every((id) => results.has(id)),
+				!results.has(candidate.id) && candidate.dependsOn.every((id) => results.has(id)),
 		);
-		if (!node) throw new Error("Validated task graph could not be scheduled.");
+		if (!node) {
+			event({ type: "run.failed" });
+			return {
+				runId: input.runId,
+				status: "failed",
+				validation,
+				nodeResults: graph.nodes.flatMap((candidate) => {
+					const result = results.get(candidate.id);
+					return result ? [result] : [];
+				}),
+				events,
+			};
+		}
 		const dependencyResults = node.dependsOn.map((id) => results.get(id));
 		if (dependencyResults.some((result) => result?.status === "failed")) {
 			results.set(node.id, { nodeId: node.id, status: "blocked" });
@@ -97,7 +109,14 @@ export async function executeTaskGraph(input: {
 		event({ type: "node.started", nodeId: node.id });
 		const tool = input.tools[node.toolName];
 		if (!tool) {
-			throw new Error("Validated task graph referenced an unavailable tool.");
+			const result: NodeResult = {
+				nodeId: node.id,
+				status: "failed",
+				errorCode: "TOOL_UNAVAILABLE",
+			};
+			results.set(node.id, result);
+			event({ type: "node.finished", nodeId: node.id, status: result.status });
+			continue;
 		}
 		let toolResult: ToolExecutionResult;
 		try {
@@ -115,9 +134,7 @@ export async function executeTaskGraph(input: {
 		results.set(node.id, result);
 		event({ type: "node.finished", nodeId: node.id, status: result.status });
 	}
-	const nodeResults = graph.nodes.map(
-		(node) => results.get(node.id) as NodeResult,
-	);
+	const nodeResults = graph.nodes.map((node) => results.get(node.id) as NodeResult);
 	const status = nodeResults.every((result) => result.status === "succeeded")
 		? "succeeded"
 		: nodeResults.some((result) => result.status === "succeeded")
@@ -128,11 +145,14 @@ export async function executeTaskGraph(input: {
 }
 
 function toNodeResult(nodeId: string, result: ToolExecutionResult): NodeResult {
-	return result.ok
-		? { nodeId, status: "succeeded", output: result.output }
-		: {
-				nodeId,
-				status: "failed",
-				errorCode: result.errorCode ?? "TOOL_EXECUTION_FAILED",
-			};
+	if (result.ok) {
+		return result.output === undefined
+			? { nodeId, status: "succeeded" }
+			: { nodeId, status: "succeeded", output: result.output };
+	}
+	return {
+		nodeId,
+		status: "failed",
+		errorCode: result.errorCode ?? "TOOL_EXECUTION_FAILED",
+	};
 }

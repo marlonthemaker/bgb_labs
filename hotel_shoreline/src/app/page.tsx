@@ -6,8 +6,8 @@ export default function Home() {
 			<p className="eyebrow">Native Agent demonstration</p>
 			<h1>Hotel Shoreline</h1>
 			<p className="lede">
-				A constrained, multilingual hotel-operations demonstration designed to
-				make task decomposition and verified execution visible.
+				A constrained, multilingual hotel-operations demonstration designed to make task
+				decomposition and verified execution visible.
 			</p>
 			<section aria-label="Demonstration status">
 				<h2>Workspace ready</h2>
@@ -16,10 +16,9 @@ export default function Home() {
 				</p>
 			</section>
 			<aside>
-				Hotel Shoreline is a fictional demonstration built independently for a
-				hackathon. It is not affiliated with, endorsed by, or operated by
-				Google. Demonstration results are illustrative and are not research
-				findings.
+				Hotel Shoreline is a fictional demonstration built independently for a hackathon. It is not
+				affiliated with, endorsed by, or operated by Google. Demonstration results are illustrative
+				and are not research findings.
 			</aside>
 		</main>
 	);

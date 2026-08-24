@@ -1,4 +1,5 @@
 import {
+	isRecord,
 	parseSemanticContract,
 	parseTaskGraph,
 	type SemanticContract,
@@ -13,6 +14,14 @@ export function validateTaskGraph(input: {
 	readonly graph: TaskGraph | unknown;
 	readonly tools: ToolRegistry;
 }): ValidationResult {
+	if (!isRecord(input.tools)) {
+		return {
+			ok: false,
+			issues: [
+				{ code: "INVALID_GRAPH", path: "tools", message: "Tool registry must be an object." },
+			],
+		};
+	}
 	const contract = parseSemanticContract(input.contract);
 	const graph = parseTaskGraph(input.graph);
 	const issues: ValidationIssue[] = [];
@@ -52,7 +61,7 @@ export function validateTaskGraph(input: {
 					message: `Unknown dependency ${dependency}.`,
 				});
 		const tool = input.tools[node.toolName];
-		if (!tool)
+		if (!isTaskTool(tool))
 			issues.push({
 				code: "UNKNOWN_TOOL",
 				path: `nodes.${node.id}.toolName`,
@@ -80,6 +89,12 @@ export function validateTaskGraph(input: {
 				path: "preservedConstraintIds",
 				message: `Required constraint ${constraint} is missing.`,
 			});
+		else if (!graph.nodes.some((node) => node.constraintIds.includes(constraint)))
+			issues.push({
+				code: "MISSING_REQUIRED_CONSTRAINT",
+				path: "nodes",
+				message: `Required constraint ${constraint} is not attached to an executable task.`,
+			});
 	if (hasCycle(graph))
 		issues.push({
 			code: "CYCLE_DETECTED",
@@ -89,10 +104,17 @@ export function validateTaskGraph(input: {
 	return issues.length === 0 ? { ok: true, issues: [] } : { ok: false, issues };
 }
 
-function hasCycle(graph: TaskGraph): boolean {
-	const dependencies = new Map(
-		graph.nodes.map((node) => [node.id, node.dependsOn]),
+function isTaskTool(value: unknown): value is ToolRegistry[string] {
+	return (
+		isRecord(value) &&
+		typeof value.name === "string" &&
+		typeof value.effect === "string" &&
+		typeof value.execute === "function"
 	);
+}
+
+function hasCycle(graph: TaskGraph): boolean {
+	const dependencies = new Map(graph.nodes.map((node) => [node.id, node.dependsOn]));
 	const visiting = new Set<string>();
 	const visited = new Set<string>();
 	const visit = (id: string): boolean => {

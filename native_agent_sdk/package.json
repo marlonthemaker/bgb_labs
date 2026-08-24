@@ -17,6 +17,9 @@
 	"scripts": {
 		"build": "tsc --project tsconfig.build.json",
 		"test": "vitest run",
+		"test:coverage": "vitest run --coverage",
+		"test:integration": "vitest run src/integration",
+		"test:unit": "vitest run src/unit",
 		"typecheck": "tsc --noEmit --project tsconfig.json"
 	}
 }

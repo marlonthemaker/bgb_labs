@@ -67,14 +67,26 @@ export type ValidationResult =
 	| { readonly ok: false; readonly issues: readonly ValidationIssue[] };
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === "object" && value !== null && !Array.isArray(value);
+	if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+	const prototype = Object.getPrototypeOf(value);
+	return prototype === Object.prototype || prototype === null;
 }
 
-export function parseSemanticContract(
-	value: unknown,
-): SemanticContract | ValidationIssue[] {
-	if (!isRecord(value))
-		return [invalid("INVALID_CONTRACT", "$", "Contract must be an object.")];
+export function isJsonValue(value: unknown): value is JsonValue {
+	if (
+		value === null ||
+		typeof value === "boolean" ||
+		typeof value === "number" ||
+		typeof value === "string"
+	) {
+		return true;
+	}
+	if (Array.isArray(value)) return value.every(isJsonValue);
+	return isRecord(value) && Object.values(value).every(isJsonValue);
+}
+
+export function parseSemanticContract(value: unknown): SemanticContract | ValidationIssue[] {
+	if (!isRecord(value)) return [invalid("INVALID_CONTRACT", "$", "Contract must be an object.")];
 	const fields = [
 		"id",
 		"version",
@@ -82,27 +94,19 @@ export function parseSemanticContract(
 		"prohibitedEffects",
 		"requiredConstraintIds",
 	] as const;
-	const issues = fields.flatMap((field) =>
-		validateField(value, field, "INVALID_CONTRACT"),
-	);
+	const issues = fields.flatMap((field) => validateField(value, field, "INVALID_CONTRACT"));
 	return issues.length > 0 ? issues : (value as unknown as SemanticContract);
 }
 
 export function parseTaskGraph(value: unknown): TaskGraph | ValidationIssue[] {
-	if (!isRecord(value))
-		return [invalid("INVALID_GRAPH", "$", "Task graph must be an object.")];
-	const issues = [
-		"id",
-		"contractId",
-		"preservedConstraintIds",
-		"nodes",
-	].flatMap((field) => validateField(value, field, "INVALID_GRAPH"));
+	if (!isRecord(value)) return [invalid("INVALID_GRAPH", "$", "Task graph must be an object.")];
+	const issues = ["id", "contractId", "preservedConstraintIds", "nodes"].flatMap((field) =>
+		validateField(value, field, "INVALID_GRAPH"),
+	);
 	if (Array.isArray(value.nodes)) {
 		value.nodes.forEach((node, index) => {
 			if (!isRecord(node)) {
-				issues.push(
-					invalid("INVALID_GRAPH", `nodes.${index}`, "Node must be an object."),
-				);
+				issues.push(invalid("INVALID_GRAPH", `nodes.${index}`, "Node must be an object."));
 				return;
 			}
 			for (const field of [
@@ -113,9 +117,7 @@ export function parseTaskGraph(value: unknown): TaskGraph | ValidationIssue[] {
 				"constraintIds",
 				"input",
 			] as const) {
-				issues.push(
-					...validateField(node, field, "INVALID_GRAPH", `nodes.${index}`),
-				);
+				issues.push(...validateField(node, field, "INVALID_GRAPH", `nodes.${index}`));
 			}
 		});
 	}
@@ -139,9 +141,9 @@ function validateField(
 		"constraintIds",
 	].includes(field);
 	if (field === "input")
-		return isRecord(current)
+		return isRecord(current) && isJsonValue(current)
 			? []
-			: [invalid(code, path, "Input must be an object.")];
+			: [invalid(code, path, "Input must be a JSON-safe object.")];
 	if (field === "nodes")
 		return Array.isArray(current) && current.length > 0
 			? []
@@ -156,10 +158,6 @@ function validateField(
 		: [invalid(code, path, "Must be a non-empty string.")];
 }
 
-function invalid(
-	code: ValidationErrorCode,
-	path: string,
-	message: string,
-): ValidationIssue {
+function invalid(code: ValidationErrorCode, path: string, message: string): ValidationIssue {
 	return { code, path, message };
 }
