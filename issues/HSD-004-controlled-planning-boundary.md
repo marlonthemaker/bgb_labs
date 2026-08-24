@@ -88,5 +88,10 @@ deployment proof. These require a Google Cloud project, credentials/secret
 configuration, and explicit deployment approval; HSD-004 must not be marked
 complete until they are captured.
 
+The repository-owned Cloud Run preparation is documented in
+[`hotel_shoreline/CLOUD_RUN.md`](../hotel_shoreline/CLOUD_RUN.md). It specifies
+the container build, private secret injection, least-privilege service identity,
+bounded scaling/timeouts, local smoke procedure, and required submission proof.
+
 Comments may explain a safety invariant, provider limitation, or deployment
 trade-off only; they must not restate implementation mechanics.
