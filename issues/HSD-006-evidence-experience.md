@@ -2,22 +2,30 @@
 
 **Status:** Planned
 **Repository:** `hotel_shoreline`
-**Depends on:** HSD-005
+**Depends on:** HSD-005, HSD-007
 **Branch:** `feat/hsd-006-evidence-experience`
 
 ## Outcome
 
-Deliver an accessible, presentation-ready run experience that exposes request,
-contract, graph, lifecycle, diagnosis, limitations, and a privacy-safe evidence
-export.
+Deliver an accessible, presentation-ready run and comparison experience that
+exposes request, contract, graph, lifecycle, earliest-loss diagnosis,
+baseline/intervention condition, limitations, and a privacy-safe evidence
+export backed by the durable run ledger.
 
 ## Acceptance criteria
 
 | ID | Observable criterion | Test layer |
 | --- | --- | --- |
-| HSD6-U-001 | Run states distinguish planning, validation, execution, partial failure, and completion. | Unit / E2E |
-| HSD6-U-002 | Evidence export is structured, deterministic, and excludes secrets and non-synthetic personal data. | Unit / integration |
-| HSD6-U-003 | Primary flow works on desktop and mobile with keyboard-accessible controls and readable failure states. | E2E |
+| HSD6-U-001 | Run states distinguish receipt, planning, validation, execution, partial failure, completion, and comparison exclusion. | Unit / E2E |
+| HSD6-U-002 | A comparison view exposes matched-condition metadata, source facts, measure definitions, and invalid-run handling without causal or parity overclaim. | Unit / E2E |
+| HSD6-U-003 | Evidence export is structured, deterministic, and excludes secrets and non-synthetic personal data. | Unit / integration |
+| HSD6-U-004 | Primary flow works on desktop and mobile with keyboard-accessible controls and readable failure states. | E2E |
+
+The experience may display structured candidate plans, contract facts,
+validation issues, tool names/arguments/results, lifecycle events, model and
+configuration metadata, and annotations. It must not display or claim hidden
+chain-of-thought. Use “planning evidence” or “structured decision trace,” not
+“model reasoning,” unless the displayed artifact is explicitly defined.
 
 ## Test and error strategy
 

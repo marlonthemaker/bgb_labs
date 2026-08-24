@@ -1,8 +1,10 @@
 # Hotel Shoreline
 
 Hotel Shoreline is a fictional hotel-operations demonstration for Native Agent.
-It makes multilingual task decomposition, validation, deterministic tool use,
-and evidence visible through a deliberately constrained workflow.
+It currently makes one English request's task decomposition, validation,
+deterministic tool use, and evidence visible through a deliberately constrained
+workflow. Reviewed multilingual comparison is planned in HSD-005; it is not a
+current capability.
 
 It is built independently for a hackathon and is not affiliated with, endorsed
 by, or operated by Google. Its results are illustrative demonstrations, not
@@ -26,10 +28,22 @@ guest request
 The application has a verified deterministic English vertical slice: a
 versioned synthetic fixture, manually authored contract/graph, deterministic
 maintenance and housekeeping adapters, and inspectable ordered evidence. It has
-no real hotel data, model call, cloud integration, or persistent state. HSD-004
-adds the server-side Gemini/Genkit and Cloud Run Taskmaster boundary. HSD-003's
-scope and completion record are in
+no real hotel data or persistent state. HSD-004 has added an opt-in server-side
+Gemini/Genkit planner and Cloud Run delivery preparation; missing local
+failure/budget coverage, real-provider evidence, and deployment proof remain
+open closure gates. HSD-005/HSD-007 will add a small
+reviewed baseline/intervention comparison and durable sanitized run history.
+HSD-003's scope and completion record are in
 [`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
+
+The planned comparison method and its claim limits are in
+[the controlled comparison protocol](EVALUATION_PROTOCOL.md).
+The durable storage choice and portability rules are in
+[the PostgreSQL evidence-ledger architecture](DATA_ARCHITECTURE.md).
+
+“Evidence” means structured plans, validation decisions, tool calls/results,
+lifecycle events, sanitized configuration metadata, and evaluator annotations.
+Hotel Shoreline does not expose or claim access to hidden model chain-of-thought.
 
 ## Development
 
@@ -40,6 +54,10 @@ pnpm --filter @bomgoodbueno/hotel-shoreline dev
 pnpm test:e2e
 pnpm --filter @bomgoodbueno/hotel-shoreline build
 ```
+
+Optional local Gemini mode uses `hotel_shoreline/.env.local`; copy
+`.env.example` in this directory and keep the key server-only. Deterministic
+mode is the default.
 
 ## Guardrails
 

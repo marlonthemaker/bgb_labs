@@ -10,8 +10,13 @@ and issue specification record. Preserve existing user changes.
 2. `CONTRIBUTING.md`
 3. `TESTING.md`
 4. `ROADMAP.md` and the active issue in `issues/`
-5. The affected package's `README.md` and `ROADMAP.md`
-6. `git status`
+5. `ARCHITECTURE.md` and `PRODUCT_SURFACES.md` for cross-boundary work
+6. The affected package's `README.md` and `ROADMAP.md`
+7. `git status`
+
+For evaluation, intervention, or evidence-ledger work, also read
+`hotel_shoreline/EVALUATION_PROTOCOL.md` and
+`hotel_shoreline/DATA_ARCHITECTURE.md` as applicable.
 
 For a submission-facing issue, also read
 [`issues/HACKATHON-CONSTRAINTS.md`](issues/HACKATHON-CONSTRAINTS.md) and verify
@@ -33,6 +38,12 @@ relevant locally installed Next.js guide before editing application code.
   the SDK.
 - No commit, push, deployment, package publication, or PR creation without
   explicit approval.
+- Never describe a planned or merely implemented behavior as verified. Keep
+  `planned`, `implemented`, `locally verified`, `externally verified`, and
+  `deployed` distinct in issue records and public documentation.
+- Do not expose or claim access to hidden model chain-of-thought. Evidence may
+  include structured plans, validation decisions, tool calls/results,
+  lifecycle events, sanitized metadata, and evaluator annotations.
 
 ## Definition of done
 
@@ -53,7 +64,11 @@ Follow this issue lifecycle without skipping a record update:
    READMEs/roadmaps, and the issue index. Record residual risk and links to
    follow-ups; do not silently expand scope.
 6. **Prepare next:** move only the immediate dependent issue to `Ready for
-   analysis` when its prerequisites are met. Do not begin it without approval.
+  analysis` when its prerequisites are met. Do not begin it without approval.
+
+Mutable status has one owner: `issues/README.md`. Roadmaps own sequencing,
+issue files own criteria and evidence, package READMEs own current capability,
+and other status summaries must be dated and link back to the issue index.
 
 ## Required task handoff
 

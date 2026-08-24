@@ -1,6 +1,6 @@
 # HSD-003 — Deterministic Hotel Shoreline Vertical Slice
 
-**Status:** Complete
+**Status:** In review
 **Repository:** `hotel_shoreline` (SDK changes are out of scope unless a narrow,
 domain-neutral gap is demonstrated)
 **Branch:** `feat/hsd-003-deterministic-shoreline-slice`
@@ -125,13 +125,14 @@ test(demo): cover deterministic Shoreline execution [HSD-003]
 
 - [x] Add HSD-003 acceptance IDs and actual test paths to `TESTING.md`.
 - [x] Update Hotel Shoreline README/roadmap and root roadmap/index status.
-- [x] Complete the Completion Record with actual QA output and residual risk.
-- [x] Review HSD-004 and move it to `Ready for analysis` only after HSD-003 is
-  complete and approved.
+- [ ] Finalize the Completion Record after corrected CI passes and PR #1 merges;
+  the local implementation/review record below is current.
+- [x] HSD-004 was moved to `Ready for analysis` after local HSD-003
+  verification; it subsequently entered `In progress` on a stacked branch.
 
-## Completion Record
+## Implementation and review record
 
-**Completed date:** 2026-08-24
+**Local implementation verified date:** 2026-08-24
 **Implementation summary:** Added `shoreline-fixture-v1`, fresh state/tool
 factories, adapter-level idempotency, the frozen English contract/graph, and a
 small run-evidence panel.
@@ -147,14 +148,20 @@ model, server-side planning, Cloud Run, persistence, retry, or live hotel
 operation. HSD-004 must supply the required Gemini/Genkit and Cloud Run proof.
 **Docs updated:** Root and Hotel Shoreline READMEs/roadmaps, issue index, and
 testing traceability.
-**Next issue readiness:** HSD-004 is ready for analysis only.
+**Next issue readiness:** HSD-004 entered implementation on a stacked branch;
+its issue record lists remaining local and external gates.
 
 ## Branch, commits, and review
 
 **Branch used:** `feat/hsd-003-deterministic-shoreline-slice`
-**Commits:** Pending explicit approval; no commit created.
-**Review / PR:** Pending explicit approval; no PR created.
-**Commit scope check:** Confirm unrelated work is excluded before committing.
+**Commits:** `f542956 feature(HSD-003)`
+**Review / PR:** [#1](https://github.com/marlonthemaker/bgb_labs/pull/1),
+targeting `main`; open. Its first CI run failed during pnpm bootstrap before any
+project check ran. The workflow correction must be pushed and pass before this
+issue can become `Complete`; because the current working branch is HSD-004, the
+CI correction must be backported to this HSD-003 branch.
+**Commit scope check:** Historical completion metadata reconciled on 2026-08-24;
+review branch scope before merge.
 
 ## Comment policy
 

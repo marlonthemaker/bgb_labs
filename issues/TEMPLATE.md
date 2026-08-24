@@ -1,6 +1,6 @@
 # HSD-XXX — Concise Outcome Name
 
-**Status:** Draft | Ready for analysis | In progress | In review | Complete | Blocked
+**Status:** Draft | Planned | Ready for analysis | In progress | In review | Complete | Blocked
 **Repository:** `native_agent_sdk` | `hotel_shoreline` | both
 **Depends on:** HSD-XXX
 **Branch:** `<type>/hsd-xxx-short-description`
@@ -25,6 +25,15 @@ Out of scope:
 | ID | Observable criterion | Test layer | Evidence location |
 | --- | --- | --- | --- |
 | HSDX-F-001 | A concrete, falsifiable behavior. | Unit / integration / E2E | Planned test path. |
+
+## Current acceptance status
+
+Maintain this table while an issue is in progress. Do not use `verified`
+without direct evidence.
+
+| Acceptance ID | State | Evidence or remaining gap |
+| --- | --- | --- |
+| HSDX-F-001 | Planned / implemented / locally verified / externally verified / deployed | Exact test, artifact, or missing work. |
 
 ## Test and QA strategy
 

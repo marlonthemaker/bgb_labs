@@ -35,5 +35,6 @@ deterministic executor, ordered events, and run-scoped idempotency.
 thresholds (90% lines/statements/functions, 80% branches).
 **Known limitations:** Sequential, in-memory execution only; no retries,
 persistence, deadline, cancellation, or provider integration.
-**Next issue readiness:** HSD-003 can validate app-owned deterministic tools
-through the existing `ToolRegistry` seam.
+**Next issue readiness:** HSD-003 subsequently validated app-owned deterministic
+tools through the existing `ToolRegistry` seam; HSD-004 is the current active
+issue.

@@ -18,6 +18,11 @@
   the demo's stated scope.
 - Keep comments for non-obvious intent, safety decisions, or invariants; do not
   narrate self-evident code.
+- Keep status language precise: planned, implemented, locally verified,
+  externally verified, deployed, and merged are different states. The issue
+  index owns mutable status; issue files own acceptance evidence.
+- Describe inspectable planning artifacts and tool evidence precisely. Do not
+  claim access to hidden model chain-of-thought.
 
 ## Style and tooling
 
@@ -43,6 +48,9 @@ git diff --check
 
 Tests requiring a localhost server/browser may need the appropriate local
 permission. Do not skip the E2E test for a visible workflow change.
+
+A local pass and a GitHub Actions pass are separate quality evidence. Do not
+mark an issue complete while its required PR check is failing or has not run.
 
 ## Commits
 

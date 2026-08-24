@@ -5,6 +5,9 @@
 **Depends on:** HSD-003
 **Branch:** `feat/hsd-004-controlled-planning-boundary`
 
+This is a stacked branch and PR on HSD-003. It must not merge before HSD-003's
+corrected CI check passes and HSD-003 merges to `main`.
+
 ## Outcome
 
 Deliver the minimum compliant Taskmaster agent: when a synthetic
@@ -62,16 +65,46 @@ and submission constraints, Hotel Shoreline docs, root roadmap, issue index,
 and this Completion Record. Do not mark HSD-005 ready until the Cloud Run proof
 and the required Google-stack evidence are captured.
 
+## Current acceptance status
+
+`Implemented` means code exists; `locally verified` means the specified
+behavior has direct automated evidence. Neither means deployed proof exists.
+
+| Acceptance ID | State | Current evidence or gap |
+| --- | --- | --- |
+| HSD4-P-001 | Partially implemented | Server-only Genkit/Gemini adapter and declared model metadata exist. No opt-in real-provider smoke test or recorded provider evidence exists. |
+| HSD4-P-002 | Partially locally verified | The deterministic planner proves continuous event → plan → validation → two-tool execution. The Gemini path has not been exercised with real credentials. |
+| HSD4-P-003 | Partially locally verified | Unsafe and unavailable planners produce zero operations. Timeout conversion exists but lacks a direct test; malformed structured output, explicit turn/token budget enforcement, and browser-visible failure evidence remain open. |
+| HSD4-P-004 | Locally verified | An unsafe tool proposal is rejected by the SDK before scenario operations execute. |
+| HSD4-C-001 | Prepared, unverified | Dockerfile and runbooks exist. No authorized Cloud Run revision, IAM proof, URL, or deployed smoke evidence exists. |
+| HSD4-UI-001 | Partially locally verified | The browser proves the successful lifecycle. It currently renders the frozen static graph rather than the actual candidate graph and has no E2E failure-state proof. |
+
 ## Completion Record
 
-**Branch used:**
-**Commits:**
-**Review / PR:**
-**Acceptance evidence:**
-**QA commands and results:**
-**Docs updated:**
-**Known limitations / follow-up:**
-**Next issue readiness:**
+Do not complete this record until the external gates below are satisfied.
+
+**Branch used:** `feat/hsd-004-controlled-planning-boundary`
+**Commits:** `52569c0 feat(demo): add Taskmaster planning boundary [HSD-004]`;
+`e514142 chore(cloud): prepare HSD-004 Cloud Run delivery`;
+`344593f chore(demo): refresh Next generated types [HSD-004]`
+**Review / PR:** [#2](https://github.com/marlonthemaker/bgb_labs/pull/2),
+stacked on HSD-003; open. Its first CI run failed during pnpm bootstrap before
+project checks ran, and the workflow correction remains to be pushed.
+**Acceptance evidence:** Local deterministic-planner integration, unsafe and
+unavailable planner behavior, SDK rejection, and successful browser lifecycle
+evidence are present. The status table above identifies all unverified behavior.
+**QA commands and results:** Local full verification was recorded before the
+external gates; re-run it against the approved final commit before closure.
+**Docs updated:** Cloud Run guide, deployment preparation, test traceability,
+root/package roadmaps, and secure environment guidance are in progress and
+must be reconciled at closure.
+**Known limitations / follow-up:** Local timeout/malformed/budget and failure-UI
+coverage remains incomplete. The UI does not yet render the planner's actual
+candidate graph. No authorized Google Cloud project, Secret Manager secret,
+real-Gemini smoke run, or Cloud Run deployment proof exists. HSD-005 must not
+begin until these are resolved and recorded.
+**Next issue readiness:** Not ready. Finish the listed local gaps, then capture
+the external Google proof.
 
 ## Current implementation evidence
 
@@ -83,10 +116,16 @@ and the required Google-stack evidence are captured.
   with zero operations, and planner unavailability with zero operations.
 - Browser E2E covers receipt, planning, validation, and execution lifecycle.
 
-**Open HSD-004 gates:** an authorized real-Gemini smoke run and Cloud Run
-deployment proof. These require a Google Cloud project, credentials/secret
-configuration, and explicit deployment approval; HSD-004 must not be marked
-complete until they are captured.
+The UI exposes lifecycle labels and terminal node statuses. It does not expose
+hidden model chain-of-thought and must never claim to do so. The planned
+evidence experience may expose structured candidate plans, validation decisions,
+tool calls, arguments, outcomes, and sanitized metadata.
+
+**Open HSD-004 gates:** complete the local gaps in the acceptance-status table,
+then perform an authorized real-Gemini smoke run and capture Cloud Run
+deployment proof. External work requires a Google Cloud project,
+credentials/secret configuration, and explicit deployment approval; HSD-004
+must not be marked complete until all local and external gates are captured.
 
 The repository-owned Cloud Run preparation is documented in
 [`hotel_shoreline/CLOUD_RUN.md`](../hotel_shoreline/CLOUD_RUN.md). It specifies
