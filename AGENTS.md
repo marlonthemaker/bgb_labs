@@ -55,5 +55,29 @@ Follow this issue lifecycle without skipping a record update:
 6. **Prepare next:** move only the immediate dependent issue to `Ready for
    analysis` when its prerequisites are met. Do not begin it without approval.
 
+## Required task handoff
+
+At the end of every implementation or review task, provide a self-contained
+close-out report. Do not execute Git delivery commands unless explicitly
+approved; provide copy/paste-ready commands instead.
+
+1. **Outcome and scope:** changed behavior, acceptance IDs satisfied, exclusions,
+   residual risks, and blockers.
+2. **QA readout:** exact commands, pass/fail state, unit/integration/E2E test
+   counts, coverage percentages and thresholds when configured, type/lint/build
+   state, and `git diff --check` state. Say `not run` with a reason instead of
+   implying a check passed.
+3. **Manual test checklist:** a short user-facing sequence covering the primary
+   success flow, one meaningful failure/boundary flow, visible disclosures, and
+   any accessibility or responsive behavior changed by the issue.
+4. **Git handoff:** current branch; scoped files to stage; one or more approved
+   Conventional Commit messages; exact `git add`, `git commit`, `git push -u`,
+   and `gh pr create` commands. Mark commands that require a remote, `gh`, or
+   user confirmation. Never include unrelated files.
+
+Use the issue's Completion Record to preserve the actual QA output and proposed
+delivery metadata. Update the issue, test traceability, affected package docs,
+and roadmap before producing the handoff.
+
 Every completed change has scoped acceptance criteria, traceable tests, a
 clean diff, documented error behavior, and a passing full verification gate.
