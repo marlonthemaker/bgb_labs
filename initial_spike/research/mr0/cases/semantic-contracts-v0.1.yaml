@@ -1,0 +1,170 @@
+case_set:
+  id: mr0-hotel-aurora-semantic-contracts-v0.1
+  status: draft_for_mr0_002
+  world_id: hotel-aurora-v0.1
+  tool_contract_set_id: hotel-aurora-tools-v0.1
+  languages:
+    - en
+    - es-ES
+    - pt-PT
+  contracts:
+    - id: MR0-C001
+      family: atomic_knowledge
+      intent: Ask breakfast hours.
+      expected_capabilities:
+        - retrieve_policy
+        - respond_with_correct_fact
+      fixture_refs:
+        facts:
+          - fact.breakfast
+        tools:
+          - search_hotel_knowledge
+    - id: MR0-C002
+      family: atomic_knowledge
+      intent: Ask luggage storage after checkout.
+      expected_capabilities:
+        - retrieve_policy
+        - respond_with_correct_fact
+      fixture_refs:
+        facts:
+          - fact.luggage_storage
+          - fact.check_in_checkout
+        tools:
+          - search_hotel_knowledge
+    - id: MR0-C003
+      family: atomic_request
+      intent: Request two extra towels.
+      expected_capabilities:
+        - identify_housekeeping_need
+        - call_housekeeping_tool
+        - confirm_action
+      fixture_refs:
+        reservations:
+          - R104
+        tools:
+          - lookup_reservation
+          - request_housekeeping
+    - id: MR0-C004
+      family: compound
+      intent: Report no hot water and request towels.
+      expected_capabilities:
+        - decompose_multiple_needs
+        - call_maintenance_tool
+        - call_housekeeping_tool
+      fixture_refs:
+        reservations:
+          - R104
+        tools:
+          - lookup_reservation
+          - request_maintenance
+          - request_housekeeping
+    - id: MR0-C005
+      family: compound
+      intent: Ask parking availability and late checkout.
+      expected_capabilities:
+        - retrieve_policy
+        - evaluate_late_checkout
+        - respond_with_two_results
+      fixture_refs:
+        facts:
+          - fact.parking
+          - fact.late_checkout
+        reservations:
+          - R104
+        tools:
+          - lookup_reservation
+          - search_hotel_knowledge
+          - request_late_checkout
+    - id: MR0-C006
+      family: compound
+      intent: Ask Wi-Fi details while changing a service note.
+      expected_capabilities:
+        - retrieve_policy
+        - record_or_route_note
+      fixture_refs:
+        facts:
+          - fact.wifi
+        reservations:
+          - R218
+        tools:
+          - lookup_reservation
+          - search_hotel_knowledge
+          - escalate_to_reception
+    - id: MR0-C007
+      family: conditional
+      intent: Request late checkout only if free.
+      expected_capabilities:
+        - preserve_condition
+        - evaluate_policy
+        - avoid_unapproved_action
+      fixture_refs:
+        facts:
+          - fact.late_checkout
+        reservations:
+          - R104
+        tools:
+          - lookup_reservation
+          - request_late_checkout
+    - id: MR0-C008
+      family: negative_constraint
+      intent: Ask not to send housekeeping before noon.
+      expected_capabilities:
+        - preserve_negative_constraint
+        - route_housekeeping_with_timing
+      fixture_refs:
+        reservations:
+          - R104
+        tools:
+          - lookup_reservation
+          - request_housekeeping
+    - id: MR0-C009
+      family: temporal
+      intent: Ask what can be done after checkout today.
+      expected_capabilities:
+        - resolve_checkout_context
+        - retrieve_luggage_policy
+      fixture_refs:
+        facts:
+          - fact.luggage_storage
+          - fact.check_in_checkout
+        reservations:
+          - R218
+        tools:
+          - lookup_reservation
+          - search_hotel_knowledge
+    - id: MR0-C010
+      family: pragmatic
+      intent: Indirectly imply the room is cold and needs help.
+      expected_capabilities:
+        - infer_service_issue
+        - select_maintenance_or_reception
+      fixture_refs:
+        reservations:
+          - R412
+        tools:
+          - lookup_reservation
+          - request_maintenance
+    - id: MR0-C011
+      family: ambiguous
+      intent: Ask for help with an unclear room problem.
+      expected_capabilities:
+        - ask_clarifying_question
+        - avoid_fabricated_action
+      fixture_refs:
+        reservations:
+          - R218
+        tools:
+          - lookup_reservation
+          - escalate_to_reception
+    - id: MR0-C012
+      family: multi_turn_correction
+      intent: Correct a previous room or reservation assumption.
+      expected_capabilities:
+        - update_state
+        - avoid_repeating_old_assumption
+      fixture_refs:
+        reservations:
+          - R305
+          - R412
+        tools:
+          - lookup_reservation

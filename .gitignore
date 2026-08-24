@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+.env
+.venv/
+node_modules/
+dist/
+build/
+.next/
+coverage/
+*.log

@@ -1,0 +1,24 @@
+{
+	"name": "bgb-labs-workspace",
+	"version": "0.0.0",
+	"private": true,
+	"engines": {
+		"node": ">=22.0.0"
+	},
+	"scripts": {
+		"build": "pnpm --filter @bomgoodbueno/native-agent-sdk build && pnpm --filter @bomgoodbueno/hotel-shoreline build",
+		"format": "biome format --write package.json pnpm-workspace.yaml tsconfig.base.json native_agent_sdk/src native_agent_sdk/package.json native_agent_sdk/tsconfig.json native_agent_sdk/tsconfig.build.json native_agent_sdk/README.md hotel_shoreline/src hotel_shoreline/package.json hotel_shoreline/tsconfig.json hotel_shoreline/next.config.ts hotel_shoreline/next-env.d.ts hotel_shoreline/README.md",
+		"format:check": "biome format package.json pnpm-workspace.yaml tsconfig.base.json native_agent_sdk/src native_agent_sdk/package.json native_agent_sdk/tsconfig.json native_agent_sdk/tsconfig.build.json native_agent_sdk/README.md hotel_shoreline/src hotel_shoreline/package.json hotel_shoreline/tsconfig.json hotel_shoreline/next.config.ts hotel_shoreline/next-env.d.ts hotel_shoreline/README.md",
+		"lint": "biome lint native_agent_sdk/src hotel_shoreline/src hotel_shoreline/next.config.ts",
+		"test": "pnpm --filter @bomgoodbueno/native-agent-sdk test",
+		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.10",
+		"@types/node": "26.2.0",
+		"@types/react": "19.2.18",
+		"@types/react-dom": "19.2.5",
+		"typescript": "7.0.2",
+		"vitest": "4.1.11"
+	}
+}

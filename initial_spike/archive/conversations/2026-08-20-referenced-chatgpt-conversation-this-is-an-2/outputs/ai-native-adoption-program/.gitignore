@@ -1,0 +1,11 @@
+# Local and generated files
+.DS_Store
+*.log
+tmp/
+.cache/
+
+# Future data locations
+evidence/raw/
+evidence/derived/
+runs/
+datasets/private/
