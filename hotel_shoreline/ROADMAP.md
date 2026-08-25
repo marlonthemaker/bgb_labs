@@ -11,18 +11,15 @@ not the MR-0 research fixture. It makes one constrained workflow inspectable.
 - Visible fictional, non-affiliation, and non-research disclosure.
 - Browser E2E test for that public boundary.
 
-## Implemented, in review
-
 ### HSD-003 — Deterministic environment and vertical slice
 
 Create an app-owned fictional fixture and a small deterministic tool set.
 Demonstrate one manually planned English compound request through the SDK.
 
-Implemented and locally verified: versioned, synthetic, run-isolated fixture;
+Completed and merged through PR #1: versioned, synthetic, run-isolated fixture;
 idempotent tools; visible plan, validation, tool events, and outcome;
-acceptance-traceable unit,
-integration, and browser tests. PR #1 remains open pending a corrected CI run
-and merge. The implementation/review record is
+acceptance-traceable unit, integration, and browser tests. Local and GitHub
+Actions gates passed. The implementation/review record is
 [`HSD-003-deterministic-hotel-shoreline-vertical-slice`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
 ## Next
@@ -34,11 +31,12 @@ Gemini 3.5+, then deploy the event-to-outcome Taskmaster flow to Cloud Run.
 Malformed, timed-out, unsafe, or unavailable planning output must fail closed
 through the SDK without tool execution.
 
-Current local implementation is partial: the planner port, Genkit/Gemini
-adapter, fixed event route, deterministic success/rejection integration tests,
-success lifecycle UI, container, and deployment runbook exist. Timeout,
-malformed-output, budget-limit, and visible failure-state coverage remain open,
-followed by an authorized real-Gemini smoke run and Cloud Run deployment proof.
+The deterministic local gate now covers the planner port, Genkit/Gemini adapter,
+fixed event route, timeout, malformed output/envelopes, unavailable planning,
+unsafe candidates, turn/token/node limits, actual candidate evidence, sanitized
+browser projection, and visible success/failure lifecycles. The remaining gates
+are updated PR #2 CI, an authorized real-Gemini smoke run, and Cloud Run
+deployment proof.
 
 ### HSD-005 — Controlled native-adoption comparison
 

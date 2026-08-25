@@ -12,6 +12,9 @@ Google Cloud project.
   commit it or use a `NEXT_PUBLIC_` variable.
 - `HSD_PLANNER_MODE=gemini` enables the Genkit/Gemini planner. Omit it or set
   `deterministic` for the credential-free demo baseline.
+- HSD-004 fixes the application planning envelope in code: one planning turn,
+  1,024 output tokens, four candidate nodes, and a two-second planner deadline.
+  These are evidence-bearing safety limits, not browser-controlled variables.
 - The Cloud Run service account must have only the roles required to access the
   configured secret. Browser users get no Google Cloud credentials.
 
@@ -26,8 +29,21 @@ docker build -t hotel-shoreline:hsd-004 .
 docker run --rm -p 8080:8080 -e HSD_PLANNER_MODE=deterministic hotel-shoreline:hsd-004
 ```
 
-Visit `http://localhost:8080`, run the fixed request, and confirm the lifecycle
-shows event, planning, validation, and execution.
+Visit `http://localhost:8080`, run the fixed request, and confirm the UI shows
+the actual candidate graph, planning budget, event/planning/validation/execution
+lifecycle, two successful node outcomes, and two recorded operations.
+
+For the opt-in real-provider browser smoke, put `HSD_PLANNER_MODE=gemini` and
+the approved `GEMINI_API_KEY` in the uncommitted `.env.local`, stop any existing
+local Hotel Shoreline server so Playwright starts with that configuration, then
+run:
+
+```sh
+HSD_REAL_GEMINI_SMOKE=1 pnpm exec playwright test --grep "real Gemini Taskmaster"
+```
+
+The smoke is skipped by default and in CI. Record the commit, model metadata,
+result, and non-secret run evidence; never copy the key into output or docs.
 
 ## Approved deploy procedure
 

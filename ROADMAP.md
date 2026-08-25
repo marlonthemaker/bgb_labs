@@ -15,7 +15,7 @@ limits, and completion record.
 | Stage | Issues | Product outcome | Quality gate |
 | --- | --- | --- | --- |
 | Foundation | HSD-001–002 | Strict workspace and fail-closed deterministic task runtime. | SDK contracts, errors, execution evidence, and test gates pass. |
-| Deterministic proof | HSD-003 (in review) | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, browser proof, passing CI, and merge. |
+| Deterministic proof | HSD-003 (complete) | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, browser proof, passing CI, and merge. |
 | Taskmaster agent proof | HSD-004 | A Gemini/Genkit agent receives a guest-request event, plans, validates, routes, and completes it autonomously on Cloud Run. | Google stack requirement and safe failure paths are demonstrated in one continuous run. |
 | Controlled comparison | HSD-005 | Matched native-language requests expose baseline/intervention task and operational differences. | Frozen conditions, reviewed variants, invalid-run preservation, no research overclaim. |
 | Evidence ledger | HSD-007 | A privacy-safe, portable PostgreSQL run history permits reproducible comparison across models, dates, modes, and interventions. | Append-only evidence, least-privilege access, idempotent writes, cost/security review. |
@@ -34,8 +34,8 @@ Gemini 3.5+, a Google agent framework (Genkit), and a Google Cloud service
 durable model/history/intervention comparison now promised by this roadmap. It
 must follow—not delay—the HSD-004 deployment proof.
 
-HSD-004 currently has partial local evidence, not a completed local gate. Its
-issue record owns the remaining deterministic tests, failure-state UX,
+HSD-004's deterministic local boundary and failure-state UX are implemented and
+locally verified. Its issue record owns the remaining updated PR CI,
 real-provider smoke test, and deployment evidence.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.

@@ -1,6 +1,6 @@
 # HSD-003 — Deterministic Hotel Shoreline Vertical Slice
 
-**Status:** In review
+**Status:** Complete
 **Repository:** `hotel_shoreline` (SDK changes are out of scope unless a narrow,
 domain-neutral gap is demonstrated)
 **Branch:** `feat/hsd-003-deterministic-shoreline-slice`
@@ -125,10 +125,10 @@ test(demo): cover deterministic Shoreline execution [HSD-003]
 
 - [x] Add HSD-003 acceptance IDs and actual test paths to `TESTING.md`.
 - [x] Update Hotel Shoreline README/roadmap and root roadmap/index status.
-- [ ] Finalize the Completion Record after corrected CI passes and PR #1 merges;
-  the local implementation/review record below is current.
+- [x] Finalize the Completion Record after corrected CI passed and PR #1 merged.
 - [x] HSD-004 was moved to `Ready for analysis` after local HSD-003
-  verification; it subsequently entered `In progress` on a stacked branch.
+  verification; it subsequently entered `In progress` and was rebased onto the
+  merged `main` line.
 
 ## Implementation and review record
 
@@ -142,26 +142,25 @@ small run-evidence panel.
 **QA commands and results:** `pnpm check`, `pnpm typecheck`, `pnpm test:unit`,
 `pnpm test:integration`, `pnpm test:coverage`, `pnpm test:e2e`, `pnpm build`,
 and `git diff --check` passed. HSD-003 adds 3 unit, 2 integration, and 1 E2E
-test; the existing SDK coverage gate remains above threshold.
+test; the then-existing SDK coverage gate remained above threshold. HSD-004
+subsequently added a separate Hotel Shoreline core coverage gate.
 **Known limitations / follow-up:** The flow is local and deterministic, with no
 model, server-side planning, Cloud Run, persistence, retry, or live hotel
 operation. HSD-004 must supply the required Gemini/Genkit and Cloud Run proof.
 **Docs updated:** Root and Hotel Shoreline READMEs/roadmaps, issue index, and
 testing traceability.
-**Next issue readiness:** HSD-004 entered implementation on a stacked branch;
-its issue record lists remaining local and external gates.
+**Next issue readiness:** HSD-004 is in progress on a branch rebased onto the
+merged HSD-003 main line; its issue record owns the remaining external gates.
 
 ## Branch, commits, and review
 
 **Branch used:** `feat/hsd-003-deterministic-shoreline-slice`
-**Commits:** `f542956 feature(HSD-003)`
-**Review / PR:** [#1](https://github.com/marlonthemaker/bgb_labs/pull/1),
-targeting `main`; open. Its first CI run failed during pnpm bootstrap before any
-project check ran. The workflow correction must be pushed and pass before this
-issue can become `Complete`; because the current working branch is HSD-004, the
-CI correction must be backported to this HSD-003 branch.
-**Commit scope check:** Historical completion metadata reconciled on 2026-08-24;
-review branch scope before merge.
+**Commits:** `f542956 feature(HSD-003)`; `e8203a6 fix(ci): install pnpm before
+dependency caching [HSD-001]`
+**Review / PR:** [#1](https://github.com/marlonthemaker/bgb_labs/pull/1)
+merged into `main` on 2026-08-24 as `77aa3ad`; its `verify` GitHub Actions check
+passed before merge.
+**Commit scope check:** Reviewed and merged through PR #1.
 
 ## Comment policy
 

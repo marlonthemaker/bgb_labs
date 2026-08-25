@@ -22,15 +22,14 @@ owner of mutable issue status; this section summarizes current capability.
 - **HSD-002 complete:** JSON-safe semantic contracts and task graphs,
   fail-closed validation (including defensive tool-registry checks), deterministic
   execution, explicit execution failures, and run-scoped idempotency.
-- **HSD-003 in review:** a versioned synthetic fixture, deterministic hotel tool
+- **HSD-003 complete:** a versioned synthetic fixture, deterministic hotel tool
   adapters, frozen English contract/graph, ordered run evidence, and browser
-  vertical slice pass locally. PR #1 remains open and must pass corrected CI
-  before merge and closure.
+  vertical slice passed locally and in CI; PR #1 merged on 2026-08-24.
 - **HSD-004 in progress:** a server-side planner port, Genkit/Gemini adapter,
-  deterministic test path, SDK validation boundary, lifecycle API/UI, and Cloud
-  Run preparation exist. Local timeout/malformed/budget and failure-UI coverage,
-  a real-Gemini smoke run, and Cloud Run deployment proof remain open. PR #2 is
-  stacked on HSD-003.
+  deterministic test path, explicit timeout/turn/token/node budgets, SDK
+  validation boundary, actual candidate evidence, sanitized lifecycle UI, and
+  Cloud Run preparation exist and pass locally. A real-Gemini smoke run, Cloud
+  Run deployment proof, and updated PR #2 CI remain open.
 - **Next after deployment proof:** HSD-005, a small, reviewed,
   baseline/intervention comparison across `en`, `es-ES`, and `pt-PT`, followed
   by durable run history and a presentation-ready evidence experience.
@@ -71,7 +70,9 @@ pnpm exec playwright install chromium
 Local Gemini mode reads server-only values from
 `hotel_shoreline/.env.local`; start from
 [`hotel_shoreline/.env.example`](hotel_shoreline/.env.example). The committed
-default and all automated tests remain deterministic and credential-free.
+default CI/full-gate path remains deterministic and credential-free. The
+separate real-Gemini browser smoke is opt-in and skipped unless explicitly
+enabled with approved credentials.
 
 ## Quality standard
 

@@ -29,9 +29,11 @@ The application has a verified deterministic English vertical slice: a
 versioned synthetic fixture, manually authored contract/graph, deterministic
 maintenance and housekeeping adapters, and inspectable ordered evidence. It has
 no real hotel data or persistent state. HSD-004 has added an opt-in server-side
-Gemini/Genkit planner and Cloud Run delivery preparation; missing local
-failure/budget coverage, real-provider evidence, and deployment proof remain
-open closure gates. HSD-005/HSD-007 will add a small
+Gemini/Genkit planner, explicit planning budgets, fail-closed planner error
+classification, actual candidate evidence, browser failure states, and Cloud
+Run delivery preparation. The deterministic local gate passes; real-provider
+evidence, updated PR CI, and deployment proof remain open closure gates.
+HSD-005/HSD-007 will add a small
 reviewed baseline/intervention comparison and durable sanitized run history.
 HSD-003's scope and completion record are in
 [`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
@@ -51,6 +53,7 @@ From the workspace root:
 
 ```sh
 pnpm --filter @bomgoodbueno/hotel-shoreline dev
+pnpm --filter @bomgoodbueno/hotel-shoreline test:coverage
 pnpm test:e2e
 pnpm --filter @bomgoodbueno/hotel-shoreline build
 ```

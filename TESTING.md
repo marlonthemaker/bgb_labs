@@ -22,9 +22,12 @@ that can prove it.
 | Integration | SDK orchestration and application-owned deterministic tool ports | `native_agent_sdk/src/integration/`, `hotel_shoreline/src/integration/` | `pnpm test:integration` |
 | End-to-end | User-visible app behavior in a real browser | `hotel_shoreline/e2e/` | `pnpm test:e2e` |
 
-`pnpm test:all` runs every layer and the SDK coverage gate. New core code must
-meet at least 90% lines, statements, and functions, and 80% branches. A
-coverage number never substitutes for an acceptance-oriented test.
+`pnpm test:all` runs every layer plus separate SDK and Hotel Shoreline core
+coverage gates. Each core gate must meet at least 90% lines, statements, and
+functions, and 80% branches. Provider adapters and presentation components use
+integration/build or browser evidence where instrumentation would substitute a
+mock for the behavior under test. A coverage number never substitutes for an
+acceptance-oriented test.
 
 GitHub Actions runs the same formatter/type/test/build gate on pull requests
 and pushes to `main`. A local pass and a CI pass are distinct evidence; record
@@ -44,9 +47,10 @@ before setup-node enables pnpm caching.
 | HSD3-F-002 | Maintenance and housekeeping adapters accept only the frozen stay, room, and towel quantity. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
 | HSD3-F-003, HSD3-T-002 | The frozen contract and graph validate, execute in order, preserve exact inputs, and produce final state/evidence. | `hotel_shoreline/src/integration/shoreline.integration.test.ts` |
 | HSD3-F-004, HSD3-UI-001 | A user-triggered fixed run renders graph, ordered evidence, statuses, outcome, and disclosure. | `hotel_shoreline/e2e/foundation.spec.ts` |
+| HSD4-P-001 | Implemented, not externally verified: the Genkit adapter is server-only, fixes Gemini 3.5 metadata, and applies the declared output-token configuration. The credentialed real-provider smoke is opt-in and skipped in CI. | `hotel_shoreline/e2e/gemini.smoke.spec.ts`; production build; procedure in `hotel_shoreline/CLOUD_RUN.md` |
 | HSD4-P-002, HSD4-P-004 | Locally verified: a deterministic fixed event is planned, validated, and executed without per-step user direction; an unsafe tool proposal is rejected before execution. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
-| HSD4-P-003 | Partially verified: unsafe and unavailable planner output produces no scenario operation. Timeout, malformed-output, and explicit budget cases remain planned. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
-| HSD4-UI-001 | Partially verified: the browser renders successful event, planning, validation, and execution lifecycle stages. Candidate-graph and failure-state evidence remain planned. | `hotel_shoreline/e2e/foundation.spec.ts` |
+| HSD4-P-003 | Locally verified: malformed output/envelopes, malformed usage, unsafe candidates, timeout, unavailable planning, and turn/output-token/node budget breaches produce typed terminal results with zero scenario operations. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
+| HSD4-UI-001 | Locally verified: the public projection whitelists candidate/lifecycle/outcome evidence; the browser renders the actual candidate, success lifecycle, typed planning failure, malformed-response fallback, zero-operation truth, and disclosures. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts` |
 | HSD5-D-001, HSD5-D-002 | Planned: reviewed case/locale variants retain contract, expected-outcome, reviewer, and provenance links. | `hotel_shoreline/src/unit/native-adoption.unit.test.ts` |
 | HSD5-I-001 | Planned: an intervention is versioned, immutable after use, and declares target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/intervention.unit.test.ts` |
 | HSD5-E-001, HSD5-E-003 | Planned: paired baseline/intervention conditions are comparable; invalid or non-comparable runs are preserved and excluded by default. | `hotel_shoreline/src/integration/native-adoption.integration.test.ts` |
