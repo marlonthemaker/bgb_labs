@@ -7,6 +7,7 @@
 		"dev": "next dev",
 		"pretypecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk build",
 		"start": "next start",
+		"test:coverage": "vitest run --coverage",
 		"test:integration": "vitest run src/integration",
 		"test:unit": "vitest run src/unit",
 		"typecheck": "tsc --noEmit --project tsconfig.json"

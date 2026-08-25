@@ -1,6 +1,8 @@
 import {
 	createExecutionLedger,
 	executeTaskGraph,
+	isRecord,
+	parseTaskGraph,
 	type RunResult,
 	type TaskGraph,
 } from "@bomgoodbueno/native-agent-sdk";
@@ -24,61 +26,135 @@ export const shorelineGuestRequest: GuestRequestReceived = {
 
 export interface TaskPlanner {
 	readonly metadata: { readonly framework: "genkit" | "deterministic"; readonly model: string };
-	plan(event: GuestRequestReceived): Promise<unknown>;
+	plan(event: GuestRequestReceived, context: PlanningContext): Promise<PlanningOutput>;
 }
+
+export interface PlanningContext {
+	readonly signal: AbortSignal;
+}
+
+export interface PlanningUsage {
+	readonly turns: number;
+	readonly outputTokens?: number;
+}
+
+export interface PlanningOutput {
+	readonly graph: unknown;
+	readonly usage: PlanningUsage;
+}
+
+export interface PlanningBudget {
+	readonly timeoutMs: number;
+	readonly maxTurns: number;
+	readonly maxOutputTokens: number;
+	readonly maxNodes: number;
+}
+
+export const taskmasterPlanningBudget: PlanningBudget = Object.freeze({
+	timeoutMs: 2_000,
+	maxTurns: 1,
+	maxOutputTokens: 1_024,
+	maxNodes: 4,
+});
+
+export type TaskmasterLifecycleEvent =
+	| "event.received"
+	| "planning.started"
+	| "planning.finished"
+	| "planning.failed"
+	| "validation.started"
+	| "validation.finished"
+	| "validation.failed"
+	| "execution.finished";
+
+export type TaskmasterErrorCode =
+	| "PLANNER_BUDGET_EXCEEDED"
+	| "PLANNER_INVALID_OUTPUT"
+	| "PLANNER_TIMEOUT"
+	| "PLANNER_UNAVAILABLE";
 
 export interface TaskmasterRun {
 	readonly eventId: string;
 	readonly fixtureVersion: string;
 	readonly planner: TaskPlanner["metadata"];
-	readonly lifecycle: readonly string[];
+	readonly planning: {
+		readonly budget: PlanningBudget;
+		readonly usage?: PlanningUsage;
+	};
+	readonly lifecycle: readonly TaskmasterLifecycleEvent[];
 	readonly status: "planning_failed" | "rejected" | "succeeded" | "partial_failure" | "failed";
+	readonly candidateGraph?: TaskGraph;
 	readonly run?: RunResult;
-	readonly errorCode?: "PLANNER_INVALID_OUTPUT" | "PLANNER_TIMEOUT" | "PLANNER_UNAVAILABLE";
+	readonly errorCode?: TaskmasterErrorCode;
 	readonly operationCount: number;
 }
 
 export class DeterministicTaskPlanner implements TaskPlanner {
 	readonly metadata = { framework: "deterministic" as const, model: "frozen-hsd-003-graph" };
 
-	async plan(_event: GuestRequestReceived): Promise<unknown> {
-		return shorelineGraph;
+	async plan(_event: GuestRequestReceived, _context: PlanningContext): Promise<PlanningOutput> {
+		return { graph: shorelineGraph, usage: { turns: 1 } };
 	}
 }
 
 export async function executeGuestRequest(input: {
 	readonly planner: TaskPlanner;
-	readonly timeoutMs?: number;
+	readonly budget?: PlanningBudget;
 	readonly event?: GuestRequestReceived;
 }): Promise<TaskmasterRun> {
 	const event = input.event ?? shorelineGuestRequest;
-	const lifecycle = ["event.received", "planning.started"];
-	let graph: TaskGraph | unknown;
+	const budget = input.budget ?? taskmasterPlanningBudget;
+	const lifecycle: TaskmasterLifecycleEvent[] = ["event.received", "planning.started"];
+	let output: PlanningOutput;
+	const planningAbortController = new AbortController();
 	try {
-		graph = await withinTimeout(input.planner.plan(event), input.timeoutMs ?? 2_000);
+		output = await withinTimeout(
+			input.planner.plan(event, { signal: planningAbortController.signal }),
+			budget.timeoutMs,
+			() => planningAbortController.abort(),
+		);
 	} catch (error) {
 		lifecycle.push("planning.failed");
-		return {
-			eventId: event.eventId,
-			fixtureVersion: shorelineFixture.version,
-			planner: input.planner.metadata,
+		return planningFailure({
+			event,
+			planner: input.planner,
+			budget,
 			lifecycle,
-			status: "planning_failed",
 			errorCode: error instanceof PlannerTimeoutError ? "PLANNER_TIMEOUT" : "PLANNER_UNAVAILABLE",
-			operationCount: 0,
-		};
+		});
 	}
-	if (!graph || typeof graph !== "object") {
+	if (!isPlanningOutput(output)) {
 		lifecycle.push("planning.failed");
-		return {
-			eventId: event.eventId,
-			fixtureVersion: shorelineFixture.version,
-			planner: input.planner.metadata,
+		return planningFailure({
+			event,
+			planner: input.planner,
+			budget,
 			lifecycle,
-			status: "planning_failed",
 			errorCode: "PLANNER_INVALID_OUTPUT",
-			operationCount: 0,
-		};
+		});
+	}
+	const graph = parseTaskGraph(output.graph);
+	if (Array.isArray(graph)) {
+		lifecycle.push("planning.failed");
+		return planningFailure({
+			event,
+			planner: input.planner,
+			budget,
+			usage: output.usage,
+			lifecycle,
+			errorCode: "PLANNER_INVALID_OUTPUT",
+		});
+	}
+	if (planningBudgetExceeded({ budget, graph, usage: output.usage })) {
+		lifecycle.push("planning.failed");
+		return planningFailure({
+			event,
+			planner: input.planner,
+			budget,
+			usage: output.usage,
+			lifecycle,
+			errorCode: "PLANNER_BUDGET_EXCEEDED",
+		});
 	}
 	const shorelineTools = createShorelineTools();
 	lifecycle.push("planning.finished", "validation.started");
@@ -95,22 +171,77 @@ export async function executeGuestRequest(input: {
 		eventId: event.eventId,
 		fixtureVersion: shorelineFixture.version,
 		planner: input.planner.metadata,
+		planning: { budget, usage: output.usage },
 		lifecycle,
 		status: run.validation.ok ? run.status : "rejected",
+		candidateGraph: graph,
 		run,
 		operationCount: shorelineTools.getState().operations.length,
 	};
 }
 
+function planningFailure(input: {
+	readonly event: GuestRequestReceived;
+	readonly planner: TaskPlanner;
+	readonly budget: PlanningBudget;
+	readonly usage?: PlanningUsage;
+	readonly lifecycle: readonly TaskmasterLifecycleEvent[];
+	readonly errorCode: TaskmasterErrorCode;
+}): TaskmasterRun {
+	return {
+		eventId: input.event.eventId,
+		fixtureVersion: shorelineFixture.version,
+		planner: input.planner.metadata,
+		planning: input.usage ? { budget: input.budget, usage: input.usage } : { budget: input.budget },
+		lifecycle: input.lifecycle,
+		status: "planning_failed",
+		errorCode: input.errorCode,
+		operationCount: 0,
+	};
+}
+
+function isPlanningOutput(value: unknown): value is PlanningOutput {
+	if (!isRecord(value) || !isRecord(value.usage)) return false;
+	const { outputTokens, turns } = value.usage;
+	return (
+		"graph" in value &&
+		typeof turns === "number" &&
+		Number.isSafeInteger(turns) &&
+		turns > 0 &&
+		(outputTokens === undefined ||
+			(typeof outputTokens === "number" && Number.isSafeInteger(outputTokens) && outputTokens >= 0))
+	);
+}
+
+function planningBudgetExceeded(input: {
+	readonly budget: PlanningBudget;
+	readonly graph: TaskGraph;
+	readonly usage: PlanningUsage;
+}): boolean {
+	return (
+		input.usage.turns > input.budget.maxTurns ||
+		(input.usage.outputTokens !== undefined &&
+			input.usage.outputTokens > input.budget.maxOutputTokens) ||
+		input.graph.nodes.length > input.budget.maxNodes
+	);
+}
+
 class PlannerTimeoutError extends Error {}
 
-async function withinTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+async function withinTimeout<T>(
+	promise: Promise<T>,
+	timeoutMs: number,
+	onTimeout: () => void,
+): Promise<T> {
 	let timeout: ReturnType<typeof setTimeout> | undefined;
 	try {
 		return await Promise.race([
 			promise,
 			new Promise<T>((_resolve, reject) => {
-				timeout = setTimeout(() => reject(new PlannerTimeoutError()), timeoutMs);
+				timeout = setTimeout(() => {
+					reject(new PlannerTimeoutError());
+					onTimeout();
+				}, timeoutMs);
 			}),
 		]);
 	} finally {

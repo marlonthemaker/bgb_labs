@@ -1,7 +1,16 @@
+import "server-only";
+
 import { googleAI } from "@genkit-ai/google-genai";
 import { genkit, z } from "genkit";
 
-import type { GuestRequestReceived, TaskPlanner } from "./taskmaster";
+import { shorelineContract, shorelineFixture } from "./shoreline";
+import {
+	type GuestRequestReceived,
+	type PlanningContext,
+	type PlanningOutput,
+	type TaskPlanner,
+	taskmasterPlanningBudget,
+} from "./taskmaster";
 
 const ai = genkit({ plugins: [googleAI()] });
 const graphSchema = z.object({
@@ -23,19 +32,33 @@ const graphSchema = z.object({
 export class GeminiTaskPlanner implements TaskPlanner {
 	readonly metadata = { framework: "genkit" as const, model: "gemini-3.5-flash" };
 
-	async plan(event: GuestRequestReceived): Promise<unknown> {
+	async plan(event: GuestRequestReceived, context: PlanningContext): Promise<PlanningOutput> {
 		if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not configured.");
 		const response = await ai.generate({
 			model: googleAI.model("gemini-3.5-flash"),
+			abortSignal: context.signal,
+			config: {
+				maxOutputTokens: taskmasterPlanningBudget.maxOutputTokens,
+				temperature: 0,
+			},
 			prompt: [
-				"Return only a task graph for the approved Hotel Shoreline contract.",
-				"Allowed tools: request_maintenance, request_housekeeping.",
-				"Required constraints: room-204, two-extra-towels, no-charge.",
+				"Return only one JSON task graph. Propose tasks; do not call tools.",
+				`Set contractId to ${JSON.stringify(shorelineContract.id)}.`,
+				`Set preservedConstraintIds to ${JSON.stringify(shorelineContract.requiredConstraintIds)}.`,
+				"Create exactly two independent nodes with empty dependsOn arrays and unique idempotency keys.",
+				`The maintenance node uses request_maintenance with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber })} and constraintIds ["room-204", "no-charge"].`,
+				`The housekeeping node uses request_housekeeping with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber, extraTowelCount: shorelineFixture.maxExtraTowels })} and constraintIds ["room-204", "two-extra-towels", "no-charge"].`,
 				`Guest request: ${event.request}`,
 			].join("\n"),
 			output: { schema: graphSchema },
 		});
 		if (!response.output) throw new Error("Gemini returned no structured graph.");
-		return response.output;
+		return {
+			graph: response.output,
+			usage:
+				response.usage.outputTokens === undefined
+					? { turns: 1 }
+					: { turns: 1, outputTokens: response.usage.outputTokens },
+		};
 	}
 }

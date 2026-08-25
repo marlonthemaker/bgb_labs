@@ -37,6 +37,12 @@ test("HSD4-UI-001: shows event, planning, validation, and execution lifecycle", 
 	await page.goto("/");
 	await page.getByRole("button", { name: "Run fixed request" }).click();
 
+	await expect(page.getByRole("region", { name: "Planner candidate graph" })).toContainText(
+		"request_maintenance",
+	);
+	await expect(page.getByRole("region", { name: "Planner candidate graph" })).toContainText(
+		"request_housekeeping",
+	);
 	await expect(page.getByRole("list", { name: "Ordered run events" })).toContainText(
 		"event.received",
 	);
@@ -46,4 +52,67 @@ test("HSD4-UI-001: shows event, planning, validation, and execution lifecycle", 
 	await expect(page.getByRole("list", { name: "Ordered run events" })).toContainText(
 		"validation.finished",
 	);
+});
+
+test("HSD4-P-003/HSD4-UI-001: renders a typed planning failure without claiming operations", async ({
+	page,
+}) => {
+	await page.route("**/api/taskmaster", async (route) => {
+		await route.fulfill({
+			status: 503,
+			contentType: "application/json",
+			body: JSON.stringify({
+				eventId: "shoreline-guest-request-204-v1",
+				fixtureVersion: "shoreline-fixture-v1",
+				planner: { framework: "genkit", model: "gemini-3.5-flash" },
+				planning: {
+					budget: {
+						timeoutMs: 2_000,
+						maxTurns: 1,
+						maxOutputTokens: 1_024,
+						maxNodes: 4,
+					},
+				},
+				lifecycle: ["event.received", "planning.started", "planning.failed"],
+				status: "planning_failed",
+				errorCode: "PLANNER_TIMEOUT",
+				operationCount: 0,
+			}),
+		});
+	});
+	await page.goto("/");
+	await page.getByRole("button", { name: "Run fixed request" }).click();
+
+	await expect(page.getByText("Status:")).toContainText("planning_failed");
+	await expect(page.getByText("Stopped safely before scenario operations.")).toBeVisible();
+	await expect(page.getByText("Error: PLANNER_TIMEOUT")).toBeVisible();
+	await expect(page.getByText("Operations recorded: 0")).toBeVisible();
+	await expect(page.getByRole("region", { name: "Planner candidate graph" })).toContainText(
+		"Planning stopped before a structurally valid candidate was available.",
+	);
+	await expect(page.getByRole("list", { name: "Ordered run events" })).toContainText(
+		"planning.failed",
+	);
+	await expect(
+		page.getByText("not affiliated with, endorsed by, or operated by Google"),
+	).toBeVisible();
+});
+
+test("HSD4-UI-001: rejects malformed API evidence without claiming completion", async ({
+	page,
+}) => {
+	await page.route("**/api/taskmaster", async (route) => {
+		await route.fulfill({
+			status: 200,
+			contentType: "application/json",
+			body: JSON.stringify({ status: "succeeded" }),
+		});
+	});
+	await page.goto("/");
+	await page.getByRole("button", { name: "Run fixed request" }).click();
+
+	await expect(
+		page.getByText("Run evidence is unavailable. No completion is being claimed."),
+	).toBeVisible();
+	await expect(page.getByText("Status:")).toHaveCount(0);
 });
