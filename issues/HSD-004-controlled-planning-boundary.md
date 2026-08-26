@@ -1,12 +1,13 @@
 # HSD-004 — Taskmaster Agent and Controlled Planning Boundary
 
-**Status:** In progress
+**Status:** Ready to merge — deployment verified
 **Repository:** `hotel_shoreline` (optional narrow SDK interface only)
 **Depends on:** HSD-003
 **Branch:** `feat/hsd-004-controlled-planning-boundary`
 
-HSD-003 passed CI and merged through PR #1. PR #2 targets `main`; its latest
-pushed closeout commits and `Quality / verify` check passed on 2026-08-26.
+HSD-003 passed CI and merged through PR #1. PR #2 targets `main`; deployment
+proof is recorded and its `Quality / verify` check passed at `161c416` on
+2026-08-26. Merge remains the only closure gate.
 
 ## Outcome
 
@@ -55,12 +56,12 @@ the hackathon without adding a permanent production dependency to tests.
 
 | Acceptance ID | Code boundary | Direct evidence | Remaining QA |
 | --- | --- | --- | --- |
-| HSD4-P-001 | `src/lib/genkit-planner.ts`, server route | Type/build verification plus the 2026-08-25 credentialed smoke prove Gemini 3.5 Flash, minimal thinking, structured output, limits, and abort propagation. | Repeat through deployed Cloud Run revision. |
-| HSD4-P-002 | `src/lib/taskmaster.ts`, fixed API route | `src/integration/taskmaster.integration.test.ts`; successful lifecycle cases in `e2e/foundation.spec.ts` | Repeat through deployed Gemini/Cloud Run path. |
-| HSD4-P-003 | Planner envelope/schema/budget boundary | Malformed graph/envelope/usage, timeout, unavailable, unsafe, turn, token, and node cases in `src/integration/taskmaster.integration.test.ts`; typed and malformed API cases in `e2e/foundation.spec.ts` | Demonstrate one deployed no-operation failure. |
-| HSD4-P-004 | SDK parse/validate/execute call in `src/lib/taskmaster.ts` | Unsafe-candidate integration case asserts SDK rejection and zero operations. | None locally; repeat in deployed smoke evidence. |
-| HSD4-C-001 | Root container, route telemetry, and `hotel_shoreline/CLOUD_RUN.md` | Production build, local workflows, sanitized structured-log tests, and Cloud Trace validation. | Authorized deployment, IAM/revision/URL evidence, and deployed smoke. |
-| HSD4-UI-001 | `src/lib/taskmaster-view.ts`, `src/app/run-demo.tsx` | Unit projection/parser tests plus browser success, server-response sanitization, failure, malformed-response, and disclosure cases. | Manual responsive/accessibility and deployed-browser pass. |
+| HSD4-P-001 | `src/lib/genkit-planner.ts`, server route | Type/build verification, opt-in local smoke, and deployed revision prove Gemini 3.5 Flash, structured output, declared limits, and abort propagation. | None. |
+| HSD4-P-002 | `src/lib/taskmaster.ts`, fixed API route | Integration/E2E success cases plus the deployed Gemini request prove event → candidate → validation → ordered execution. | None. |
+| HSD4-P-003 | Planner envelope/schema/budget boundary | Local malformed/timeout/unavailable/unsafe/budget cases plus the deployed no-secret proof show typed `PLANNER_UNAVAILABLE` and zero operations. | None. |
+| HSD4-P-004 | SDK parse/validate/execute call in `src/lib/taskmaster.ts` | Unsafe-candidate integration rejection plus deployed `validationOutcome=accepted` and two verified operations. | None. |
+| HSD4-C-001 | Root container, route telemetry, and `hotel_shoreline/CLOUD_RUN.md` | Production build, Cloud Build, immutable image/revision, bounded service configuration, scoped identities/secret, success/failure responses, and sanitized Cloud Logging evidence. | None. |
+| HSD4-UI-001 | `src/lib/taskmaster-view.ts`, `src/app/run-demo.tsx` | Unit/E2E projection cases plus deployed desktop and 390px browser checks with required disclosures. | None. |
 
 ## Scope boundaries
 
@@ -73,46 +74,59 @@ automatic retry. A planner may propose; it may never decide what is safe.
 Run the root full gate, deterministic planner integration suite, browser E2E,
 and a documented deploy/smoke procedure. Update `TESTING.md`, the architecture
 and submission constraints, Hotel Shoreline docs, root roadmap, issue index,
-and this Completion Record. Do not mark HSD-005 ready until the Cloud Run proof
-and the required Google-stack evidence are captured.
+and this Completion Record. Do not begin HSD-005 until this external proof is
+recorded, PR #2 merges, and green `main` is pulled.
 
 ## Current acceptance status
 
-`Implemented` means code exists; `locally verified` means the specified
-behavior has direct automated evidence. Neither means deployed proof exists.
+All acceptance criteria have direct local evidence and the external Cloud Run
+proof required by this issue. Merge status remains separate from acceptance.
 
 | Acceptance ID | State | Current evidence or gap |
 | --- | --- | --- |
-| HSD4-P-001 | Externally verified locally | The server-only Genkit adapter uses `gemini-3.5-flash`, minimal thinking, a 1,024-output-token ceiling, and the orchestration abort signal. After a separately observed transient provider 503 failed closed with `PLANNER_UNAVAILABLE` and zero operations, the credentialed browser smoke passed on 2026-08-25: one test passed in 4.9 seconds with the provider workflow completing in 3.3 seconds. Credentialed and credential-free browser suites force fresh servers with explicit Gemini and deterministic modes, respectively, so local environment state cannot change the tested condition. |
-| HSD4-P-002 | Externally verified locally; deployed proof open | The deterministic and credentialed Gemini paths both prove continuous event → candidate → validation → ordered two-tool execution, and the browser renders the actual candidate without per-step direction. |
-| HSD4-P-003 | Locally verified | Malformed graphs/envelopes/usage, unsupported planner configuration, unsafe candidates, timeout, unavailability, and turn/output-token/node budget breaches have direct tests. Every pre-execution failure records zero operations; unexpected route crashes return sanitized 500 evidence and log only the exception type; a no-payload Genkit sink prevents provider-owned exception messages and stacks from bypassing the telemetry allowlist. |
-| HSD4-P-004 | Locally verified | An unsafe tool proposal is rejected by the SDK before scenario operations execute. |
-| HSD4-C-001 | Locally prepared, externally unverified | A minimal non-root Next.js standalone runtime, explicit Docker/gcloud ignore boundaries, split build/runtime identity plan, pinned-secret procedure, bounded Cloud Run configuration, and deploy/evidence/rollback runbook exist. The generated standalone server completed the deterministic two-operation flow on 2026-08-26. Docker/Cloud Build and an authorized Cloud Run revision, IAM proof, URL, and deployed smoke remain unverified. |
-| HSD4-UI-001 | Locally verified | The server projects an allowlisted response before transport and the client validates it again. Unit/browser tests prove private inputs/outputs remain absent, plus actual candidate, budgets, success, typed failure, zero-operation truth, malformed fallback, and disclosures. |
+| HSD4-P-001 | Externally verified | Deployed revision `hotel-shoreline-hsd004-161c4161` used server-only Genkit and `gemini-3.5-flash`; the response retained declared planner metadata and limits. |
+| HSD4-P-002 | Externally verified | The deployed fixed event produced two candidate nodes, preserved three constraints, passed validation, completed two ordered tools, and terminated at `execution.finished`. |
+| HSD4-P-003 | Externally verified | Local edge cases remain green. A temporary same-image service without the secret returned HTTP 503, `PLANNER_UNAVAILABLE`, zero candidates/results/operations, and `planning.failed`; its sanitized `WARNING` event was retained before the service was deleted. |
+| HSD4-P-004 | Externally verified | Local SDK rejection proves unsafe candidates cannot execute; deployed success telemetry recorded `validationOutcome=accepted` before two verified operations. |
+| HSD4-C-001 | Externally verified | Cloud Build used the dedicated builder, the runtime uses the dedicated identity and pinned secret version 1, the public service is bounded to 1 CPU/512 MiB, concurrency 4, timeout 60 seconds, scale 0–2, and the immutable image digest is recorded below. |
+| HSD4-UI-001 | Externally verified | Deployed desktop and 390px checks rendered candidate, constraints, budgets, lifecycle, outcomes, and the fictional/non-affiliation/non-research disclosure without horizontal layout failure. |
 
 ## Completion Record
 
-Do not complete this record until the external gates below are satisfied.
+External acceptance gates were satisfied on 2026-08-26. PR #2 merge remains.
 
 **Branch used:** `feat/hsd-004-controlled-planning-boundary`
 **Existing rebased commits:** `d157a3b feat(demo): add Taskmaster planning
 boundary [HSD-004]`; `3094be2 chore(cloud): prepare HSD-004 Cloud Run
 delivery`; `109dfc2 chore(demo): refresh Next generated types [HSD-004]`;
 `a4d794d fix(demo): harden Gemini failure boundary [HSD-004]`;
-`62cf385 docs(hsd): record HSD-004 provider failure evidence [HSD-004]`.
-The final deployment-hardening follow-up remains uncommitted; record its hash
-when HSD-004 reaches final closure.
+`62cf385 docs(hsd): record HSD-004 provider failure evidence [HSD-004]`;
+`14fce17 chore(cloud): harden HSD-004 release runtime [HSD-004]`;
+`c2bcc6f docs(cloud): define HSD-004 deployment evidence [HSD-004]`;
+`161c416 docs(hsd): freeze HSD-005 comparison design [HSD-005]`.
 **Review / PR:** [#2](https://github.com/marlonthemaker/bgb_labs/pull/2) is
-open against `main`, mergeable, and its `Quality / verify` check passed on
-2026-08-26 at `62cf385`. The deployment-hardening follow-up requires its own
-push and fresh CI pass before deployment.
+open against `main`, mergeable, and its `Quality / verify` check passed in
+[run 32969012306](https://github.com/marlonthemaker/bgb_labs/actions/runs/32969012306)
+at `161c416` on 2026-08-26.
 **Acceptance evidence:** Deterministic planner integration covers continuous
 success, SDK rejection, malformed graph/envelope/usage, unsupported
 configuration, timeout, provider unavailability, and turn/token/node budgets.
 Projection/telemetry unit tests and browser tests cover server-sanitized
 evidence, secret-free logs, success, typed failure, malformed API fallback,
-zero-operation truth, and disclosures. The table above separates these local
-results from unverified Cloud Run behavior.
+zero-operation truth, and disclosures. Cloud project `native-agent-poc`
+(`1075716782706`) in `europe-west1` serves
+`https://hotel-shoreline-7larmcl4aa-ew.a.run.app`. Cloud Build
+`7bd5d440-a347-4780-be5d-23c0768af5a3` built commit
+`161c4161c0607f03bd81e8a68a33111837b0be7d` with
+`hotel-shoreline-builder@native-agent-poc.iam.gserviceaccount.com`; revision
+`hotel-shoreline-hsd004-161c4161` runs as
+`hotel-shoreline-runtime@native-agent-poc.iam.gserviceaccount.com` from image
+digest `sha256:edad9573bb6e9f7d05fee5e0806ef018c3f3da37b0e133d19b8b914360e5eec3`.
+Success request `9adc3c7d-c82c-4bed-9d1f-6b11d09de8d1` returned HTTP 200,
+two nodes, three constraints, two successful operations, and
+`execution.finished`. Failure request `7d9c5319-aed7-462f-98d6-d4079ea98acd`
+returned HTTP 503, `PLANNER_UNAVAILABLE`, zero operations, and `planning.failed`;
+its temporary service was confirmed deleted.
 **QA commands and results:** On 2026-08-26, `pnpm check` passed across 39
 formatted/linted files; `pnpm typecheck` passed both packages; `pnpm test:all`
 passed 31 unit, 18 integration, and 5 deterministic browser E2E tests; the
@@ -128,22 +142,24 @@ API flow with two candidate nodes, three constraints, two successful node
 results, and two operations. The default browser suite passed on isolated port
 3102 while a manual server retained port 3000; invalid port configuration also
 failed with a typed configuration error. Secret scans, ignored-file/permission
-checks, and `git diff --check` passed. Google Cloud CLI 582.0.0 was installed,
-but it has no active account/project configuration; Docker, Cloud Build, and
-Cloud Run were not run. PR #2's pushed closeout `Quality / verify` check passed;
-the deployment-hardening follow-up now requires commit, push, and fresh CI.
+checks, and `git diff --check` passed. Google Cloud CLI 582.0.0 is authenticated
+through the isolated `hotel-shoreline-hsd` configuration. The six required APIs,
+split identities, scoped secret version 1, 60-file secret-free upload manifest,
+successful Cloud Build, immutable image, bounded/public service configuration,
+deployed success/failure assertions, allowlisted `INFO`/`WARNING` logs, cleanup,
+and desktop/390px browser checks passed. PR #2 CI passed at the deployed commit.
 **Docs updated:** Testing traceability, architecture/product boundaries,
 root/package roadmaps and READMEs, issue index, authorization-key migration,
 Cloud identity/secret bootstrap, release/evidence/rollback procedure, and the
 HSD-005 treatment contract are reconciled to the current local state.
-**Known limitations / follow-up:** The local key remains outside version control
-and the credentialed provider path is verified. No authorized Cloud Run
-revision, least-privilege service identity/Secret Manager binding, URL, or
-deployed smoke evidence exists. HSD-005 must not begin until that final external
-gate is recorded and PR #2 is merged.
-**Next issue readiness:** HSD-005 is specified but blocked. Verify and push the
-deployment-hardening follow-up, capture Cloud Run proof, merge PR #2, then move
-HSD-005 to ready for implementation.
+**Known limitations / follow-up:** The public demonstration can consume provider
+quota; scale-to-zero and max two instances bound compute but a billing budget
+alert still requires an owner-selected amount. The app remains synthetic,
+ephemeral, non-research, and intentionally lacks HSD-005 comparison data or
+HSD-007 persistence. The key remains outside Git and pinned through Secret
+Manager version 1. Provider availability remains an external dependency.
+**Next issue readiness:** HSD-005 is fully specified and ready immediately after
+PR #2 merges and green `main` is pulled.
 
 ## Current implementation evidence
 
@@ -168,11 +184,8 @@ hidden model chain-of-thought and must never claim to do so. The planned
 evidence experience may expose structured candidate plans, validation decisions,
 tool calls, arguments, outcomes, and sanitized metadata.
 
-**Open HSD-004 gate:** capture authorized Cloud Run revision/IAM/URL and
-deployed-smoke proof, then merge PR #2 after its final CI run. External work
-requires a Google Cloud project, Secret Manager configuration, and explicit
-deployment approval; HSD-004 must not be marked complete until that evidence is
-captured.
+**Open HSD-004 gate:** merge PR #2. Deployment, IAM, revision, success/failure,
+logging, cleanup, and responsive-browser evidence are complete.
 
 The repository-owned Cloud Run preparation is documented in
 [`hotel_shoreline/CLOUD_RUN.md`](../hotel_shoreline/CLOUD_RUN.md). It specifies

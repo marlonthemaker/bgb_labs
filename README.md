@@ -25,13 +25,14 @@ owner of mutable issue status; this section summarizes current capability.
 - **HSD-003 complete:** a versioned synthetic fixture, deterministic hotel tool
   adapters, frozen English contract/graph, ordered run evidence, and browser
   vertical slice passed locally and in CI; PR #1 merged on 2026-08-24.
-- **HSD-004 in progress:** a server-side planner port, Genkit/Gemini adapter,
+- **HSD-004 ready to merge:** a server-side planner port, Genkit/Gemini adapter,
   deterministic test path, explicit timeout/turn/token/node budgets, SDK
   validation boundary, server-sanitized evidence, structured telemetry, and
-  Cloud Run preparation exist and pass locally. The real-Gemini smoke and PR #2
-  CI passed; a minimal standalone runtime and hardened deployment runbooks are
-  locally prepared. Cloud Build/container and Cloud Run proof remain open.
-- **Next after deployment proof:** HSD-005, a small, reviewed,
+  Cloud Run delivery exist and pass. The real-Gemini smoke, Cloud Build,
+  bounded Cloud Run revision, deployed success/failure evidence, responsive UI,
+  sanitized logs, and PR #2 CI passed on 2026-08-26. PR #2 merge is the only
+  remaining HSD-004 closure gate.
+- **Next after PR #2 merges:** HSD-005, a small, reviewed,
   baseline/intervention comparison across `en`, `es-ES`, and `pt-PT`, followed
   by durable run history and a presentation-ready evidence experience.
 

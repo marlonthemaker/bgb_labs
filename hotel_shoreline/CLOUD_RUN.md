@@ -213,12 +213,16 @@ gcloud logging read \
   --project "$PROJECT_ID" \
   --limit 10 \
   --freshness 1h \
-  --format='table(timestamp,jsonPayload.severity,jsonPayload.requestId,jsonPayload.status,jsonPayload.errorCode,jsonPayload.operationCount,jsonPayload.candidateNodeCount,jsonPayload.terminalLifecycleEvent)'
+  --format='table(timestamp,severity,jsonPayload.requestId,jsonPayload.status,jsonPayload.errorCode,jsonPayload.operationCount,jsonPayload.candidateNodeCount,jsonPayload.terminalLifecycleEvent)'
 ```
 
 Successful evidence is `INFO`, `succeeded`, two operations, two candidate
 nodes, and `execution.finished`. Logs must not contain a key, request text,
 node input, tool output, exception message, or stack.
+
+Cloud Logging ingestion is asynchronous. If a just-completed run is absent,
+repeat the read after a short propagation interval; do not rerun the model or
+weaken the query merely to obtain an immediate row.
 
 ## 7. Capture a controlled deployed failure
 

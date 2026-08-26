@@ -39,12 +39,17 @@ Create a billing budget before deployment. A normal budget sends alerts; it
 does not automatically stop usage. Cloud Run's scale-to-zero and maximum
 instance settings remain the primary cost bounds for this demo.
 
+The first HSD-004 revision was deployed with those runtime bounds on 2026-08-26.
+A billing budget remains pending because its amount is an owner decision; add it
+before sharing the public URL broadly.
+
 ## 2. Use the installed `gcloud` CLI or Cloud Shell
 
-Google Cloud CLI 582.0.0 is installed on the current workstation. No active
-account, project, or Cloud Run region was configured when this guide was last
-verified on 2026-08-26. Authenticate and create the named configuration below,
-or use Cloud Shell if local browser authentication is inconvenient:
+Google Cloud CLI 582.0.0 is installed on the current workstation. The isolated
+`hotel-shoreline-hsd` configuration is authenticated and targets
+`native-agent-poc` / `europe-west1` as of 2026-08-26. Reconfirm those values
+before every mutation, or use Cloud Shell if local browser authentication is
+inconvenient:
 
 - Recommended for the first deployment: open Cloud Shell from the Google Cloud
   console, clone this repository, check out the approved commit, and run the

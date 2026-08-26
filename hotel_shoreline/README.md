@@ -31,9 +31,11 @@ maintenance and housekeeping adapters, and inspectable ordered evidence. It has
 no real hotel data or persistent state. HSD-004 has added an opt-in server-side
 Gemini/Genkit planner, explicit planning budgets, fail-closed planner error
 classification, server-allowlisted candidate evidence, browser failure states,
-structured secret-free run telemetry, and Cloud Run delivery preparation. The
-deterministic and credentialed Gemini paths pass locally and PR #2 CI is green;
-Cloud Run deployment proof remains the open closure gate.
+structured secret-free run telemetry, and Cloud Run delivery. The deterministic
+and credentialed Gemini paths pass locally; the bounded production revision,
+success and zero-operation failure paths, sanitized Cloud Logging envelopes,
+desktop/mobile UI, and PR #2 CI passed on 2026-08-26. PR #2 merge remains the
+open closure gate.
 HSD-005/HSD-007 will add a small
 reviewed baseline/intervention comparison and durable sanitized run history.
 HSD-003's scope and completion record are in
