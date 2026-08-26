@@ -39,9 +39,26 @@ standalone/non-root image, least-privilege identities, bounded Cloud Run
 revision, deployed success/failure paths, sanitized logs, and responsive UI were
 verified on 2026-08-26; PR #2 CI passed and merged as `36d02f6`. HSD-005's
 engineering implementation, full local QA, focused real-provider success, and
-nine-block attempt retention are complete; Git delivery remains.
+nine-block attempt retention passed; PR #3 CI passed and merged as `d7a8963`.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.
+
+## Post-release research sequence
+
+The hackathon release remains the only active critical path:
+
+```text
+HSD-007 -> HSD-006 -> HSD-008
+  -> AILITW-001 access audit and 27-cell pilot freeze
+  -> field-suite foundation and feasibility pilot
+  -> focused field study and failure promotion
+  -> controlled Shoreline analogue interventions
+  -> publication, operator handoff, and authorized validation
+```
+
+The detailed follow-up and commercialization gates live in the
+[Iberia integration guide](research/ailitw/studies/iberia-2026/INTEGRATION_GUIDE.md).
+Public-agent collection is not authorized and must not delay HSD-008.
 
 ## Exit principles
 

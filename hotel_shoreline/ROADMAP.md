@@ -1,7 +1,7 @@
 # Hotel Shoreline Roadmap
 
-Hotel Shoreline is a narrow, fictional demonstration—not a hotel product and
-not the MR-0 research fixture. It makes one constrained workflow inspectable.
+Hotel Shoreline is a narrow, fictional demonstration—not a hotel product or
+field-research environment. It makes one constrained workflow inspectable.
 
 ## Complete
 
@@ -41,9 +41,10 @@ sanitized logs, responsive UI, and PR #2 CI passed; PR #2 merged as `36d02f6`.
 ### HSD-005 — Controlled native-adoption comparison
 
 Engineering implementation, full-repository QA, a focused real-provider success,
-and nine-block attempt retention are complete. Git delivery remains. Human review is
-non-blocking for execution: all nine authored variants are explicitly pending
-and excluded from reviewer-qualified claims until reviewers update them.
+and nine-block attempt retention are complete. PR #3 CI passed and merged as
+`d7a8963`. Human review is non-blocking for execution: all nine authored
+variants are explicitly pending and excluded from reviewer-qualified claims
+until reviewers update them.
 
 Run a small, pre-specified, paired baseline/intervention study across reviewed
 `en`, `es-ES`, and `pt-PT` variants. Both arms use the same model condition,

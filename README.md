@@ -1,8 +1,8 @@
 # bgb_labs
 
-`bgb_labs` is a pnpm workspace for the Native Agent hackathon demonstration.
-It contains a reusable assurance SDK, a fictional Hotel Shoreline application,
-and a separate research canon preserved as provenance.
+`bgb_labs` is a pnpm workspace for Native Agent: a domain-neutral assurance
+SDK, the fictional Hotel Shoreline Google hackathon demonstration, and a
+separate native-adoption research program.
 
 ## Workspace map
 
@@ -10,7 +10,8 @@ and a separate research canon preserved as provenance.
 | --- | --- | --- |
 | [`native_agent_sdk/`](native_agent_sdk/README.md) | Reusable, domain-neutral validated task runtime | Must not import the app, hotel concepts, model providers, or cloud services. |
 | [`hotel_shoreline/`](hotel_shoreline/README.md) | Fictional hackathon demonstration | May import the SDK; owns all hotel, UI, fixture, and provider concerns. |
-| [`initial_spike/`](initial_spike/README.md) | Research canon and provenance | Not a runtime dependency and not changed by HSD work without explicit direction. |
+| [`research/`](research/README.md) | Research canon and versioned studies | Never a runtime dependency; public studies require their own access and evidence gates. |
+| [`docs/`](docs/README.md) | Cross-project architecture, product, operations, and decisions | Owns shared guidance, not package behavior or mutable issue status. |
 
 ## HSD status
 
@@ -31,26 +32,32 @@ owner of mutable issue status; this section summarizes current capability.
   Cloud Run delivery exist and pass. The real-Gemini smoke, Cloud Build,
   bounded Cloud Run revision, deployed success/failure evidence, responsive UI,
   sanitized logs, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
-- **HSD-005 implemented locally:** three case families and nine authored
+- **HSD-005 complete:** three case families and nine authored
   `en`, `es-ES`, and `pt-PT` variants run as matched baseline/contract-guided
   pairs with hash-linked conditions, deterministic measures, safe failure
   retention, telemetry, and an inspectable UI. Variants remain explicitly
   pending human review and excluded from reviewer-qualified aggregate claims.
+  PR #3 passed CI and merged on 2026-08-26 as `d7a8963`.
+- **Next:** HSD-007 is ready for analysis and owns the portable PostgreSQL
+  evidence ledger. The Iberia field study remains pre-pilot until HSD-008 and
+  its responsible-access gate are complete.
 
 Read the package roadmaps before changing behavior:
 
 - [Native Agent SDK roadmap](native_agent_sdk/ROADMAP.md)
 - [Hotel Shoreline roadmap](hotel_shoreline/ROADMAP.md)
 - [HSD product roadmap](ROADMAP.md)
-- [Architecture boundaries](ARCHITECTURE.md)
-- [Product, research, and demonstration surfaces](PRODUCT_SURFACES.md)
+- [Architecture boundaries](docs/architecture/BOUNDARIES.md)
+- [Product, research, and demonstration surfaces](docs/product/SURFACES.md)
+- [Native-adoption research canon](research/canon/README.md)
+- [Iberia field-study proposal](research/ailitw/studies/iberia-2026/README.md)
 - [Hotel Shoreline controlled comparison protocol](hotel_shoreline/EVALUATION_PROTOCOL.md)
 - [Hotel Shoreline native-language review guide](hotel_shoreline/NATIVE_REVIEW_GUIDE.md)
 - [Hotel Shoreline PostgreSQL evidence-ledger architecture](hotel_shoreline/DATA_ARCHITECTURE.md)
 - [Testing convention](TESTING.md)
 - [Contributor guide](CONTRIBUTING.md)
 - [Issue index](issues/README.md)
-- [Google Cloud setup and deployment guide](GOOGLE_CLOUD_SETUP.md)
+- [Google Cloud setup and deployment guide](docs/operations/GOOGLE_CLOUD_SETUP.md)
 
 ## Local setup
 

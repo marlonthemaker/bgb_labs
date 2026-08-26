@@ -1,9 +1,9 @@
 # Hotel Shoreline Controlled Comparison Protocol
 
 Hotel Shoreline is a fictional hackathon demonstration. This protocol makes a
-small comparison inspectable; it does not convert the demo into MR-0 or support
+small comparison inspectable; it does not convert the demo into field research or support
 a claim of broad language, cultural, model, or operational parity. The active
-research method and claim rules remain in `initial_spike/docs/`.
+research method and claim rules remain in `research/canon/`.
 
 ## Decision question
 
@@ -52,7 +52,7 @@ engineering evaluation but remain excluded from reviewer-qualified aggregates.
 | Corrective multi-turn change | Amend or cancel an earlier request while retaining an unrelated task. | State revision, referential continuity, cancellation. | Superseded work is not performed; remaining work completes or fails truthfully. |
 
 The existing hot-water/two-towels flow is a suitable compound family seed. Do
-not reuse the research canon's Hotel Aurora fixture or present Hotel Shoreline
+not reuse a named production environment or present Hotel Shoreline
 as a real hotel.
 
 ## Intervention and shared assurance definition
