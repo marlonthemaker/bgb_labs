@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { GeminiPlannerError } from "../lib/gemini-error";
 import { shorelineGraph } from "../lib/shoreline";
 import {
 	DeterministicTaskPlanner,
@@ -77,6 +78,21 @@ describe("HSD-004 Taskmaster event orchestration", () => {
 		});
 		expect(result.lifecycle).toEqual(["event.received", "planning.started", "planning.failed"]);
 		expect(result).not.toHaveProperty("candidateGraph");
+	});
+
+	it("HSD4-P-003: distinguishes exhausted provider quota without leaking or executing", async () => {
+		const quotaPlanner: TaskPlanner = {
+			metadata: { framework: "genkit", model: "quota-test" },
+			plan: async () => Promise.reject(new GeminiPlannerError("PLANNER_QUOTA_EXHAUSTED")),
+		};
+		const result = await executeGuestRequest({ planner: quotaPlanner });
+
+		expect(result).toMatchObject({
+			status: "planning_failed",
+			errorCode: "PLANNER_QUOTA_EXHAUSTED",
+			operationCount: 0,
+		});
+		expect(JSON.stringify(result)).not.toContain("quota-test detail");
 	});
 
 	it("HSD4-P-003: classifies malformed structured graph output and invokes no tool", async () => {

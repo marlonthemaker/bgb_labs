@@ -10,7 +10,8 @@ const baseURL = `http://127.0.0.1:${requestedPort}`;
 export default defineConfig({
 	testDir: "./hotel_shoreline/e2e",
 	fullyParallel: true,
-	reporter: "list",
+	preserveOutput: "always",
+	reporter: plannerMode === "gemini" ? [["list"], ["html", { open: "never" }]] : "list",
 	use: {
 		baseURL,
 		trace: "retain-on-failure",

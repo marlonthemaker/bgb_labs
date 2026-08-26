@@ -78,7 +78,7 @@ describe("HSD-004 public run evidence boundary", () => {
 		const view = parseRunView({
 			...successfulApiRun,
 			status: "planning_failed",
-			errorCode: "PLANNER_TIMEOUT",
+			errorCode: "PLANNER_QUOTA_EXHAUSTED",
 			operationCount: 0,
 			candidateGraph: undefined,
 			nodeResults: [],
@@ -88,7 +88,7 @@ describe("HSD-004 public run evidence boundary", () => {
 
 		expect(view).toMatchObject({
 			status: "planning_failed",
-			errorCode: "PLANNER_TIMEOUT",
+			errorCode: "PLANNER_QUOTA_EXHAUSTED",
 			operationCount: 0,
 			nodeResults: [],
 		});
