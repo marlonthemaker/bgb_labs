@@ -39,4 +39,4 @@ analysis. Do not implement persistence until its analysis is approved.
 
 | Issue | Status | Outcome |
 | --- | --- | --- |
-| [REP-001](REP-001-repository-research-consolidation.md) | Ready for delivery — local QA passed | Consolidate active documentation/research authority and remove superseded artifacts without changing runtime behavior. |
+| [REP-001](REP-001-repository-research-consolidation.md) | Complete | Consolidated active documentation/research authority and removed superseded artifacts without changing runtime behavior. |

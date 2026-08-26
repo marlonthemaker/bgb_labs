@@ -1,6 +1,6 @@
 # REP-001 — Consolidate Repository and Research Authority
 
-**Status:** Ready for delivery
+**Status:** Complete
 **Repository:** workspace
 **Depends on:** HSD-005
 **Branch:** `docs/repo-research-consolidation`
@@ -82,7 +82,7 @@ git diff --check
 
 ## Completion Record
 
-**Completed date:** Pending PR merge; local work completed 2026-08-26.
+**Completed date:** 2026-08-26.
 
 **Implementation summary:** Migrated durable canon and accepted decisions,
 added current research/shared-doc indexes, reconciled HSD and Iberia status,
@@ -123,8 +123,8 @@ quota.
 architecture/product/operations documents, HSD issue records, research canon,
 Iberia study, decision index, and REP-001.
 
-**Next issue readiness:** HSD-007 is ready for analysis after REP-001 passes PR
-CI and merges. `AILITW-001` remains deferred until HSD-008.
+**Next issue readiness:** HSD-007 is ready for analysis. `AILITW-001` remains
+deferred until HSD-008.
 
 ## Branch, commits, and review
 
@@ -134,5 +134,7 @@ CI and merges. `AILITW-001` remains deferred until HSD-008.
 
 - `983d050 docs(research): consolidate native-adoption authority [REP-001]`
 - `ec927b4 docs(workspace): reconcile repository status and guidance [REP-001]`
+- `ec6d2ea docs(workspace): record consolidation verification [REP-001]`
 
-**Review / PR:** Pending PR checks and merge.
+**Review / PR:** [PR #4](https://github.com/marlonthemaker/bgb_labs/pull/4)
+passed the `verify` check in 1m45s and merged as `734eebf`.
