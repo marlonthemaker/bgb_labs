@@ -22,9 +22,28 @@ that can prove it.
 | Integration | SDK orchestration and application-owned deterministic tool ports | `native_agent_sdk/src/integration/`, `hotel_shoreline/src/integration/` | `pnpm test:integration` |
 | End-to-end | User-visible app behavior in a real browser | `hotel_shoreline/e2e/` | `pnpm test:e2e` |
 
-`pnpm test:all` runs every layer and the SDK coverage gate. New core code must
-meet at least 90% lines, statements, and functions, and 80% branches. A
-coverage number never substitutes for an acceptance-oriented test.
+`pnpm test:all` runs every layer plus separate SDK and Hotel Shoreline core
+coverage gates. Each core gate must meet at least 90% lines, statements, and
+functions, and 80% branches. Provider adapters and presentation components use
+integration/build or browser evidence where instrumentation would substitute a
+mock for the behavior under test. A coverage number never substitutes for an
+acceptance-oriented test.
+
+GitHub Actions runs the same formatter/type/test/build gate on pull requests
+and pushes to `main`. A local pass and a CI pass are distinct evidence; record
+both when closing an issue. The repository-pinned pnpm version must be installed
+before setup-node enables pnpm caching.
+
+The ordinary `pnpm test:e2e` command always starts a fresh server in explicit
+deterministic mode. `pnpm test:e2e:gemini` always starts a fresh server in
+explicit Gemini mode and remains opt-in. Browser evidence is therefore
+independent of a developer's `.env.local` planner selection or an already
+running development server.
+
+If port 3000 is occupied by a manual server, choose an unused test-only port
+without stopping it, for example `HSD_E2E_PORT=3102 pnpm test:all`. The
+Playwright configuration accepts only integer ports from 1024 through 65535 and
+still refuses server reuse.
 
 ## HSD traceability
 
@@ -39,6 +58,17 @@ coverage number never substitutes for an acceptance-oriented test.
 | HSD3-F-002 | Maintenance and housekeeping adapters accept only the frozen stay, room, and towel quantity. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
 | HSD3-F-003, HSD3-T-002 | The frozen contract and graph validate, execute in order, preserve exact inputs, and produce final state/evidence. | `hotel_shoreline/src/integration/shoreline.integration.test.ts` |
 | HSD3-F-004, HSD3-UI-001 | A user-triggered fixed run renders graph, ordered evidence, statuses, outcome, and disclosure. | `hotel_shoreline/e2e/foundation.spec.ts` |
+| HSD4-P-001 | Externally verified: the server-only Genkit adapter uses Gemini 3.5 Flash with minimal thinking and declared limits; the opt-in local smoke and deployed Cloud Run flow passed. | `hotel_shoreline/e2e/gemini.smoke.spec.ts`; production build; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
+| HSD4-P-002, HSD4-P-004 | Externally verified: deterministic and deployed Gemini events are planned, SDK-validated, and executed without per-step direction; an unsafe proposal is rejected before execution. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
+| HSD4-P-003 | Externally verified: malformed, unsafe, unavailable, timeout, and budget failures fail closed locally; the deployed no-secret proof returned `PLANNER_UNAVAILABLE` with zero operations and a sanitized warning envelope. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; `hotel_shoreline/src/unit/taskmaster-telemetry.unit.test.ts`; `hotel_shoreline/src/unit/genkit-logging.unit.test.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
+| HSD4-UI-001 | Externally verified: allowlisted candidate/lifecycle/outcome evidence, failures, malformed fallback, disclosures, and deployed desktop/390px layouts passed. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
+| HSD5-D-001, HSD5-D-002 | Planned: reviewed case/locale variants retain contract, expected-outcome, reviewer, provenance, and representation-limitation links; pending review fails closed. | `hotel_shoreline/src/unit/native-adoption/cases.unit.test.ts` |
+| HSD5-I-001 | Planned: control and intervention conditions are versioned, immutable after use, and declare target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/native-adoption/interventions.unit.test.ts` |
+| HSD5-E-001, HSD5-E-003 | Planned: paired conditions differ only by declared contract guidance; invalid, failed, or non-comparable attempts are preserved with typed exclusion reasons. | `hotel_shoreline/src/integration/native-adoption/comparison.integration.test.ts` |
+| HSD5-E-002 | Planned: named deterministic measures retain numerators and denominators and are calculated from immutable versioned evidence, not model self-assessment. | `hotel_shoreline/src/unit/native-adoption/evaluation.unit.test.ts` |
+| HSD5-UI-001 | Planned: browser users can inspect conditions, evidence, diagnosis, measures, and limitations. | `hotel_shoreline/e2e/native-adoption.spec.ts` |
+| HSD7-R-001, HSD7-R-002, HSD7-R-003 | Planned: append-only sanitized PostgreSQL run ledger, provenance, and server-only repository boundary. | `hotel_shoreline/src/integration/run-ledger.integration.test.ts` |
+| HSD7-D-001, HSD7-D-002 | Planned if background delivery is enabled: authenticated duplicate-safe worker and terminal failure state. | `hotel_shoreline/src/integration/worker.integration.test.ts` |
 
 ## Writing rule
 

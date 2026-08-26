@@ -11,16 +11,15 @@ not the MR-0 research fixture. It makes one constrained workflow inspectable.
 - Visible fictional, non-affiliation, and non-research disclosure.
 - Browser E2E test for that public boundary.
 
-## Complete
-
 ### HSD-003 — Deterministic environment and vertical slice
 
 Create an app-owned fictional fixture and a small deterministic tool set.
 Demonstrate one manually planned English compound request through the SDK.
 
-Completed: versioned, synthetic, run-isolated fixture; idempotent tools; visible
-plan, validation, tool events, and outcome; acceptance-traceable unit,
-integration, and browser tests. The completion record is
+Completed and merged through PR #1: versioned, synthetic, run-isolated fixture;
+idempotent tools; visible plan, validation, tool events, and outcome;
+acceptance-traceable unit, integration, and browser tests. Local and GitHub
+Actions gates passed. The implementation/review record is
 [`HSD-003-deterministic-hotel-shoreline-vertical-slice`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
 ## Next
@@ -32,22 +31,45 @@ Gemini 3.5+, then deploy the event-to-outcome Taskmaster flow to Cloud Run.
 Malformed, timed-out, unsafe, or unavailable planning output must fail closed
 through the SDK without tool execution.
 
-### HSD-005 — Native-adoption comparison
+The deterministic local gate now covers the planner port, Genkit/Gemini adapter,
+fixed event route, timeout, malformed output/envelopes, unavailable planning,
+unsafe candidates, turn/token/node limits, actual candidate evidence, sanitized
+server response and browser projection, structured run telemetry, and visible
+success/failure lifecycles. The authorized real-Gemini smoke,
+standalone/non-root image, Cloud Build, least-privilege identities, bounded
+Cloud Run revision, deployed success and zero-operation failure evidence,
+sanitized logs, responsive UI, and PR #2 CI pass. PR #2 merge remains the gate.
 
-Add matched `en`, `es-ES`, and `pt-PT` variants for a frozen semantic contract.
-Expose mode, model settings, fixture version, and limitations.
+### HSD-005 — Controlled native-adoption comparison
+
+Run a small, pre-specified, paired baseline/intervention study across reviewed
+`en`, `es-ES`, and `pt-PT` variants. Both arms use the same model condition,
+Native Agent validation, and typed execution boundary; the intervention adds
+only versioned, reviewed semantic-contract guidance during planning. This
+isolates the treatment without giving the baseline unsafe execution authority.
+
+Expose the request, reviewed semantic contract, candidate graph, validation,
+tool calls, terminal outcome, model/configuration, and scoped limitations. The
+demo may illustrate task-level preservation; it must not claim broad language
+or cultural parity.
+
+See [the controlled comparison protocol](EVALUATION_PROTOCOL.md).
+
+### HSD-007 — Evidence ledger and bounded background delivery
+
+Persist sanitized, versioned run records so the demo can compare historical
+runs across model, locale, prompt/configuration, baseline/intervention arm, and
+fixture/contract version. Use an append-only repository boundary with a local
+test implementation and a PostgreSQL/Cloud SQL implementation. Add Cloud Tasks only if a
+genuine delayed/background execution is needed for the demonstrable workflow;
+it is not a substitute for a correct synchronous flow.
 
 ### HSD-006 — Evidence experience
 
-Add the operational run view, privacy-safe evidence export, accessible failure
-states, and responsive presentation flow.
-
-### HSD-007 — Cloud delivery hardening (optional)
-
-Only if the submitted flow needs it, add asynchronous/resumable execution,
-authenticated workers, retry-safe idempotency, and status handling. Cloud Run
-deployment, least-privilege identity, and basic cost controls are HSD-004
-requirements, not optional work.
+Add the presentation-ready operational run and matched-comparison view,
+privacy-safe evidence export, accessible failure states, and responsive flow.
+The presentation layer reads sanitized historical evidence; it does not own
+planning, evaluation, or tool authority.
 
 ### HSD-008 — Submission release
 
@@ -57,7 +79,8 @@ verification. No release claim may exceed demonstrated behavior.
 
 ## Deferred until earned
 
-- Firestore, Cloud Tasks, retries, and asynchronous workers;
+- generic benchmark platforms, live hotel data, or scoreboards that imply
+  claims beyond the frozen controlled study;
 - authentication, real integrations, or live hotel data;
 - dashboards, customer accounts, billing, or a generic hotel platform;
 - broad model, language, market, or research claims.

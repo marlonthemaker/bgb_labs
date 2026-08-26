@@ -9,7 +9,8 @@ provider, a database, or cloud infrastructure. Applications may depend on this
 package; this package must not depend on applications.
 
 This package is private during the hackathon demonstration. Its licence and
-publication terms have not been selected.
+publication terms have not been selected. Version `0.0.0` is a prototype
+boundary, not a published package or compatibility commitment.
 
 ## Public primitives
 

@@ -31,4 +31,13 @@ Biome, SDK skeleton, Next.js shell, and Playwright disclosure proof.
 **Acceptance evidence:** `hotel_shoreline/e2e/foundation.spec.ts`; root quality
 scripts and CI workflow.
 **Known limitations:** No operational fixture or model workflow exists.
-**Next issue readiness:** HSD-002 completed; HSD-003 is the active next issue.
+**Next issue readiness:** HSD-002 and HSD-003 subsequently completed; HSD-004
+is in progress on a branch rebased onto `main`.
+
+### QA amendment — 2026-08-24
+
+The first GitHub runs failed before installation because `actions/setup-node`
+requested pnpm caching before pnpm existed on `PATH`. The workflow now installs
+the repository-pinned pnpm version with `pnpm/action-setup` before configuring
+the setup-node cache. The corrected `verify` workflow passed on PR #1 before it
+merged on 2026-08-24.

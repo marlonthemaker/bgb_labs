@@ -8,8 +8,8 @@ export default function Home() {
 			<p className="eyebrow">Native Agent demonstration</p>
 			<h1>Hotel Shoreline</h1>
 			<p className="lede">
-				A constrained, multilingual hotel-operations demonstration designed to make task
-				decomposition and verified execution visible.
+				A constrained hotel-operations demonstration designed to make task decomposition and
+				verified execution visible.
 			</p>
 			<section aria-label="Demonstration status">
 				<h2>Workspace ready</h2>

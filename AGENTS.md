@@ -10,8 +10,13 @@ and issue specification record. Preserve existing user changes.
 2. `CONTRIBUTING.md`
 3. `TESTING.md`
 4. `ROADMAP.md` and the active issue in `issues/`
-5. The affected package's `README.md` and `ROADMAP.md`
-6. `git status`
+5. `ARCHITECTURE.md` and `PRODUCT_SURFACES.md` for cross-boundary work
+6. The affected package's `README.md` and `ROADMAP.md`
+7. `git status`
+
+For evaluation, intervention, or evidence-ledger work, also read
+`hotel_shoreline/EVALUATION_PROTOCOL.md` and
+`hotel_shoreline/DATA_ARCHITECTURE.md` as applicable.
 
 For a submission-facing issue, also read
 [`issues/HACKATHON-CONSTRAINTS.md`](issues/HACKATHON-CONSTRAINTS.md) and verify
@@ -33,6 +38,12 @@ relevant locally installed Next.js guide before editing application code.
   the SDK.
 - No commit, push, deployment, package publication, or PR creation without
   explicit approval.
+- Never describe a planned or merely implemented behavior as verified. Keep
+  `planned`, `implemented`, `locally verified`, `externally verified`, and
+  `deployed` distinct in issue records and public documentation.
+- Do not expose or claim access to hidden model chain-of-thought. Evidence may
+  include structured plans, validation decisions, tool calls/results,
+  lifecycle events, sanitized metadata, and evaluator annotations.
 
 ## Definition of done
 
@@ -53,7 +64,35 @@ Follow this issue lifecycle without skipping a record update:
    READMEs/roadmaps, and the issue index. Record residual risk and links to
    follow-ups; do not silently expand scope.
 6. **Prepare next:** move only the immediate dependent issue to `Ready for
-   analysis` when its prerequisites are met. Do not begin it without approval.
+  analysis` when its prerequisites are met. Do not begin it without approval.
+
+Mutable status has one owner: `issues/README.md`. Roadmaps own sequencing,
+issue files own criteria and evidence, package READMEs own current capability,
+and other status summaries must be dated and link back to the issue index.
+
+## Required task handoff
+
+At the end of every implementation or review task, provide a self-contained
+close-out report. Do not execute Git delivery commands unless explicitly
+approved; provide copy/paste-ready commands instead.
+
+1. **Outcome and scope:** changed behavior, acceptance IDs satisfied, exclusions,
+   residual risks, and blockers.
+2. **QA readout:** exact commands, pass/fail state, unit/integration/E2E test
+   counts, coverage percentages and thresholds when configured, type/lint/build
+   state, and `git diff --check` state. Say `not run` with a reason instead of
+   implying a check passed.
+3. **Manual test checklist:** a short user-facing sequence covering the primary
+   success flow, one meaningful failure/boundary flow, visible disclosures, and
+   any accessibility or responsive behavior changed by the issue.
+4. **Git handoff:** current branch; scoped files to stage; one or more approved
+   Conventional Commit messages; exact `git add`, `git commit`, `git push -u`,
+   and `gh pr create` commands. Mark commands that require a remote, `gh`, or
+   user confirmation. Never include unrelated files.
+
+Use the issue's Completion Record to preserve the actual QA output and proposed
+delivery metadata. Update the issue, test traceability, affected package docs,
+and roadmap before producing the handoff.
 
 Every completed change has scoped acceptance criteria, traceable tests, a
 clean diff, documented error behavior, and a passing full verification gate.

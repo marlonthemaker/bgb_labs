@@ -2,7 +2,7 @@
 
 **Status:** Planned
 **Repository:** both (separate branches if code changes are needed)
-**Depends on:** HSD-006 and HSD-007 only if cloud delivery is used
+**Depends on:** HSD-006 and HSD-007
 **Branch:** `docs/hsd-008-submission-release`
 
 ## Outcome
@@ -10,13 +10,20 @@
 Produce a reproducible, honest hackathon submission with setup instructions,
 architecture, limitations, evidence, and presentation material.
 
+The presentation must tell one continuous story: a native-language guest event
+becomes a Gemini/Genkit candidate plan, Native Agent validates it, allowlisted
+tools act, the evidence ledger retains the result, and the comparison view
+shows the declared baseline/intervention difference and limitation. It must
+also show real Google Cloud execution. Do not imply that the controlled demo is
+a broad multilingual benchmark.
+
 ## Acceptance criteria
 
 | ID | Observable criterion | Test layer |
 | --- | --- | --- |
 | HSD8-R-001 | A clean environment can install, verify, and build the exact submitted workspace. | QA |
 | HSD8-R-002 | Docs disclose fictional status, non-affiliation, synthetic data, limitations, and third-party dependencies. | Review |
-| HSD8-R-003 | Architecture, video script, screenshots, and evidence match current behavior and make no unsupported claim. | Review / E2E |
+| HSD8-R-003 | Architecture, video script, screenshots, run-history comparison, and evidence match current behavior and make no unsupported claim. | Review / E2E |
 | HSD8-R-004 | No secret, credential, live data, generated noise, or unrelated change is included. | QA |
 
 ## Test and error strategy

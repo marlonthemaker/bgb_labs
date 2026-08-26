@@ -7,12 +7,15 @@
 		"dev": "next dev",
 		"pretypecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk build",
 		"start": "next start",
+		"test:coverage": "vitest run --coverage",
 		"test:integration": "vitest run src/integration",
 		"test:unit": "vitest run src/unit",
 		"typecheck": "tsc --noEmit --project tsconfig.json"
 	},
 	"dependencies": {
 		"@bomgoodbueno/native-agent-sdk": "workspace:*",
+		"@genkit-ai/google-genai": "^1.41.0",
+		"genkit": "^1.41.0",
 		"next": "16.3.2",
 		"react": "19.2.8",
 		"react-dom": "19.2.8"

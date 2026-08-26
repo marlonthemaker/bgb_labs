@@ -21,20 +21,22 @@ It avoids promoting demo-specific code into a public product contract.
 - Acceptance-traceable unit and integration coverage above the configured SDK
   quality thresholds.
 
-## Next
+## Current integration boundary
 
-### HSD-003 — Application adapter validation
+### HSD-003 and HSD-004 — Application validation
 
-Validate HSD-003's application-owned tool adapters against the existing public
-`ToolRegistry` seam. Do not add hotel types, fixture data, or application
-dependencies to this package unless the vertical slice proves a narrow,
-domain-neutral SDK contract is missing.
+Hotel Shoreline's deterministic slice and partial HSD-004 implementation use
+the existing public `ToolRegistry` and task-graph contracts without an SDK
+change.
+Genkit/Gemini, Cloud Run, fixtures, locales, evaluation, persistence, and UI
+remain application concerns; none may become SDK dependencies.
 
-### HSD-004 — Taskmaster planning boundary
+## Next SDK change only if earned
 
-Validate the HSD-004 application-owned Genkit/Gemini planning boundary only
-through existing neutral contracts. Genkit/Gemini and Cloud Run remain
-integration concerns, not core logic.
+HSD-005/HSD-007 may reveal a repeated, domain-neutral need for versioned run
+provenance or comparison metadata. Do not add it to the SDK from one demo:
+first show that the application schema is stable across multiple controlled
+cases and that a smaller application-owned record is insufficient.
 
 ## Deferred until earned
 
