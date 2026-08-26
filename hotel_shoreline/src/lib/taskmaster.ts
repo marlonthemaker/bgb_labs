@@ -57,6 +57,14 @@ export const taskmasterPlanningBudget: PlanningBudget = Object.freeze({
 	maxNodes: 4,
 });
 
+// Network-backed providers need a larger wall-clock allowance than the
+// credential-free deterministic planner. The safety limits on turns, tokens,
+// and nodes remain identical across both modes.
+export const geminiTaskmasterPlanningBudget: PlanningBudget = Object.freeze({
+	...taskmasterPlanningBudget,
+	timeoutMs: 30_000,
+});
+
 export type TaskmasterLifecycleEvent =
 	| "event.received"
 	| "planning.started"
@@ -72,6 +80,8 @@ export type TaskmasterErrorCode =
 	| "PLANNER_INVALID_OUTPUT"
 	| "PLANNER_TIMEOUT"
 	| "PLANNER_UNAVAILABLE";
+
+export type TaskmasterPlannerMode = "deterministic" | "gemini";
 
 export interface TaskmasterRun {
 	readonly eventId: string;
@@ -95,6 +105,14 @@ export class DeterministicTaskPlanner implements TaskPlanner {
 	async plan(_event: GuestRequestReceived, _context: PlanningContext): Promise<PlanningOutput> {
 		return { graph: shorelineGraph, usage: { turns: 1 } };
 	}
+}
+
+export function resolveTaskmasterPlannerMode(value: string | undefined): TaskmasterPlannerMode {
+	if (value === undefined || value === "deterministic") return "deterministic";
+	if (value === "gemini") return "gemini";
+	const error = new Error("HSD_PLANNER_MODE must be either deterministic or gemini.");
+	error.name = "TaskmasterConfigurationError";
+	throw error;
 }
 
 export async function executeGuestRequest(input: {

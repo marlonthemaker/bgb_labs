@@ -6,6 +6,7 @@ import {
 	executeGuestRequest,
 	type PlanningOutput,
 	type PlanningUsage,
+	resolveTaskmasterPlannerMode,
 	type TaskPlanner,
 	taskmasterPlanningBudget,
 } from "../lib/taskmaster";
@@ -16,6 +17,15 @@ const planner = (graph: unknown, usage: PlanningUsage = { turns: 1 }): TaskPlann
 });
 
 describe("HSD-004 Taskmaster event orchestration", () => {
+	it("HSD4-P-003: rejects an unsupported planner mode instead of silently changing behavior", () => {
+		expect(resolveTaskmasterPlannerMode(undefined)).toBe("deterministic");
+		expect(resolveTaskmasterPlannerMode("deterministic")).toBe("deterministic");
+		expect(resolveTaskmasterPlannerMode("gemini")).toBe("gemini");
+		expect(() => resolveTaskmasterPlannerMode("gemnii")).toThrowError(
+			"HSD_PLANNER_MODE must be either deterministic or gemini.",
+		);
+	});
+
 	it("HSD4-P-002: routes one guest-request event through planning, validation, and execution", async () => {
 		const result = await executeGuestRequest({ planner: new DeterministicTaskPlanner() });
 

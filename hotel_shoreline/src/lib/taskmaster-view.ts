@@ -1,3 +1,5 @@
+import type { TaskmasterRun } from "./taskmaster";
+
 export interface RunView {
 	readonly status: "planning_failed" | "rejected" | "succeeded" | "partial_failure" | "failed";
 	readonly plannerFramework: "genkit" | "deterministic";
@@ -38,12 +40,12 @@ type PlannerErrorCode =
 type NodeStatus = "blocked" | "failed" | "skipped" | "succeeded";
 
 export function parseRunView(value: unknown): RunView | undefined {
-	if (!isRecord(value) || !isRecord(value.planner) || !isRecord(value.planning)) return undefined;
-	const { budget, usage } = value.planning;
+	if (!isRecord(value)) return undefined;
+	const { budget, usage } = value;
 	if (!isBudget(budget) || (usage !== undefined && !isUsage(usage))) return undefined;
-	if (!isStatus(value.status) || !isPlannerFramework(value.planner.framework)) return undefined;
+	if (!isStatus(value.status) || !isPlannerFramework(value.plannerFramework)) return undefined;
 	if (
-		typeof value.planner.model !== "string" ||
+		typeof value.plannerModel !== "string" ||
 		!isLifecycle(value.lifecycle) ||
 		!isNonNegativeInteger(value.operationCount)
 	) {
@@ -51,7 +53,7 @@ export function parseRunView(value: unknown): RunView | undefined {
 	}
 	const candidateGraph = parseCandidateGraph(value.candidateGraph);
 	if (value.candidateGraph !== undefined && !candidateGraph) return undefined;
-	const nodeResults = parseNodeResults(value.run);
+	const nodeResults = parseNodeResults(value.nodeResults);
 	if (!nodeResults) return undefined;
 	if (value.errorCode !== undefined && !isPlannerErrorCode(value.errorCode)) return undefined;
 	if (
@@ -67,8 +69,8 @@ export function parseRunView(value: unknown): RunView | undefined {
 	}
 	return {
 		status: value.status,
-		plannerFramework: value.planner.framework,
-		plannerModel: value.planner.model,
+		plannerFramework: value.plannerFramework,
+		plannerModel: value.plannerModel,
 		lifecycle: value.lifecycle,
 		operationCount: value.operationCount,
 		...(value.errorCode === undefined ? {} : { errorCode: value.errorCode }),
@@ -76,6 +78,28 @@ export function parseRunView(value: unknown): RunView | undefined {
 		nodeResults,
 		budget,
 		...(usage === undefined ? {} : { usage }),
+	};
+}
+
+export function projectRunView(run: TaskmasterRun): RunView {
+	return {
+		status: run.status,
+		plannerFramework: run.planner.framework,
+		plannerModel: run.planner.model,
+		lifecycle: run.lifecycle,
+		operationCount: run.operationCount,
+		...(run.errorCode === undefined ? {} : { errorCode: run.errorCode }),
+		...(run.candidateGraph === undefined
+			? {}
+			: {
+					candidateGraph: {
+						nodes: run.candidateGraph.nodes.map(({ id, toolName }) => ({ id, toolName })),
+						preservedConstraintIds: run.candidateGraph.preservedConstraintIds,
+					},
+				}),
+		nodeResults: run.run?.nodeResults.map(({ nodeId, status }) => ({ nodeId, status })) ?? [],
+		budget: run.planning.budget,
+		...(run.planning.usage === undefined ? {} : { usage: run.planning.usage }),
 	};
 }
 
@@ -95,15 +119,14 @@ function parseCandidateGraph(value: unknown): RunView["candidateGraph"] | undefi
 }
 
 function parseNodeResults(value: unknown): RunView["nodeResults"] | undefined {
-	if (value === undefined) return [];
-	if (!isRecord(value) || !Array.isArray(value.nodeResults)) return undefined;
-	const nodeResults = value.nodeResults.flatMap((result) => {
+	if (!Array.isArray(value)) return undefined;
+	const nodeResults = value.flatMap((result) => {
 		if (!isRecord(result) || typeof result.nodeId !== "string" || !isNodeStatus(result.status)) {
 			return [];
 		}
 		return [{ nodeId: result.nodeId, status: result.status }];
 	});
-	return nodeResults.length === value.nodeResults.length ? nodeResults : undefined;
+	return nodeResults.length === value.length ? nodeResults : undefined;
 }
 
 function isBudget(value: unknown): value is RunView["budget"] {

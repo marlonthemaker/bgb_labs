@@ -11,12 +11,14 @@ test("HSD1-UI-001: presents the fictional Hotel Shoreline boundary", async ({ pa
 	await expect(page.getByText("not research findings")).toBeVisible();
 });
 
-test("HSD3-UI-001: runs the fixed request and renders truthful execution evidence", async ({
+test("HSD3-UI-001/HSD4-UI-001: runs the fixed request and renders sanitized execution evidence", async ({
 	page,
 }) => {
 	await page.goto("/");
 
+	const responsePromise = page.waitForResponse("**/api/taskmaster");
 	await page.getByRole("button", { name: "Run fixed request" }).click();
+	const publicRun: unknown = await (await responsePromise).json();
 
 	await expect(page.getByText("Status:")).toContainText("succeeded");
 	await expect(page.getByText("Planner:")).toContainText("deterministic");
@@ -29,6 +31,8 @@ test("HSD3-UI-001: runs the fixed request and renders truthful execution evidenc
 	await expect(
 		page.getByText("not affiliated with, endorsed by, or operated by Google"),
 	).toBeVisible();
+	expect(publicRun).not.toHaveProperty("run");
+	expect(publicRun).not.toHaveProperty("candidateGraph.nodes.0.input");
 });
 
 test("HSD4-UI-001: shows event, planning, validation, and execution lifecycle", async ({
@@ -62,21 +66,19 @@ test("HSD4-P-003/HSD4-UI-001: renders a typed planning failure without claiming 
 			status: 503,
 			contentType: "application/json",
 			body: JSON.stringify({
-				eventId: "shoreline-guest-request-204-v1",
-				fixtureVersion: "shoreline-fixture-v1",
-				planner: { framework: "genkit", model: "gemini-3.5-flash" },
-				planning: {
-					budget: {
-						timeoutMs: 2_000,
-						maxTurns: 1,
-						maxOutputTokens: 1_024,
-						maxNodes: 4,
-					},
+				plannerFramework: "genkit",
+				plannerModel: "gemini-3.5-flash",
+				budget: {
+					timeoutMs: 30_000,
+					maxTurns: 1,
+					maxOutputTokens: 1_024,
+					maxNodes: 4,
 				},
 				lifecycle: ["event.received", "planning.started", "planning.failed"],
 				status: "planning_failed",
 				errorCode: "PLANNER_TIMEOUT",
 				operationCount: 0,
+				nodeResults: [],
 			}),
 		});
 	});

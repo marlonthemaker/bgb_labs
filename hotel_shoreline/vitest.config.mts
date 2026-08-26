@@ -5,7 +5,12 @@ export default defineConfig({
 		include: ["src/**/*.test.ts"],
 		coverage: {
 			provider: "v8",
-			include: ["src/lib/shoreline.ts", "src/lib/taskmaster.ts", "src/lib/taskmaster-view.ts"],
+			include: [
+				"src/lib/shoreline.ts",
+				"src/lib/taskmaster.ts",
+				"src/lib/taskmaster-telemetry.ts",
+				"src/lib/taskmaster-view.ts",
+			],
 			thresholds: {
 				branches: 80,
 				functions: 90,

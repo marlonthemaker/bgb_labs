@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { parseRunView } from "../lib/taskmaster-view";
+import { shorelineGraph } from "../lib/shoreline";
+import type { TaskmasterRun } from "../lib/taskmaster";
+import { parseRunView, projectRunView } from "../lib/taskmaster-view";
 
-const successfulApiRun = {
-	status: "succeeded",
+const successfulInternalRun: TaskmasterRun = {
+	eventId: "shoreline-guest-request-204-v1",
+	fixtureVersion: "shoreline-fixture-v1",
 	planner: { framework: "deterministic", model: "frozen-hsd-003-graph" },
 	planning: {
 		budget: { timeoutMs: 2_000, maxTurns: 1, maxOutputTokens: 1_024, maxNodes: 4 },
@@ -17,28 +20,26 @@ const successfulApiRun = {
 		"validation.finished",
 		"execution.finished",
 	],
-	operationCount: 2,
-	candidateGraph: {
-		preservedConstraintIds: ["room-204", "two-extra-towels", "no-charge"],
-		nodes: [
-			{
-				id: "request-maintenance",
-				toolName: "request_maintenance",
-				input: { roomNumber: "204" },
-			},
-		],
-	},
+	status: "succeeded",
+	candidateGraph: shorelineGraph,
 	run: {
-		nodeResults: [{ nodeId: "request-maintenance", status: "succeeded", output: "private" }],
+		runId: "taskmaster-shoreline-guest-request-204-v1",
+		status: "succeeded",
+		validation: { ok: true, issues: [] },
+		nodeResults: [
+			{ nodeId: "request-maintenance", status: "succeeded", output: "private-output" },
+			{ nodeId: "request-housekeeping", status: "succeeded" },
+		],
+		events: [],
 	},
-	serverOnlyDetail: "must-not-cross-the-view-boundary",
+	operationCount: 2,
 };
 
-describe("HSD-004 public run evidence parser", () => {
-	it("HSD4-UI-001: projects only the candidate, lifecycle, budget, and outcome fields the UI uses", () => {
-		const view = parseRunView(successfulApiRun);
+const successfulApiRun = projectRunView(successfulInternalRun);
 
-		expect(view).toEqual({
+describe("HSD-004 public run evidence boundary", () => {
+	it("HSD4-UI-001: projects only the candidate, lifecycle, budget, and outcome fields the UI uses", () => {
+		expect(successfulApiRun).toEqual({
 			status: "succeeded",
 			plannerFramework: "deterministic",
 			plannerModel: "frozen-hsd-003-graph",
@@ -53,15 +54,24 @@ describe("HSD-004 public run evidence parser", () => {
 			operationCount: 2,
 			candidateGraph: {
 				preservedConstraintIds: ["room-204", "two-extra-towels", "no-charge"],
-				nodes: [{ id: "request-maintenance", toolName: "request_maintenance" }],
+				nodes: [
+					{ id: "request-maintenance", toolName: "request_maintenance" },
+					{ id: "request-housekeeping", toolName: "request_housekeeping" },
+				],
 			},
-			nodeResults: [{ nodeId: "request-maintenance", status: "succeeded" }],
+			nodeResults: [
+				{ nodeId: "request-maintenance", status: "succeeded" },
+				{ nodeId: "request-housekeeping", status: "succeeded" },
+			],
 			budget: { timeoutMs: 2_000, maxTurns: 1, maxOutputTokens: 1_024, maxNodes: 4 },
 			usage: { turns: 1 },
 		});
-		expect(view).not.toHaveProperty("serverOnlyDetail");
-		expect(view?.candidateGraph?.nodes[0]).not.toHaveProperty("input");
-		expect(view?.nodeResults[0]).not.toHaveProperty("output");
+		expect(successfulApiRun.candidateGraph?.nodes[0]).not.toHaveProperty("input");
+		expect(successfulApiRun.nodeResults[0]).not.toHaveProperty("output");
+	});
+
+	it("HSD4-UI-001: validates the projected public response before rendering it", () => {
+		expect(parseRunView(successfulApiRun)).toEqual(successfulApiRun);
 	});
 
 	it("HSD4-UI-001: accepts a typed planning failure with no candidate or execution result", () => {
@@ -71,8 +81,8 @@ describe("HSD-004 public run evidence parser", () => {
 			errorCode: "PLANNER_TIMEOUT",
 			operationCount: 0,
 			candidateGraph: undefined,
-			run: undefined,
-			planning: { budget: successfulApiRun.planning.budget },
+			nodeResults: [],
+			usage: undefined,
 			lifecycle: ["event.received", "planning.started", "planning.failed"],
 		});
 
@@ -99,14 +109,8 @@ describe("HSD-004 public run evidence parser", () => {
 				},
 			},
 		},
-		{
-			label: "negative operation count",
-			value: { ...successfulApiRun, operationCount: -1 },
-		},
-		{
-			label: "incoherent successful outcome",
-			value: { ...successfulApiRun, operationCount: 0 },
-		},
+		{ label: "negative operation count", value: { ...successfulApiRun, operationCount: -1 } },
+		{ label: "incoherent successful outcome", value: { ...successfulApiRun, operationCount: 0 } },
 		{
 			label: "unknown lifecycle event",
 			value: { ...successfulApiRun, lifecycle: ["model.private-reasoning"] },

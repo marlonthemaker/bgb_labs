@@ -16,9 +16,11 @@
 		"test:all": "pnpm test && pnpm test:coverage && pnpm test:e2e",
 		"test:coverage": "pnpm --filter @bomgoodbueno/native-agent-sdk test:coverage && pnpm --filter @bomgoodbueno/hotel-shoreline test:coverage",
 		"test:e2e": "playwright test",
+		"test:e2e:gemini": "HSD_REAL_GEMINI_SMOKE=1 playwright test --grep \"real Gemini\"",
 		"test:integration": "pnpm --filter @bomgoodbueno/native-agent-sdk test:integration && pnpm --filter @bomgoodbueno/hotel-shoreline test:integration",
 		"test:unit": "pnpm --filter @bomgoodbueno/native-agent-sdk test:unit && pnpm --filter @bomgoodbueno/hotel-shoreline test:unit",
-		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck"
+		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck",
+		"meow": "pnpm --filter @bomgoodbueno/hotel-shoreline dev"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.10",

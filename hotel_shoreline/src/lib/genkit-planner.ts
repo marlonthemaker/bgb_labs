@@ -3,15 +3,17 @@ import "server-only";
 import { googleAI } from "@genkit-ai/google-genai";
 import { genkit, z } from "genkit";
 
+import { configureTaskmasterGenkitLogging } from "./genkit-logging";
 import { shorelineContract, shorelineFixture } from "./shoreline";
 import {
 	type GuestRequestReceived,
+	geminiTaskmasterPlanningBudget,
 	type PlanningContext,
 	type PlanningOutput,
 	type TaskPlanner,
-	taskmasterPlanningBudget,
 } from "./taskmaster";
 
+configureTaskmasterGenkitLogging();
 const ai = genkit({ plugins: [googleAI()] });
 const graphSchema = z.object({
 	id: z.string(),
@@ -33,13 +35,15 @@ export class GeminiTaskPlanner implements TaskPlanner {
 	readonly metadata = { framework: "genkit" as const, model: "gemini-3.5-flash" };
 
 	async plan(event: GuestRequestReceived, context: PlanningContext): Promise<PlanningOutput> {
-		if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not configured.");
+		if (!process.env.GEMINI_API_KEY?.trim()) {
+			throw new Error("GEMINI_API_KEY is not configured.");
+		}
 		const response = await ai.generate({
 			model: googleAI.model("gemini-3.5-flash"),
 			abortSignal: context.signal,
 			config: {
-				maxOutputTokens: taskmasterPlanningBudget.maxOutputTokens,
-				temperature: 0,
+				maxOutputTokens: geminiTaskmasterPlanningBudget.maxOutputTokens,
+				thinkingConfig: { thinkingLevel: "MINIMAL" },
 			},
 			prompt: [
 				"Return only one JSON task graph. Propose tasks; do not call tools.",
