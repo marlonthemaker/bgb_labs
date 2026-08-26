@@ -16,7 +16,9 @@ and issue specification record. Preserve existing user changes.
 
 For evaluation, intervention, or evidence-ledger work, also read
 `hotel_shoreline/EVALUATION_PROTOCOL.md` and
-`hotel_shoreline/DATA_ARCHITECTURE.md` as applicable.
+`hotel_shoreline/DATA_ARCHITECTURE.md` as applicable. Work that creates or
+changes authored locale variants must also read
+`hotel_shoreline/NATIVE_REVIEW_GUIDE.md`.
 
 For a submission-facing issue, also read
 [`issues/HACKATHON-CONSTRAINTS.md`](issues/HACKATHON-CONSTRAINTS.md) and verify
@@ -44,6 +46,13 @@ relevant locally installed Next.js guide before editing application code.
 - Do not expose or claim access to hidden model chain-of-thought. Evidence may
   include structured plans, validation decisions, tool calls/results,
   lifecycle events, sanitized metadata, and evaluator annotations.
+- Human review is not an engineering execution dependency. Keep draft variants
+  runnable with explicit `pending_review` state and exclude them from
+  reviewer-qualified claims. Never fabricate review metadata.
+- Tests for reviewer-editable language assert structure, version/provenance
+  links, declared semantics, and downstream behavior—not exact prose. A text
+  revision must update its review/version record without weakening operational
+  acceptance tests.
 
 ## Definition of done
 

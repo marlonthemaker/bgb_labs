@@ -25,16 +25,17 @@ owner of mutable issue status; this section summarizes current capability.
 - **HSD-003 complete:** a versioned synthetic fixture, deterministic hotel tool
   adapters, frozen English contract/graph, ordered run evidence, and browser
   vertical slice passed locally and in CI; PR #1 merged on 2026-08-24.
-- **HSD-004 ready to merge:** a server-side planner port, Genkit/Gemini adapter,
+- **HSD-004 complete:** a server-side planner port, Genkit/Gemini adapter,
   deterministic test path, explicit timeout/turn/token/node budgets, SDK
   validation boundary, server-sanitized evidence, structured telemetry, and
   Cloud Run delivery exist and pass. The real-Gemini smoke, Cloud Build,
   bounded Cloud Run revision, deployed success/failure evidence, responsive UI,
-  sanitized logs, and PR #2 CI passed on 2026-08-26. PR #2 merge is the only
-  remaining HSD-004 closure gate.
-- **Next after PR #2 merges:** HSD-005, a small, reviewed,
-  baseline/intervention comparison across `en`, `es-ES`, and `pt-PT`, followed
-  by durable run history and a presentation-ready evidence experience.
+  sanitized logs, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
+- **HSD-005 implemented locally:** three case families and nine authored
+  `en`, `es-ES`, and `pt-PT` variants run as matched baseline/contract-guided
+  pairs with hash-linked conditions, deterministic measures, safe failure
+  retention, telemetry, and an inspectable UI. Variants remain explicitly
+  pending human review and excluded from reviewer-qualified aggregate claims.
 
 Read the package roadmaps before changing behavior:
 
@@ -44,6 +45,7 @@ Read the package roadmaps before changing behavior:
 - [Architecture boundaries](ARCHITECTURE.md)
 - [Product, research, and demonstration surfaces](PRODUCT_SURFACES.md)
 - [Hotel Shoreline controlled comparison protocol](hotel_shoreline/EVALUATION_PROTOCOL.md)
+- [Hotel Shoreline native-language review guide](hotel_shoreline/NATIVE_REVIEW_GUIDE.md)
 - [Hotel Shoreline PostgreSQL evidence-ledger architecture](hotel_shoreline/DATA_ARCHITECTURE.md)
 - [Testing convention](TESTING.md)
 - [Contributor guide](CONTRIBUTING.md)
@@ -69,16 +71,22 @@ The browser test requires Playwright Chromium once per environment:
 pnpm exec playwright install chromium
 ```
 
+`pnpm meow` always starts the reliable deterministic planner, even when
+`.env.local` contains a Gemini setting. Use the explicitly quota-bearing
+`pnpm meow:gemini` command only when manually testing the provider path.
+
 Local Gemini mode reads server-only values from
 `hotel_shoreline/.env.local`; start from
 [`hotel_shoreline/.env.example`](hotel_shoreline/.env.example). The committed
 default CI/full-gate path remains deterministic and credential-free. The
-separate real-Gemini browser smoke is opt-in and skipped unless explicitly
+separate real-Gemini browser checks are opt-in and skipped unless explicitly
 enabled with approved credentials. Store local credentials only in the ignored
-`hotel_shoreline/.env.local`, then run `pnpm test:e2e:gemini`; the script exposes
-only the non-secret opt-in flag to Playwright and explicitly selects Gemini.
-The ordinary browser suite explicitly selects deterministic mode, regardless
-of the local file.
+`hotel_shoreline/.env.local`, then run `pnpm test:e2e:gemini` for HSD-004,
+`pnpm test:e2e:gemini:comparison` for one HSD-005 pair, or the deliberately
+paced `pnpm test:e2e:gemini:matrix` for all nine blocks. The scripts expose only
+the non-secret opt-in flag to Playwright and explicitly select Gemini. The
+ordinary browser suite explicitly selects deterministic mode, regardless of
+the local file.
 
 ## Quality standard
 

@@ -1,4 +1,5 @@
 .DS_Store
+.obsidian/
 __pycache__/
 .pytest_cache/
 .env
@@ -15,6 +16,7 @@ node_modules/
 dist/
 build/
 .next/
+next-env.d*.ts
 coverage/
 playwright-report/
 test-results/

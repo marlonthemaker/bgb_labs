@@ -106,6 +106,66 @@ button:focus-visible {
 	outline-offset: 3px;
 }
 
+.controls {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.controls label {
+	display: grid;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	font-weight: 700;
+}
+
+select {
+	min-height: 2.75rem;
+	border: 1px solid #879c8e;
+	border-radius: 0.5rem;
+	background: white;
+	color: inherit;
+	font: inherit;
+	padding: 0.5rem;
+}
+
+.limitation {
+	border-left: 0.25rem solid #b77b27;
+	color: #504d43;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	padding-left: 0.75rem;
+}
+
+.comparison-evidence,
+.arm-grid {
+	display: grid;
+	gap: 1rem;
+}
+
+.arm-card {
+	min-width: 0;
+}
+
+.arm-card {
+	overflow-wrap: anywhere;
+}
+
+.arm-card dl,
+.arm-card dl div {
+	display: grid;
+	gap: 0.25rem;
+}
+
+.arm-card dl div {
+	grid-template-columns: minmax(0, 1fr) auto;
+	border-top: 1px solid #d8dfd5;
+	padding-top: 0.5rem;
+}
+
+.arm-card dd {
+	margin: 0;
+}
+
 ul,
 ol {
 	margin: 0;
@@ -122,6 +182,11 @@ li + li {
 	}
 
 	.run-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.controls,
+	.arm-grid {
 		grid-template-columns: 1fr 1fr;
 	}
 }

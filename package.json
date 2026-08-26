@@ -16,11 +16,14 @@
 		"test:all": "pnpm test && pnpm test:coverage && pnpm test:e2e",
 		"test:coverage": "pnpm --filter @bomgoodbueno/native-agent-sdk test:coverage && pnpm --filter @bomgoodbueno/hotel-shoreline test:coverage",
 		"test:e2e": "playwright test",
-		"test:e2e:gemini": "HSD_REAL_GEMINI_SMOKE=1 playwright test --grep \"real Gemini\"",
+		"test:e2e:gemini": "HSD_REAL_GEMINI_SMOKE=1 playwright test hotel_shoreline/e2e/gemini.smoke.spec.ts --workers=1",
+		"test:e2e:gemini:comparison": "HSD_REAL_GEMINI_SMOKE=1 playwright test hotel_shoreline/e2e/gemini-native-adoption.smoke.spec.ts --grep \"completes one real Gemini\" --workers=1",
+		"test:e2e:gemini:matrix": "HSD_REAL_GEMINI_SMOKE=1 playwright test hotel_shoreline/e2e/gemini-native-adoption.smoke.spec.ts --grep \"nine-block comparison matrix\" --workers=1",
 		"test:integration": "pnpm --filter @bomgoodbueno/native-agent-sdk test:integration && pnpm --filter @bomgoodbueno/hotel-shoreline test:integration",
 		"test:unit": "pnpm --filter @bomgoodbueno/native-agent-sdk test:unit && pnpm --filter @bomgoodbueno/hotel-shoreline test:unit",
 		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck",
-		"meow": "pnpm --filter @bomgoodbueno/hotel-shoreline dev"
+		"meow": "HSD_PLANNER_MODE=deterministic pnpm --filter @bomgoodbueno/hotel-shoreline dev",
+		"meow:gemini": "HSD_PLANNER_MODE=gemini pnpm --filter @bomgoodbueno/hotel-shoreline dev"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.10",

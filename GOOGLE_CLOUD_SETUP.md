@@ -39,9 +39,20 @@ Create a billing budget before deployment. A normal budget sends alerts; it
 does not automatically stop usage. Cloud Run's scale-to-zero and maximum
 instance settings remain the primary cost bounds for this demo.
 
+A Cloud Billing budget also does not grant paid Gemini API quota. Billing,
+budget alerts, API-key restrictions, and Gemini model quota are separate
+controls. Confirm the API key's owning project and Gemini billing tier in AI
+Studio before a provider evidence run.
+
+Read-only checks on 2026-08-26 confirmed that `native-agent-poc` has Cloud
+Billing enabled and `generativelanguage.googleapis.com` enabled. The local key's
+provider response still identified a free-tier daily model limit, demonstrating
+that project billing linkage alone does not prove that a particular key/request
+is using paid Gemini API quota.
+
 The first HSD-004 revision was deployed with those runtime bounds on 2026-08-26.
-A billing budget remains pending because its amount is an owner decision; add it
-before sharing the public URL broadly.
+Monthly budget `4ef0dad8-1d44-4037-8804-0f9d72ac55d6` is scoped only to project
+`1075716782706` at USD 20, with current-spend alerts at 50%, 90%, and 100%.
 
 ## 2. Use the installed `gcloud` CLI or Cloud Shell
 
@@ -123,6 +134,20 @@ git check-ignore -v hotel_shoreline/.env.local
 
 Do not create a `NEXT_PUBLIC_GEMINI_API_KEY`; that prefix would make the value
 browser-visible at build time.
+
+### Local quota troubleshooting
+
+Use `pnpm meow` for routine development; it forces the deterministic planner
+even if `.env.local` selects Gemini. Use `pnpm meow:gemini` only for an explicit
+provider check. When the provider returns HTTP 429 / `RESOURCE_EXHAUSTED`, the
+application reports `PLANNER_QUOTA_EXHAUSTED`, records zero operations, and
+does not retry silently.
+
+Repeated calls and key rotation are not fixes for a project/model quota limit.
+Stop quota-bearing tests, continue with deterministic mode, then either wait
+for the provider's stated reset window or intentionally enable an appropriate
+paid Gemini API tier and review its limits. Reconfirm the USD 20 alert, but do
+not treat that alert as a hard spending cap.
 
 ## 5. Enable only the required APIs
 

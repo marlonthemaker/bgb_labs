@@ -22,8 +22,6 @@ acceptance-traceable unit, integration, and browser tests. Local and GitHub
 Actions gates passed. The implementation/review record is
 [`HSD-003-deterministic-hotel-shoreline-vertical-slice`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
-## Next
-
 ### HSD-004 — Taskmaster agent and controlled planning boundary
 
 Introduce a server-side, provider-neutral planning port backed by Genkit and
@@ -38,9 +36,14 @@ server response and browser projection, structured run telemetry, and visible
 success/failure lifecycles. The authorized real-Gemini smoke,
 standalone/non-root image, Cloud Build, least-privilege identities, bounded
 Cloud Run revision, deployed success and zero-operation failure evidence,
-sanitized logs, responsive UI, and PR #2 CI pass. PR #2 merge remains the gate.
+sanitized logs, responsive UI, and PR #2 CI passed; PR #2 merged as `36d02f6`.
 
 ### HSD-005 — Controlled native-adoption comparison
+
+Engineering implementation, full-repository QA, a focused real-provider success,
+and nine-block attempt retention are complete. Git delivery remains. Human review is
+non-blocking for execution: all nine authored variants are explicitly pending
+and excluded from reviewer-qualified claims until reviewers update them.
 
 Run a small, pre-specified, paired baseline/intervention study across reviewed
 `en`, `es-ES`, and `pt-PT` variants. Both arms use the same model condition,
@@ -54,6 +57,10 @@ demo may illustrate task-level preservation; it must not claim broad language
 or cultural parity.
 
 See [the controlled comparison protocol](EVALUATION_PROTOCOL.md).
+The intervention boundary, reviewer edit surface, disagreement handling, and
+verification steps are in [the native-language review guide](NATIVE_REVIEW_GUIDE.md).
+
+## Next
 
 ### HSD-007 — Evidence ledger and bounded background delivery
 
