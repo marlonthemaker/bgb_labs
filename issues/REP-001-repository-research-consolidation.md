@@ -109,7 +109,8 @@ resolve and the removed path has no operational link.
 - `pnpm build` — passed for the SDK and Hotel Shoreline; `/`,
   `/api/taskmaster`, and `/api/native-adoption` built.
 - Relative Markdown link audit — passed.
-- `git diff --check` and staged-diff/secret scans — pending final staging.
+- `git diff --check`, staged-diff, and secret-pattern scans — passed with no
+  findings.
 
 **Known limitations / follow-up:** Git history is intentionally larger than the
 active tree; no history rewrite was attempted. D001 and D002 retain historical
@@ -129,6 +130,9 @@ CI and merges. `AILITW-001` remains deferred until HSD-008.
 
 **Branch used:** `docs/repo-research-consolidation`
 
-**Commits:** Pending final staging.
+**Commits:**
 
-**Review / PR:** Pending commit, PR checks, and merge.
+- `983d050 docs(research): consolidate native-adoption authority [REP-001]`
+- `ec927b4 docs(workspace): reconcile repository status and guidance [REP-001]`
+
+**Review / PR:** Pending PR checks and merge.
