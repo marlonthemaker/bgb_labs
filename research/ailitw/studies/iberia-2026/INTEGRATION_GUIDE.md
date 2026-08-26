@@ -4,8 +4,7 @@
 
 **Study:** `AILITW-IBERIA-2026`
 
-**Repository snapshot assessed:** HSD-005 merged; consolidation branch
-`docs/repo-research-consolidation`,
+**Repository snapshot assessed:** HSD-005 and REP-001 merged on `main`,
 2026-08-26
 
 ## 1. Decision
@@ -195,7 +194,7 @@ a hypothesis and treatment but cannot rewrite evidence or activate themselves.
 
 ## 7. Consolidated repository authority
 
-REP-001 consolidates toward this active shape after HSD-005:
+REP-001 established this active shape after HSD-005:
 
 ```text
 README.md                    # one front door and truthful current status
@@ -222,14 +221,14 @@ issues/                      # active/closed issue specifications
 
 Consolidation decisions:
 
-- durable canon is migrated from `initial_spike/docs/` into `research/canon/`;
+- durable canon was migrated from `initial_spike/docs/` into `research/canon/`;
 - provenance is preserved in Git history and decision D003;
 - exact duplicates, generated artifacts, superseded planning snapshots, and
-  stale instructions are removed by REP-001;
+  stale instructions were removed by REP-001;
 - make each fact authoritative in one document and link to it elsewhere;
 - keep roadmaps outcome-oriented and issues implementation-ready;
 - keep raw/private research artifacts ignored or access-controlled; and
-- cleanup remains separate from the delivered HSD-005 feature branch.
+- cleanup remained separate from the delivered HSD-005 feature branch.
 
 ## 8. Research delivery backlog
 
