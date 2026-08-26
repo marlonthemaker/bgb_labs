@@ -7,6 +7,7 @@ import {
 	type TaskGraph,
 } from "@bomgoodbueno/native-agent-sdk";
 
+import { GeminiPlannerError } from "./gemini-error";
 import {
 	createShorelineTools,
 	shorelineContract,
@@ -78,6 +79,7 @@ export type TaskmasterLifecycleEvent =
 export type TaskmasterErrorCode =
 	| "PLANNER_BUDGET_EXCEEDED"
 	| "PLANNER_INVALID_OUTPUT"
+	| "PLANNER_QUOTA_EXHAUSTED"
 	| "PLANNER_TIMEOUT"
 	| "PLANNER_UNAVAILABLE";
 
@@ -138,7 +140,12 @@ export async function executeGuestRequest(input: {
 			planner: input.planner,
 			budget,
 			lifecycle,
-			errorCode: error instanceof PlannerTimeoutError ? "PLANNER_TIMEOUT" : "PLANNER_UNAVAILABLE",
+			errorCode:
+				error instanceof PlannerTimeoutError
+					? "PLANNER_TIMEOUT"
+					: error instanceof GeminiPlannerError
+						? error.code
+						: "PLANNER_UNAVAILABLE",
 		});
 	}
 	if (!isPlanningOutput(output)) {

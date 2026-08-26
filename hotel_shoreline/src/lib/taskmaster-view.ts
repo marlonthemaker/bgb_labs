@@ -34,6 +34,7 @@ type LifecycleEvent =
 type PlannerErrorCode =
 	| "PLANNER_BUDGET_EXCEEDED"
 	| "PLANNER_INVALID_OUTPUT"
+	| "PLANNER_QUOTA_EXHAUSTED"
 	| "PLANNER_TIMEOUT"
 	| "PLANNER_UNAVAILABLE";
 
@@ -214,6 +215,7 @@ function isPlannerErrorCode(value: unknown): value is PlannerErrorCode {
 	return (
 		value === "PLANNER_BUDGET_EXCEEDED" ||
 		value === "PLANNER_INVALID_OUTPUT" ||
+		value === "PLANNER_QUOTA_EXHAUSTED" ||
 		value === "PLANNER_TIMEOUT" ||
 		value === "PLANNER_UNAVAILABLE"
 	);

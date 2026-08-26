@@ -3,6 +3,7 @@ import "server-only";
 import { googleAI } from "@genkit-ai/google-genai";
 import { genkit, z } from "genkit";
 
+import { withSanitizedGeminiError } from "./gemini-error";
 import { configureTaskmasterGenkitLogging } from "./genkit-logging";
 import { shorelineContract, shorelineFixture } from "./shoreline";
 import {
@@ -38,24 +39,26 @@ export class GeminiTaskPlanner implements TaskPlanner {
 		if (!process.env.GEMINI_API_KEY?.trim()) {
 			throw new Error("GEMINI_API_KEY is not configured.");
 		}
-		const response = await ai.generate({
-			model: googleAI.model("gemini-3.5-flash"),
-			abortSignal: context.signal,
-			config: {
-				maxOutputTokens: geminiTaskmasterPlanningBudget.maxOutputTokens,
-				thinkingConfig: { thinkingLevel: "MINIMAL" },
-			},
-			prompt: [
-				"Return only one JSON task graph. Propose tasks; do not call tools.",
-				`Set contractId to ${JSON.stringify(shorelineContract.id)}.`,
-				`Set preservedConstraintIds to ${JSON.stringify(shorelineContract.requiredConstraintIds)}.`,
-				"Create exactly two independent nodes with empty dependsOn arrays and unique idempotency keys.",
-				`The maintenance node uses request_maintenance with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber })} and constraintIds ["room-204", "no-charge"].`,
-				`The housekeeping node uses request_housekeeping with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber, extraTowelCount: shorelineFixture.maxExtraTowels })} and constraintIds ["room-204", "two-extra-towels", "no-charge"].`,
-				`Guest request: ${event.request}`,
-			].join("\n"),
-			output: { schema: graphSchema },
-		});
+		const response = await withSanitizedGeminiError(() =>
+			ai.generate({
+				model: googleAI.model("gemini-3.5-flash"),
+				abortSignal: context.signal,
+				config: {
+					maxOutputTokens: geminiTaskmasterPlanningBudget.maxOutputTokens,
+					thinkingConfig: { thinkingLevel: "MINIMAL" },
+				},
+				prompt: [
+					"Return only one JSON task graph. Propose tasks; do not call tools.",
+					`Set contractId to ${JSON.stringify(shorelineContract.id)}.`,
+					`Set preservedConstraintIds to ${JSON.stringify(shorelineContract.requiredConstraintIds)}.`,
+					"Create exactly two independent nodes with empty dependsOn arrays and unique idempotency keys.",
+					`The maintenance node uses request_maintenance with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber })} and constraintIds ["room-204", "no-charge"].`,
+					`The housekeeping node uses request_housekeeping with input ${JSON.stringify({ stayId: shorelineFixture.stayId, roomNumber: shorelineFixture.roomNumber, extraTowelCount: shorelineFixture.maxExtraTowels })} and constraintIds ["room-204", "two-extra-towels", "no-charge"].`,
+					`Guest request: ${event.request}`,
+				].join("\n"),
+				output: { schema: graphSchema },
+			}),
+		);
 		if (!response.output) throw new Error("Gemini returned no structured graph.");
 		return {
 			graph: response.output,
