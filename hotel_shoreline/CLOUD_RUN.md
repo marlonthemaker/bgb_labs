@@ -1,8 +1,9 @@
 # Cloud Run Release Runbook — HSD-004
 
 This runbook deploys and verifies the fictional Hotel Shoreline demonstration.
-Complete [`../GOOGLE_CLOUD_SETUP.md`](../GOOGLE_CLOUD_SETUP.md) first. Nothing in
-this document authorizes a deployment; run Google Cloud mutation commands only
+Complete
+[`../docs/operations/GOOGLE_CLOUD_SETUP.md`](../docs/operations/GOOGLE_CLOUD_SETUP.md)
+first. Nothing in this document authorizes a deployment; run Google Cloud mutation commands only
 after confirming the active account, project, region, commit, and expected cost.
 
 ## Release invariants
@@ -114,7 +115,7 @@ gcloud meta list-files-for-upload > /tmp/hotel-shoreline-upload.txt
 
 test "$(grep -Ec '(^|/)\.env($|\.)' /tmp/hotel-shoreline-upload.txt)" -eq 0
 test "$(grep -Ec '(^|/)node_modules/' /tmp/hotel-shoreline-upload.txt)" -eq 0
-test "$(grep -Ec '(^|/)initial_spike/' /tmp/hotel-shoreline-upload.txt)" -eq 0
+test "$(grep -Ec '(^|/)research/' /tmp/hotel-shoreline-upload.txt)" -eq 0
 
 sed -n '1,200p' /tmp/hotel-shoreline-upload.txt
 ```

@@ -1,8 +1,9 @@
 # HSD Agent Guide
 
-Work only within the active HSD issue. The root [product roadmap](ROADMAP.md)
-sets delivery order; [`issues/`](issues/README.md) is the authoritative backlog
-and issue specification record. Preserve existing user changes.
+Work only within the active issue. The root [product roadmap](ROADMAP.md) sets
+HSD delivery order; [`issues/`](issues/README.md) is the authoritative backlog
+and issue specification record. Research work must also follow the applicable
+canon and study protocol. Preserve existing user changes.
 
 ## Read first
 
@@ -10,7 +11,8 @@ and issue specification record. Preserve existing user changes.
 2. `CONTRIBUTING.md`
 3. `TESTING.md`
 4. `ROADMAP.md` and the active issue in `issues/`
-5. `ARCHITECTURE.md` and `PRODUCT_SURFACES.md` for cross-boundary work
+5. `docs/architecture/BOUNDARIES.md` and `docs/product/SURFACES.md` for
+   cross-boundary work
 6. The affected package's `README.md` and `ROADMAP.md`
 7. `git status`
 
@@ -29,7 +31,11 @@ relevant locally installed Next.js guide before editing application code.
 
 ## Boundaries
 
-- `initial_spike/` is a protected research source, not a runtime dependency.
+- `research/canon/` is the durable research authority and never a runtime
+  dependency. Major semantic changes require a decision record.
+- Study files under `research/` own research-only targets, cases, observations,
+  evaluations, and publications. Hotel Shoreline may receive only promoted,
+  fictionalized analogues through an approved issue.
 - `native_agent_sdk/` remains model-, framework-, cloud-, and hotel-neutral.
 - `hotel_shoreline/` is fictional and must retain its non-affiliation and
   non-research disclosure.

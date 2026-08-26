@@ -1,6 +1,6 @@
 # HSD-005 — Controlled Native-Adoption Comparison
 
-**Status:** Ready for delivery — local and real-provider gates recorded
+**Status:** Complete
 **Repository:** `hotel_shoreline`
 **Depends on:** HSD-004
 **Branch:** `feat/hsd-005-native-adoption-comparison`
@@ -288,9 +288,16 @@ report so successful test attachments remain inspectable without entering Git.
 
 **Branch used:** `feat/hsd-005-native-adoption-comparison`
 
-**Commits:** Proposed below; not created without delivery approval.
+**Commits:**
 
-**Review / PR:** Pending commit and PR. Local strict review found and fixed a
+```text
+754191b feat(demo): add controlled native-adoption comparison [HSD-005]
+1a93af4 test(demo): verify matched comparison evidence [HSD-005]
+a021fe3 docs(hsd): document comparison and native review workflow [HSD-005]
+```
+
+**Review / PR:** PR #3 passed the GitHub `verify` check in 1m24s and merged to
+`main` as `d7a8963` on 2026-08-26. Local strict review found and fixed a
 timeout-classification race, unsupported provider literal schema, invalid-JSON
 500 response, unsupported-locale 500 response, generated `next-env.d.ts` drift,
 and loss of the provider's quota classification at the sanitized planning
@@ -338,10 +345,10 @@ descriptive sample still requires deliberate quota/cost capacity before a
 scoped difference. Runs are in memory/test artifacts only until HSD-007.
 HSD-006 owns presentation polish and export.
 
-**Next issue readiness:** HSD-007 analysis may begin after this branch is
-committed, CI passes, and the PR merges. Do not start persistence on this branch.
+**Next issue readiness:** HSD-007 is ready for analysis. Do not start
+persistence until its issue analysis is approved.
 
-**Proposed commits:**
+**Delivered commits:**
 
 ```text
 feat(demo): add controlled native-adoption comparison [HSD-005]

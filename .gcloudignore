@@ -24,7 +24,7 @@ test-results
 service-account*.json
 gcloud-credentials*.json
 
-initial_spike
+research
 issues
 *.md
 **/*.md

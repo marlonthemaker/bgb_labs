@@ -26,7 +26,8 @@ a research finding.
 `GuestRequestReceived` is the orchestration command. The Scenario context owns
 the event payload, frozen contract, and adapters; the Planning port returns a
 candidate graph only; the Assurance Runtime remains the sole policy enforcement
-point. See [`ARCHITECTURE.md`](../ARCHITECTURE.md).
+point. See
+[`docs/architecture/BOUNDARIES.md`](../docs/architecture/BOUNDARIES.md).
 
 ## Acceptance criteria
 
@@ -156,11 +157,11 @@ HSD-005 treatment contract are reconciled to the current local state.
 **Known limitations / follow-up:** The public demonstration can consume provider
 quota; scale-to-zero, max two instances, and a project-scoped USD 20 monthly
 budget with 50%/90%/100% alerts bound and surface cost. The app remains synthetic,
-ephemeral, non-research, and intentionally lacks HSD-005 comparison data or
-HSD-007 persistence. The key remains outside Git and pinned through Secret
+ephemeral, non-research, and the recorded HSD-004 deployment intentionally lacks
+the later HSD-005 comparison data and HSD-007 persistence. The key remains outside Git and pinned through Secret
 Manager version 1. Provider availability remains an external dependency.
-**Next issue readiness:** HSD-005 is active on
-`feat/hsd-005-native-adoption-comparison` from merge commit `36d02f6`.
+**Next issue readiness:** HSD-005 later completed and merged through PR #3 as
+`d7a8963`; HSD-007 is now ready for analysis.
 
 ## Current implementation evidence
 

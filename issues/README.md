@@ -24,17 +24,19 @@ issue and [`TESTING.md`](../TESTING.md).
 | [HSD-002](HSD-002-assured-task-runtime.md) | Complete | HSD-001 | Validated, deterministic, evidence-producing task runtime. |
 | [HSD-003](HSD-003-deterministic-hotel-shoreline-vertical-slice.md) | Complete | HSD-002 | Synthetic fixture, typed tools, and one English vertical slice. |
 | [HSD-004](HSD-004-controlled-planning-boundary.md) | Complete | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
-| [HSD-005](HSD-005-native-adoption-comparison.md) | Ready for delivery — local/provider gates recorded | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
-| [HSD-007](HSD-007-evidence-ledger.md) | Planned — required for comparison history | HSD-005 | Privacy-safe durable run ledger and optional asynchronous execution. |
+| [HSD-005](HSD-005-native-adoption-comparison.md) | Complete | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
+| [HSD-007](HSD-007-evidence-ledger.md) | Ready for analysis | HSD-005 | Privacy-safe durable run ledger and optional asynchronous execution. |
 | [HSD-006](HSD-006-evidence-experience.md) | Planned | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
 | [HSD-008](HSD-008-submission-release.md) | Planned | HSD-006, HSD-007 | Reproducible submission package. |
 
 ## Active next step
 
-HSD-004's local gates, credentialed Gemini smoke, Cloud Build, bounded Cloud Run
-revision, least-privilege identity, deployed success and zero-operation failure
-proof, sanitized logs, responsive UI, and PR #2 CI passed; PR #2 merged as
-`36d02f6`. HSD-005 is active on
-`feat/hsd-005-native-adoption-comparison`; its local implementation, full
-repository gate, focused real-provider success, and nine-block attempt-retention
-gate are recorded. Commit, run PR CI, merge, then prepare HSD-007 analysis.
+HSD-005 passed its local and provider gates; PR #3 CI passed and merged as
+`d7a8963` on 2026-08-26. HSD-007 is the next product issue and is ready for
+analysis. Do not implement persistence until its analysis is approved.
+
+## Repository maintenance
+
+| Issue | Status | Outcome |
+| --- | --- | --- |
+| [REP-001](REP-001-repository-research-consolidation.md) | Ready for delivery — local QA passed | Consolidate active documentation/research authority and remove superseded artifacts without changing runtime behavior. |

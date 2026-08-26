@@ -4,8 +4,8 @@
 
 1. Read this guide, the root README, and the relevant package README/roadmap.
 2. Inspect `git status`; preserve unrelated work.
-3. Keep `initial_spike/` unchanged unless the task explicitly authorizes a
-   research-canon change.
+3. Treat `research/canon/` as durable authority. Major semantic changes require
+   an accepted decision record; active study changes stay within their protocol.
 4. Keep dependencies one-way: Hotel Shoreline may import the SDK; the SDK may
    not import the application or its domain.
 

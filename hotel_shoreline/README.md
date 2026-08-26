@@ -39,7 +39,8 @@ success and zero-operation failure paths, sanitized Cloud Logging envelopes,
 desktop/mobile UI, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
 HSD-005 now provides the in-memory controlled comparison, deterministic
 measurement dictionary, review gating, real-provider adapter, and sanitized
-comparison API/UI. HSD-007 will add durable sanitized run history.
+comparison API/UI; PR #3 CI passed and merged as `d7a8963`. HSD-007 will add
+durable sanitized run history.
 HSD-003's scope and completion record are in
 [`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
