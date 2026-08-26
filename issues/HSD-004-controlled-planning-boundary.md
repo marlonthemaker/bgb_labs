@@ -5,8 +5,8 @@
 **Depends on:** HSD-003
 **Branch:** `feat/hsd-004-controlled-planning-boundary`
 
-HSD-003 passed CI and merged through PR #1. This branch is rebased locally onto
-that merge; PR #2 must be updated to target `main` and re-run CI before review.
+HSD-003 passed CI and merged through PR #1. PR #2 targets `main`; its latest
+pushed closeout commits and `Quality / verify` check passed on 2026-08-26.
 
 ## Outcome
 
@@ -87,7 +87,7 @@ behavior has direct automated evidence. Neither means deployed proof exists.
 | HSD4-P-002 | Externally verified locally; deployed proof open | The deterministic and credentialed Gemini paths both prove continuous event → candidate → validation → ordered two-tool execution, and the browser renders the actual candidate without per-step direction. |
 | HSD4-P-003 | Locally verified | Malformed graphs/envelopes/usage, unsupported planner configuration, unsafe candidates, timeout, unavailability, and turn/output-token/node budget breaches have direct tests. Every pre-execution failure records zero operations; unexpected route crashes return sanitized 500 evidence and log only the exception type; a no-payload Genkit sink prevents provider-owned exception messages and stacks from bypassing the telemetry allowlist. |
 | HSD4-P-004 | Locally verified | An unsafe tool proposal is rejected by the SDK before scenario operations execute. |
-| HSD4-C-001 | Prepared, unverified | Dockerfile and runbooks exist. No authorized Cloud Run revision, IAM proof, URL, or deployed smoke evidence exists. |
+| HSD4-C-001 | Locally prepared, externally unverified | A minimal non-root Next.js standalone runtime, explicit Docker/gcloud ignore boundaries, split build/runtime identity plan, pinned-secret procedure, bounded Cloud Run configuration, and deploy/evidence/rollback runbook exist. The generated standalone server completed the deterministic two-operation flow on 2026-08-26. Docker/Cloud Build and an authorized Cloud Run revision, IAM proof, URL, and deployed smoke remain unverified. |
 | HSD4-UI-001 | Locally verified | The server projects an allowlisted response before transport and the client validates it again. Unit/browser tests prove private inputs/outputs remain absent, plus actual candidate, budgets, success, typed failure, zero-operation truth, malformed fallback, and disclosures. |
 
 ## Completion Record
@@ -97,12 +97,15 @@ Do not complete this record until the external gates below are satisfied.
 **Branch used:** `feat/hsd-004-controlled-planning-boundary`
 **Existing rebased commits:** `d157a3b feat(demo): add Taskmaster planning
 boundary [HSD-004]`; `3094be2 chore(cloud): prepare HSD-004 Cloud Run
-delivery`; `109dfc2 chore(demo): refresh Next generated types [HSD-004]`.
-This closeout prepares the next scoped hardening and documentation commits;
-record their resulting hashes when HSD-004 reaches final closure.
+delivery`; `109dfc2 chore(demo): refresh Next generated types [HSD-004]`;
+`a4d794d fix(demo): harden Gemini failure boundary [HSD-004]`;
+`62cf385 docs(hsd): record HSD-004 provider failure evidence [HSD-004]`.
+The final deployment-hardening follow-up remains uncommitted; record its hash
+when HSD-004 reaches final closure.
 **Review / PR:** [#2](https://github.com/marlonthemaker/bgb_labs/pull/2) is
 open against `main`, mergeable, and its `Quality / verify` check passed on
-2026-08-25. The final closeout commit still requires push and a new CI pass.
+2026-08-26 at `62cf385`. The deployment-hardening follow-up requires its own
+push and fresh CI pass before deployment.
 **Acceptance evidence:** Deterministic planner integration covers continuous
 success, SDK rejection, malformed graph/envelope/usage, unsupported
 configuration, timeout, provider unavailability, and turn/token/node budgets.
@@ -110,28 +113,37 @@ Projection/telemetry unit tests and browser tests cover server-sanitized
 evidence, secret-free logs, success, typed failure, malformed API fallback,
 zero-operation truth, and disclosures. The table above separates these local
 results from unverified Cloud Run behavior.
-**QA commands and results:** On 2026-08-25, `pnpm check` passed across 39
+**QA commands and results:** On 2026-08-26, `pnpm check` passed across 39
 formatted/linted files; `pnpm typecheck` passed both packages; `pnpm test:all`
 passed 31 unit, 18 integration, and 5 deterministic browser E2E tests; the
 credentialed smoke remains intentionally excluded from the default gate and
-passed separately (1 test in 4.9 seconds, 3.3-second provider workflow). The
+passed separately (1 test in 4.6 seconds, 2.7-second provider workflow). The
 SDK coverage run passed 18 tests at 94.47% statements, 87.69% branches, 96.77%
 functions, and 94.4% lines. Hotel Shoreline coverage passed 31 tests at 92.59%
 statements, 86.09% branches, 100% functions, and 97.82% lines. Both exceed their
 90/80/90/90 thresholds. `pnpm build` passed the SDK and Next.js 16.3.2
-production builds, including static `/` and dynamic `/api/taskmaster`;
-`git diff --check` passed. PR #2's pre-closeout `Quality / verify` check passed;
-the final uncommitted closeout still requires push and a fresh CI run.
-**Docs updated:** Testing traceability, root/package roadmaps and READMEs,
-HSD-003 closure, issue index, Cloud Run preparation, and secure environment
-guidance are reconciled to the current local state.
+production/standalone builds, including static `/` and dynamic
+`/api/taskmaster`. The generated standalone server completed the deterministic
+API flow with two candidate nodes, three constraints, two successful node
+results, and two operations. The default browser suite passed on isolated port
+3102 while a manual server retained port 3000; invalid port configuration also
+failed with a typed configuration error. Secret scans, ignored-file/permission
+checks, and `git diff --check` passed. Google Cloud CLI 582.0.0 was installed,
+but it has no active account/project configuration; Docker, Cloud Build, and
+Cloud Run were not run. PR #2's pushed closeout `Quality / verify` check passed;
+the deployment-hardening follow-up now requires commit, push, and fresh CI.
+**Docs updated:** Testing traceability, architecture/product boundaries,
+root/package roadmaps and READMEs, issue index, authorization-key migration,
+Cloud identity/secret bootstrap, release/evidence/rollback procedure, and the
+HSD-005 treatment contract are reconciled to the current local state.
 **Known limitations / follow-up:** The local key remains outside version control
 and the credentialed provider path is verified. No authorized Cloud Run
 revision, least-privilege service identity/Secret Manager binding, URL, or
 deployed smoke evidence exists. HSD-005 must not begin until that final external
 gate is recorded and PR #2 is merged.
-**Next issue readiness:** Not ready. Capture Cloud Run proof, rerun PR #2 CI for
-the closeout commit, merge, then move HSD-005 to ready for analysis.
+**Next issue readiness:** HSD-005 is specified but blocked. Verify and push the
+deployment-hardening follow-up, capture Cloud Run proof, merge PR #2, then move
+HSD-005 to ready for implementation.
 
 ## Current implementation evidence
 

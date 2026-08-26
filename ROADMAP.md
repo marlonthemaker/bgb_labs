@@ -35,8 +35,10 @@ durable model/history/intervention comparison now promised by this roadmap. It
 must follow—not delay—the HSD-004 deployment proof.
 
 HSD-004's deterministic boundary, failure-state UX, and real Gemini path are
-verified locally, and PR #2 CI passes. Its issue record owns the remaining
-Cloud Run deployment/IAM evidence before HSD-005 begins.
+verified locally, and PR #2 CI passes. The standalone/non-root runtime and
+least-privilege deployment plan are locally prepared; its issue record owns the
+remaining Cloud Build, Cloud Run revision/IAM, and deployed success/failure
+evidence before HSD-005 begins.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.
 

@@ -1,166 +1,257 @@
-# Google Cloud Setup and Deployment Guide
+# Google Cloud Bootstrap — Hotel Shoreline
 
-This guide takes a new Google developer account from local development to one
-minimal Cloud Run deployment for the fictional Hotel Shoreline demo. Do not
-paste an API key into Git, a GitHub issue, a PR, or chat.
+This guide prepares a new, dedicated Google Cloud project for HSD-004. It owns
+account, identity, API, key, and secret setup. The repeatable deploy, evidence,
+rollback, and cleanup commands live in
+[`hotel_shoreline/CLOUD_RUN.md`](hotel_shoreline/CLOUD_RUN.md).
 
-## What you will create
+The commands below change Google Cloud state and may incur cost. Review the
+active account, project, region, and billing configuration before running them.
+Never paste a Gemini key into Git, a command argument, an issue, a PR, a log, or
+chat.
 
-- One dedicated Google Cloud project with billing and a budget alert.
-- One Gemini API key, stored locally only for optional local testing.
-- One Secret Manager secret for the deployed service.
-- One least-privilege Cloud Run runtime service account.
-- One public, scale-to-zero Cloud Run demo service.
+## Target architecture
 
-Gemini remains server-side. The browser sends only the fixed synthetic event;
-the SDK still validates every proposed graph before a tool executes.
+```text
+public judge/browser
+  -> Cloud Run service (max 2 instances, scale to zero)
+      -> server-only Genkit / Gemini call
+      -> Native Agent validation
+      -> synthetic Hotel Shoreline adapters
 
-## 1. Create a dedicated Google Cloud project
+Cloud Build identity -> builds source only
+Cloud Run identity   -> reads one pinned Secret Manager version only
+```
 
-In the [Google Cloud console](https://console.cloud.google.com/), create a new
-project, for example `bgb-hotel-shoreline-demo`. Attach billing and create a
-budget alert before deployment. Record its **project ID** (not display name),
-then choose one supported region, for example `europe-west1`.
+Cloud SQL is intentionally deferred to HSD-007. HSD-004 needs Cloud Run,
+Secret Manager, Cloud Build, Artifact Registry, and the Gemini API only.
 
-## 2. Install and authenticate the Google Cloud CLI
+## 1. Choose the project and region
 
-Use Cloud Shell in the Google Cloud console, or install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
-locally. Then run:
+Create a dedicated project in the
+[Google Cloud console](https://console.cloud.google.com/), attach billing, and
+record the immutable **project ID**. For a Lisbon-based hackathon deployment,
+`europe-west1` is a reasonable default and keeps the future HSD-007 Cloud SQL
+instance co-locatable. Use a different supported region if policy or judging
+latency requires it.
+
+Create a billing budget before deployment. A normal budget sends alerts; it
+does not automatically stop usage. Cloud Run's scale-to-zero and maximum
+instance settings remain the primary cost bounds for this demo.
+
+## 2. Use the installed `gcloud` CLI or Cloud Shell
+
+Google Cloud CLI 582.0.0 is installed on the current workstation. No active
+account, project, or Cloud Run region was configured when this guide was last
+verified on 2026-08-26. Authenticate and create the named configuration below,
+or use Cloud Shell if local browser authentication is inconvenient:
+
+- Recommended for the first deployment: open Cloud Shell from the Google Cloud
+  console, clone this repository, check out the approved commit, and run the
+  commands there. Cloud Shell already has an authenticated `gcloud` CLI.
+- On another workstation: install the current
+  [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), then follow the
+  same named-configuration procedure.
+
+Use a named configuration so another Google project is not changed by accident:
 
 ```sh
-gcloud init
+gcloud config configurations create hotel-shoreline-hsd --activate
+# If it already exists instead:
+# gcloud config configurations activate hotel-shoreline-hsd
+
 gcloud auth login
 gcloud config set project PROJECT_ID
 gcloud config set run/region REGION
 gcloud config list
+gcloud auth list --filter=status:ACTIVE
 ```
 
-Confirm the final command shows the intended project and region before
-continuing.
+Stop if the account, project ID, or region is not exactly the intended target.
 
-## 3. Create the Gemini API key
+## 3. Set local shell values
 
-Open [Google AI Studio](https://aistudio.google.com/app/apikey), select the new
-project, and create an API key. Restrict it to the Gemini API and your project
-where the console allows. Treat it as a password.
-
-For an optional local smoke test only:
+Replace the first two values only in your current shell. Do not commit them.
 
 ```sh
-cp hotel_shoreline/.env.example hotel_shoreline/.env.local
-# Edit hotel_shoreline/.env.local:
-# HSD_PLANNER_MODE=gemini and GEMINI_API_KEY=your-key.
-pnpm --filter @bomgoodbueno/hotel-shoreline dev
+PROJECT_ID="PROJECT_ID"
+REGION="europe-west1"
+SERVICE="hotel-shoreline"
+BUILD_SA_NAME="hotel-shoreline-builder"
+RUNTIME_SA_NAME="hotel-shoreline-runtime"
+SECRET_ID="hotel-shoreline-gemini-key"
+
+BUILD_SA="${BUILD_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
+RUNTIME_SA="${RUNTIME_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
+DEPLOYER_ACCOUNT="$(gcloud config get-value account)"
+
+test "$(gcloud config get-value project)" = "$PROJECT_ID"
+test -n "$DEPLOYER_ACCOUNT"
 ```
 
-Before any Git operation, verify the key file is ignored:
+Confirm billing is enabled in the console, or inspect it without exposing any
+credential:
 
 ```sh
+gcloud billing projects describe "$PROJECT_ID"
+```
+
+## 4. Create or migrate the Gemini key
+
+As of August 2026, Google AI Studio creates Gemini **authorization keys** by
+default, and Google states that standard Gemini keys stop working in September
+2026. In [Google AI Studio](https://aistudio.google.com/app/apikey):
+
+1. Select the dedicated project.
+2. Create a fresh authorization key, or migrate an existing standard key.
+3. Confirm it is restricted to the Gemini API.
+4. Keep the value visible only long enough to place it in the ignored local file
+   and Secret Manager.
+
+For local verification only, use `hotel_shoreline/.env.local`:
+
+```sh
+cp -n hotel_shoreline/.env.example hotel_shoreline/.env.local
+chmod 600 hotel_shoreline/.env.local
 git check-ignore -v hotel_shoreline/.env.local
-git status --short
 ```
 
-Never create a `NEXT_PUBLIC_GEMINI_API_KEY`; Next.js would expose it to browser
-code.
+Do not create a `NEXT_PUBLIC_GEMINI_API_KEY`; that prefix would make the value
+browser-visible at build time.
 
-## 4. Enable APIs and create runtime identity
+## 5. Enable only the required APIs
 
 ```sh
 gcloud services enable \
   run.googleapis.com \
   cloudbuild.googleapis.com \
   artifactregistry.googleapis.com \
-  secretmanager.googleapis.com
+  secretmanager.googleapis.com \
+  iam.googleapis.com \
+  generativelanguage.googleapis.com
+```
 
-gcloud iam service-accounts create hotel-shoreline-runtime \
+API enablement can take several minutes to propagate.
+
+## 6. Create separate build and runtime identities
+
+```sh
+gcloud iam service-accounts create "$BUILD_SA_NAME" \
+  --display-name="Hotel Shoreline source build"
+
+gcloud iam service-accounts create "$RUNTIME_SA_NAME" \
   --display-name="Hotel Shoreline Cloud Run runtime"
 ```
 
-Set temporary shell values; do not put these in Git:
+The build identity gets the project-level Cloud Run Builder role. The runtime
+identity receives no project-wide role.
 
 ```sh
-PROJECT_ID="PROJECT_ID"
-RUNTIME_SA="hotel-shoreline-runtime@${PROJECT_ID}.iam.gserviceaccount.com"
-SECRET_ID="hotel-shoreline-gemini-key"
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:${BUILD_SA}" \
+  --role="roles/run.builder"
 ```
 
-## 5. Store the key in Secret Manager
+For a non-Owner deployer, grant the documented source-deploy permissions. An
+Owner may already have the underlying permissions, but explicit least-privilege
+bindings are clearer for a durable deployment account.
 
-Create the secret and add the key without putting it in shell history:
+```sh
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="user:${DEPLOYER_ACCOUNT}" \
+  --role="roles/run.sourceDeveloper"
+
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="user:${DEPLOYER_ACCOUNT}" \
+  --role="roles/serviceusage.serviceUsageConsumer"
+
+gcloud iam service-accounts add-iam-policy-binding "$RUNTIME_SA" \
+  --member="user:${DEPLOYER_ACCOUNT}" \
+  --role="roles/iam.serviceAccountUser"
+```
+
+If the deployer is a service account, replace the `user:` member type with
+`serviceAccount:`.
+
+## 7. Store and pin the Gemini key
+
+Create the secret container first:
 
 ```sh
 gcloud secrets create "$SECRET_ID" --replication-policy=automatic
-read -r -s GEMINI_API_KEY
-printf '%s' "$GEMINI_API_KEY" | gcloud secrets versions add "$SECRET_ID" --data-file=-
-unset GEMINI_API_KEY
+```
 
+Add the key through hidden standard input so it does not enter shell history:
+
+```sh
+read -r -s GEMINI_API_KEY
+printf '%s' "$GEMINI_API_KEY" \
+  | gcloud secrets versions add "$SECRET_ID" --data-file=-
+unset GEMINI_API_KEY
+```
+
+Grant the runtime identity access on this secret only:
+
+```sh
 gcloud secrets add-iam-policy-binding "$SECRET_ID" \
   --member="serviceAccount:${RUNTIME_SA}" \
   --role="roles/secretmanager.secretAccessor"
 ```
 
-The runtime account gets secret access only on this one secret. Do not grant it
-Owner, Editor, or broad project-wide roles.
-
-## 6. Verify locally
+Record the enabled numeric version without reading its value:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm check
-pnpm typecheck
-pnpm test:all
-pnpm build
+SECRET_VERSION="$(gcloud secrets versions list "$SECRET_ID" \
+  --filter='state=ENABLED' \
+  --sort-by='~createTime' \
+  --limit=1 \
+  --format='value(name)')"
+
+test -n "$SECRET_VERSION"
 ```
 
-Run the deterministic browser flow first. Then run one Gemini-mode smoke test
-with `hotel_shoreline/.env.local` and confirm no key appears in the UI. Use the
-deterministic integration suite—not an intentionally malformed live-provider
-request—to verify that invalid planning produces zero operations.
+Cloud Run environment-variable secrets are resolved when an instance starts.
+The deployment pins `SECRET_VERSION` rather than using `latest`, making a bad
+rotation reversible through a normal revision rollback.
 
-## 7. Deploy to Cloud Run
-
-From the repository root, deploy using the checked-in root `Dockerfile`:
+## 8. Verify identity boundaries before deployment
 
 ```sh
-gcloud run deploy hotel-shoreline \
-  --source . \
-  --region REGION \
-  --service-account "$RUNTIME_SA" \
-  --set-env-vars HSD_PLANNER_MODE=gemini \
-  --set-secrets "GEMINI_API_KEY=${SECRET_ID}:latest" \
-  --max-instances 2 \
-  --concurrency 4 \
-  --timeout 30s \
-  --allow-unauthenticated
+gcloud iam service-accounts describe "$BUILD_SA"
+gcloud iam service-accounts describe "$RUNTIME_SA"
+gcloud secrets get-iam-policy "$SECRET_ID"
+gcloud projects get-iam-policy "$PROJECT_ID" \
+  --flatten='bindings[].members' \
+  --filter="bindings.members:serviceAccount:${RUNTIME_SA}" \
+  --format='table(bindings.role)'
 ```
 
-Cloud Build uses the Dockerfile and the root ignore rules prevent `.env` from
-being uploaded. Copy the resulting Cloud Run URL and run the fixed request.
+The last command should show no broad project role for the runtime identity.
+Secret access should appear only on the single secret's policy.
 
-## 8. Capture evidence and control costs
+## 9. Continue with the deployment runbook
 
-Record the deployed URL, revision, project/region, commit SHA, fixture version,
-model identifier, and one successful Gemini run. Also record a safe failure
-that shows zero operations.
+Run the repository and standalone-server gates, then deploy and capture proof
+using [`hotel_shoreline/CLOUD_RUN.md`](hotel_shoreline/CLOUD_RUN.md). Do not
+deploy from an uncommitted tree: the deployed revision must map to an approved
+commit SHA.
 
-For a short hackathon demo, retain scale-to-zero and delete the service when it
-is no longer needed:
+What can be shared safely for assisted deployment:
 
-```sh
-gcloud run services delete hotel-shoreline --region REGION
-```
+- project ID;
+- selected region;
+- active account email;
+- service/revision names and URLs;
+- non-secret IAM role names and sanitized logs.
 
-Deleting the service does not delete Secret Manager data or build images; review
-those resources separately.
+Never share the API key, secret payload, access token, service-account key file,
+or full environment dump.
 
-Cloud SQL for PostgreSQL is deliberately deferred to HSD-007. It is not needed
-to close HSD-004 and this guide does not provision a database. The future
-ledger design is documented in
-[`hotel_shoreline/DATA_ARCHITECTURE.md`](hotel_shoreline/DATA_ARCHITECTURE.md).
+## Primary references
 
-## What to send me next
-
-Send only the project ID and chosen region—never the API key. Then explicitly
-say whether you authorize API enablement and Cloud Run deployment. I can verify
-the active project, create the runtime identity and secret binding, deploy, and
-capture non-secret HSD-004 evidence with you.
+- [Cloud Run source deployment](https://cloud.google.com/run/docs/deploying-source-code)
+- [Cloud Run source build identity](https://cloud.google.com/run/docs/configuring/services/build-service-account)
+- [Cloud Run secret configuration](https://cloud.google.com/run/docs/configuring/services/secrets)
+- [Secret Manager best practices](https://cloud.google.com/secret-manager/docs/best-practices)
+- [Gemini API key guidance](https://ai.google.dev/gemini-api/docs/api-key)
+- [Google Cloud budget behavior](https://cloud.google.com/billing/docs/how-to/budgets)

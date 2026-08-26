@@ -14,7 +14,7 @@ and a separate research canon preserved as provenance.
 
 ## HSD status
 
-Snapshot verified 2026-08-25. The [issue index](issues/README.md) is the sole
+Snapshot verified 2026-08-26. The [issue index](issues/README.md) is the sole
 owner of mutable issue status; this section summarizes current capability.
 
 - **HSD-001 complete:** workspace, strict TypeScript, private package boundary,
@@ -29,7 +29,8 @@ owner of mutable issue status; this section summarizes current capability.
   deterministic test path, explicit timeout/turn/token/node budgets, SDK
   validation boundary, server-sanitized evidence, structured telemetry, and
   Cloud Run preparation exist and pass locally. The real-Gemini smoke and PR #2
-  CI passed on 2026-08-25; Cloud Run deployment proof remains open.
+  CI passed; a minimal standalone runtime and hardened deployment runbooks are
+  locally prepared. Cloud Build/container and Cloud Run proof remain open.
 - **Next after deployment proof:** HSD-005, a small, reviewed,
   baseline/intervention comparison across `en`, `es-ES`, and `pt-PT`, followed
   by durable run history and a presentation-ready evidence experience.

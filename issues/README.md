@@ -34,6 +34,7 @@ issue and [`TESTING.md`](../TESTING.md).
 HSD-003 passed CI and merged through PR #1. HSD-004's deterministic gate,
 server-sanitized evidence, structured telemetry, fail-closed boundaries, and
 credentialed Gemini smoke now pass; PR #2 targets `main` and its current CI is
-green. Capture the authorized Cloud Run revision, IAM, URL, and deployed smoke
-proof, then merge PR #2 and close HSD-004. Do not start HSD-005 until that final
-external gate and Completion Record are satisfied.
+green. Verify and push the deployment-hardening follow-up, capture the
+authorized Cloud Run revision, IAM, URL, successful and zero-operation smoke
+proof, then merge PR #2 and close HSD-004. HSD-005 is fully specified but must
+not start until that external gate and Completion Record are satisfied.

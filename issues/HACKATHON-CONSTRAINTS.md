@@ -3,6 +3,11 @@
 **Last verified:** 2026-08-24  
 **Authoritative source:** [All Things Agentic Hackathon rules](https://allthingsagentichackathon.devpost.com/rules) and [FAQ](https://allthingsagentichackathon.devpost.com/details/faqs)
 
+Automated re-verification was attempted on 2026-08-26, but Devpost required an
+interactive anti-bot check. Manually re-open both authoritative pages before
+deployment and again before submission; do not infer a rule change from this
+cached planning aid.
+
 This is a planning aid, not legal advice or a replacement for the official
 rules. Re-verify it before submission because organizer requirements can change.
 
