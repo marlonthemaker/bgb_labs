@@ -30,9 +30,10 @@ versioned synthetic fixture, manually authored contract/graph, deterministic
 maintenance and housekeeping adapters, and inspectable ordered evidence. It has
 no real hotel data or persistent state. HSD-004 has added an opt-in server-side
 Gemini/Genkit planner, explicit planning budgets, fail-closed planner error
-classification, actual candidate evidence, browser failure states, and Cloud
-Run delivery preparation. The deterministic local gate passes; real-provider
-evidence, updated PR CI, and deployment proof remain open closure gates.
+classification, server-allowlisted candidate evidence, browser failure states,
+structured secret-free run telemetry, and Cloud Run delivery preparation. The
+deterministic and credentialed Gemini paths pass locally and PR #2 CI is green;
+Cloud Run deployment proof remains the open closure gate.
 HSD-005/HSD-007 will add a small
 reviewed baseline/intervention comparison and durable sanitized run history.
 HSD-003's scope and completion record are in
@@ -55,12 +56,16 @@ From the workspace root:
 pnpm --filter @bomgoodbueno/hotel-shoreline dev
 pnpm --filter @bomgoodbueno/hotel-shoreline test:coverage
 pnpm test:e2e
+pnpm test:e2e:gemini
 pnpm --filter @bomgoodbueno/hotel-shoreline build
 ```
 
 Optional local Gemini mode uses `hotel_shoreline/.env.local`; copy
-`.env.example` in this directory and keep the key server-only. Deterministic
-mode is the default.
+`.env.example` in this directory and keep the key server-only. The ignored file
+is loaded by Next.js, so agents can run `pnpm test:e2e:gemini` without receiving
+the credential in a prompt or command. The Gemini and ordinary browser commands
+force fresh servers in Gemini and deterministic modes, respectively; the local
+planner selection is used for manual development runs.
 
 ## Guardrails
 

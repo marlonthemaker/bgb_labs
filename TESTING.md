@@ -34,6 +34,12 @@ and pushes to `main`. A local pass and a CI pass are distinct evidence; record
 both when closing an issue. The repository-pinned pnpm version must be installed
 before setup-node enables pnpm caching.
 
+The ordinary `pnpm test:e2e` command always starts a fresh server in explicit
+deterministic mode. `pnpm test:e2e:gemini` always starts a fresh server in
+explicit Gemini mode and remains opt-in. Browser evidence is therefore
+independent of a developer's `.env.local` planner selection or an already
+running development server.
+
 ## HSD traceability
 
 | Acceptance ID | Requirement | Test |
@@ -47,10 +53,10 @@ before setup-node enables pnpm caching.
 | HSD3-F-002 | Maintenance and housekeeping adapters accept only the frozen stay, room, and towel quantity. | `hotel_shoreline/src/unit/shoreline.unit.test.ts` |
 | HSD3-F-003, HSD3-T-002 | The frozen contract and graph validate, execute in order, preserve exact inputs, and produce final state/evidence. | `hotel_shoreline/src/integration/shoreline.integration.test.ts` |
 | HSD3-F-004, HSD3-UI-001 | A user-triggered fixed run renders graph, ordered evidence, statuses, outcome, and disclosure. | `hotel_shoreline/e2e/foundation.spec.ts` |
-| HSD4-P-001 | Implemented, not externally verified: the Genkit adapter is server-only, fixes Gemini 3.5 metadata, and applies the declared output-token configuration. The credentialed real-provider smoke is opt-in and skipped in CI. | `hotel_shoreline/e2e/gemini.smoke.spec.ts`; production build; procedure in `hotel_shoreline/CLOUD_RUN.md` |
+| HSD4-P-001 | Externally verified locally: the server-only Genkit adapter uses Gemini 3.5 Flash with minimal thinking and declared limits; the opt-in credentialed smoke passed on 2026-08-25 and remains skipped in credential-free CI. | `hotel_shoreline/e2e/gemini.smoke.spec.ts`; production build; evidence in `issues/HSD-004-controlled-planning-boundary.md` |
 | HSD4-P-002, HSD4-P-004 | Locally verified: a deterministic fixed event is planned, validated, and executed without per-step user direction; an unsafe tool proposal is rejected before execution. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
-| HSD4-P-003 | Locally verified: malformed output/envelopes, malformed usage, unsafe candidates, timeout, unavailable planning, and turn/output-token/node budget breaches produce typed terminal results with zero scenario operations. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
-| HSD4-UI-001 | Locally verified: the public projection whitelists candidate/lifecycle/outcome evidence; the browser renders the actual candidate, success lifecycle, typed planning failure, malformed-response fallback, zero-operation truth, and disclosures. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts` |
+| HSD4-P-003 | Locally verified: malformed output/envelopes, malformed usage, unsupported configuration, unsafe candidates, timeout, unavailable planning, and turn/output-token/node budget breaches fail closed; crash telemetry excludes exception messages; the Genkit logging boundary does not forward raw provider diagnostics. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; `hotel_shoreline/src/unit/taskmaster-telemetry.unit.test.ts`; `hotel_shoreline/src/unit/genkit-logging.unit.test.ts` |
+| HSD4-UI-001 | Locally verified: the server response and client parser whitelist candidate/lifecycle/outcome evidence; browser tests prove the actual candidate, success, typed failure, malformed fallback, zero-operation truth, and disclosures. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts` |
 | HSD5-D-001, HSD5-D-002 | Planned: reviewed case/locale variants retain contract, expected-outcome, reviewer, and provenance links. | `hotel_shoreline/src/unit/native-adoption.unit.test.ts` |
 | HSD5-I-001 | Planned: an intervention is versioned, immutable after use, and declares target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/intervention.unit.test.ts` |
 | HSD5-E-001, HSD5-E-003 | Planned: paired baseline/intervention conditions are comparable; invalid or non-comparable runs are preserved and excluded by default. | `hotel_shoreline/src/integration/native-adoption.integration.test.ts` |

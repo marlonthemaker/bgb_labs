@@ -13,10 +13,21 @@ Google Cloud project.
 - `HSD_PLANNER_MODE=gemini` enables the Genkit/Gemini planner. Omit it or set
   `deterministic` for the credential-free demo baseline.
 - HSD-004 fixes the application planning envelope in code: one planning turn,
-  1,024 output tokens, four candidate nodes, and a two-second planner deadline.
-  These are evidence-bearing safety limits, not browser-controlled variables.
+  1,024 output tokens, and four candidate nodes. The credential-free planner
+  has a two-second deadline; the network-backed Gemini planner has a 30-second
+  deadline and requests minimal thinking for this constrained graph. These are
+  evidence-bearing safety limits, not browser-controlled variables.
 - The Cloud Run service account must have only the roles required to access the
   configured secret. Browser users get no Google Cloud credentials.
+- The route writes one-line structured JSON completion/crash telemetry to
+  stdout/stderr for Cloud Logging, including request correlation, duration,
+  planner metadata, terminal status, and aggregate counts. It never logs the
+  API key, prompt, tool inputs/outputs, exception message, or hidden reasoning.
+- The server installs a no-payload Genkit log sink because the Google AI plugin's
+  default error logger includes provider messages and stack traces. Provider
+  failures are represented only by the route's typed, allowlisted completion
+  event (for example, a `WARNING` carrying `PLANNER_UNAVAILABLE` with zero
+  operations). Only unexpected route crashes use `ERROR` severity.
 
 ## Pre-deploy checks
 
@@ -33,13 +44,16 @@ Visit `http://localhost:8080`, run the fixed request, and confirm the UI shows
 the actual candidate graph, planning budget, event/planning/validation/execution
 lifecycle, two successful node outcomes, and two recorded operations.
 
-For the opt-in real-provider browser smoke, put `HSD_PLANNER_MODE=gemini` and
-the approved `GEMINI_API_KEY` in the uncommitted `.env.local`, stop any existing
-local Hotel Shoreline server so Playwright starts with that configuration, then
-run:
+For the opt-in real-provider browser smoke, put the approved `GEMINI_API_KEY`
+in the ignored `hotel_shoreline/.env.local`. The dedicated script disables
+server reuse and explicitly starts Next.js in Gemini mode; the ordinary browser
+suite likewise forces a fresh deterministic server:
 
 ```sh
-HSD_REAL_GEMINI_SMOKE=1 pnpm exec playwright test --grep "real Gemini Taskmaster"
+cp hotel_shoreline/.env.example hotel_shoreline/.env.local
+chmod 600 hotel_shoreline/.env.local
+# Edit .env.local locally; never paste the key into a prompt, command, or log.
+pnpm test:e2e:gemini
 ```
 
 The smoke is skipped by default and in CI. Record the commit, model metadata,
@@ -62,7 +76,7 @@ gcloud run deploy hotel-shoreline \
   --set-secrets GEMINI_API_KEY=hotel-shoreline-gemini-key:latest \
   --max-instances 2 \
   --concurrency 4 \
-  --timeout 30s \
+  --timeout 60s \
   --allow-unauthenticated
 ```
 

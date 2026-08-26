@@ -34,9 +34,9 @@ through the SDK without tool execution.
 The deterministic local gate now covers the planner port, Genkit/Gemini adapter,
 fixed event route, timeout, malformed output/envelopes, unavailable planning,
 unsafe candidates, turn/token/node limits, actual candidate evidence, sanitized
-browser projection, and visible success/failure lifecycles. The remaining gates
-are updated PR #2 CI, an authorized real-Gemini smoke run, and Cloud Run
-deployment proof.
+server response and browser projection, structured run telemetry, and visible
+success/failure lifecycles. The authorized real-Gemini smoke and PR #2 CI pass;
+Cloud Run deployment proof is the remaining gate.
 
 ### HSD-005 — Controlled native-adoption comparison
 

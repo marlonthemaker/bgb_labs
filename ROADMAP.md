@@ -34,9 +34,9 @@ Gemini 3.5+, a Google agent framework (Genkit), and a Google Cloud service
 durable model/history/intervention comparison now promised by this roadmap. It
 must follow—not delay—the HSD-004 deployment proof.
 
-HSD-004's deterministic local boundary and failure-state UX are implemented and
-locally verified. Its issue record owns the remaining updated PR CI,
-real-provider smoke test, and deployment evidence.
+HSD-004's deterministic boundary, failure-state UX, and real Gemini path are
+verified locally, and PR #2 CI passes. Its issue record owns the remaining
+Cloud Run deployment/IAM evidence before HSD-005 begins.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.
 

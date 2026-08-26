@@ -31,10 +31,9 @@ issue and [`TESTING.md`](../TESTING.md).
 
 ## Active next step
 
-HSD-003 passed CI and merged through PR #1. HSD-004's deterministic local gate
-now covers timeout, malformed output/envelopes, unavailable planning, unsafe
-tools, turn/token/node budgets, actual candidate evidence, sanitized browser
-projection, and visible failure behavior. Deliver the rebased HSD-004 branch
-through PR #2, then run an authorized real-Gemini smoke test and capture Cloud
-Run deployment proof. Do not start HSD-005 until the full HSD-004 acceptance
-table and Completion Record are satisfied.
+HSD-003 passed CI and merged through PR #1. HSD-004's deterministic gate,
+server-sanitized evidence, structured telemetry, fail-closed boundaries, and
+credentialed Gemini smoke now pass; PR #2 targets `main` and its current CI is
+green. Capture the authorized Cloud Run revision, IAM, URL, and deployed smoke
+proof, then merge PR #2 and close HSD-004. Do not start HSD-005 until that final
+external gate and Completion Record are satisfied.
