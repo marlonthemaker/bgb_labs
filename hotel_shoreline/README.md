@@ -1,10 +1,12 @@
 # Hotel Shoreline
 
 Hotel Shoreline is a fictional hotel-operations demonstration for Native Agent.
-It currently makes one English request's task decomposition, validation,
-deterministic tool use, and evidence visible through a deliberately constrained
-workflow. Reviewed multilingual comparison is planned in HSD-005; it is not a
-current capability.
+It makes task decomposition, contract validation, deterministic tool use, and
+evidence visible through a deliberately constrained workflow. HSD-005 adds a
+matched baseline/contract-guided inspector across three case families and
+`en`, `es-ES`, and `pt-PT` authored variants. Those variants are currently
+project-authored drafts: they run for engineering evaluation but are excluded
+from reviewer-qualified aggregate claims until human review is recorded.
 
 It is built independently for a hackathon and is not affiliated with, endorsed
 by, or operated by Google. Its results are illustrative demonstrations, not
@@ -34,15 +36,17 @@ classification, server-allowlisted candidate evidence, browser failure states,
 structured secret-free run telemetry, and Cloud Run delivery. The deterministic
 and credentialed Gemini paths pass locally; the bounded production revision,
 success and zero-operation failure paths, sanitized Cloud Logging envelopes,
-desktop/mobile UI, and PR #2 CI passed on 2026-08-26. PR #2 merge remains the
-open closure gate.
-HSD-005/HSD-007 will add a small
-reviewed baseline/intervention comparison and durable sanitized run history.
+desktop/mobile UI, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
+HSD-005 now provides the in-memory controlled comparison, deterministic
+measurement dictionary, review gating, real-provider adapter, and sanitized
+comparison API/UI. HSD-007 will add durable sanitized run history.
 HSD-003's scope and completion record are in
 [`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
 
 The planned comparison method and its claim limits are in
 [the controlled comparison protocol](EVALUATION_PROTOCOL.md).
+Language reviewers should follow the non-blocking
+[native-language review guide](NATIVE_REVIEW_GUIDE.md).
 The durable storage choice and portability rules are in
 [the PostgreSQL evidence-ledger architecture](DATA_ARCHITECTURE.md).
 
@@ -59,8 +63,15 @@ pnpm --filter @bomgoodbueno/hotel-shoreline dev
 pnpm --filter @bomgoodbueno/hotel-shoreline test:coverage
 pnpm test:e2e
 pnpm test:e2e:gemini
+pnpm test:e2e:gemini:comparison
+pnpm test:e2e:gemini:matrix
 pnpm --filter @bomgoodbueno/hotel-shoreline build
 ```
+
+From the root, `pnpm meow` forces deterministic mode for reliable development.
+`pnpm meow:gemini` explicitly enables the quota-bearing provider mode. A 429
+quota response is shown as `PLANNER_QUOTA_EXHAUSTED`, executes zero operations,
+and is never retried silently.
 
 Optional local Gemini mode uses `hotel_shoreline/.env.local`; copy
 `.env.example` in this directory and keep the key server-only. The ignored file
@@ -68,6 +79,13 @@ is loaded by Next.js, so agents can run `pnpm test:e2e:gemini` without receiving
 the credential in a prompt or command. The Gemini and ordinary browser commands
 force fresh servers in Gemini and deterministic modes, respectively; the local
 planner selection is used for manual development runs.
+
+All three Gemini commands are quota-bearing and serialized. The base command
+runs only the HSD-004 smoke, `:comparison` runs one focused HSD-005 pair, and
+`:matrix` runs all nine HSD-005 blocks while attaching every paired response to
+the ignored Playwright HTML report. The matrix deliberately paces independent
+blocks to respect shared provider capacity; it does not retry either arm.
+Provider failure is evidence and does not authorize a retry or silent repair.
 
 ## Guardrails
 

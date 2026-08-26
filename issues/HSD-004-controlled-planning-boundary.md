@@ -1,13 +1,13 @@
 # HSD-004 — Taskmaster Agent and Controlled Planning Boundary
 
-**Status:** Ready to merge — deployment verified
+**Status:** Complete
 **Repository:** `hotel_shoreline` (optional narrow SDK interface only)
 **Depends on:** HSD-003
 **Branch:** `feat/hsd-004-controlled-planning-boundary`
 
-HSD-003 passed CI and merged through PR #1. PR #2 targets `main`; deployment
-proof is recorded and its `Quality / verify` check passed at `161c416` on
-2026-08-26. Merge remains the only closure gate.
+HSD-003 passed CI and merged through PR #1. HSD-004 deployment proof is recorded,
+the final `Quality / verify` check passed at `2169166`, and PR #2 merged as
+`36d02f6` on 2026-08-26.
 
 ## Outcome
 
@@ -93,7 +93,7 @@ proof required by this issue. Merge status remains separate from acceptance.
 
 ## Completion Record
 
-External acceptance gates were satisfied on 2026-08-26. PR #2 merge remains.
+External acceptance gates were satisfied and PR #2 merged on 2026-08-26.
 
 **Branch used:** `feat/hsd-004-controlled-planning-boundary`
 **Existing rebased commits:** `d157a3b feat(demo): add Taskmaster planning
@@ -103,11 +103,12 @@ delivery`; `109dfc2 chore(demo): refresh Next generated types [HSD-004]`;
 `62cf385 docs(hsd): record HSD-004 provider failure evidence [HSD-004]`;
 `14fce17 chore(cloud): harden HSD-004 release runtime [HSD-004]`;
 `c2bcc6f docs(cloud): define HSD-004 deployment evidence [HSD-004]`;
-`161c416 docs(hsd): freeze HSD-005 comparison design [HSD-005]`.
+`161c416 docs(hsd): freeze HSD-005 comparison design [HSD-005]`;
+`2169166 docs(hsd): record HSD-004 Cloud Run proof [HSD-004]`.
 **Review / PR:** [#2](https://github.com/marlonthemaker/bgb_labs/pull/2) is
-open against `main`, mergeable, and its `Quality / verify` check passed in
-[run 32969012306](https://github.com/marlonthemaker/bgb_labs/actions/runs/32969012306)
-at `161c416` on 2026-08-26.
+merged as `36d02f6`; its final `Quality / verify` check passed in
+[run 32983742017](https://github.com/marlonthemaker/bgb_labs/actions/runs/32983742017)
+at `2169166` on 2026-08-26.
 **Acceptance evidence:** Deterministic planner integration covers continuous
 success, SDK rejection, malformed graph/envelope/usage, unsupported
 configuration, timeout, provider unavailability, and turn/token/node budgets.
@@ -153,13 +154,13 @@ root/package roadmaps and READMEs, issue index, authorization-key migration,
 Cloud identity/secret bootstrap, release/evidence/rollback procedure, and the
 HSD-005 treatment contract are reconciled to the current local state.
 **Known limitations / follow-up:** The public demonstration can consume provider
-quota; scale-to-zero and max two instances bound compute but a billing budget
-alert still requires an owner-selected amount. The app remains synthetic,
+quota; scale-to-zero, max two instances, and a project-scoped USD 20 monthly
+budget with 50%/90%/100% alerts bound and surface cost. The app remains synthetic,
 ephemeral, non-research, and intentionally lacks HSD-005 comparison data or
 HSD-007 persistence. The key remains outside Git and pinned through Secret
 Manager version 1. Provider availability remains an external dependency.
-**Next issue readiness:** HSD-005 is fully specified and ready immediately after
-PR #2 merges and green `main` is pulled.
+**Next issue readiness:** HSD-005 is active on
+`feat/hsd-005-native-adoption-comparison` from merge commit `36d02f6`.
 
 ## Current implementation evidence
 
@@ -184,8 +185,8 @@ hidden model chain-of-thought and must never claim to do so. The planned
 evidence experience may expose structured candidate plans, validation decisions,
 tool calls, arguments, outcomes, and sanitized metadata.
 
-**Open HSD-004 gate:** merge PR #2. Deployment, IAM, revision, success/failure,
-logging, cleanup, and responsive-browser evidence are complete.
+**Open HSD-004 gate:** None. Deployment, IAM, revision, success/failure,
+logging, cleanup, responsive-browser evidence, CI, and merge are complete.
 
 The repository-owned Cloud Run preparation is documented in
 [`hotel_shoreline/CLOUD_RUN.md`](../hotel_shoreline/CLOUD_RUN.md). It specifies

@@ -17,7 +17,7 @@ limits, and completion record.
 | Foundation | HSD-001–002 | Strict workspace and fail-closed deterministic task runtime. | SDK contracts, errors, execution evidence, and test gates pass. |
 | Deterministic proof | HSD-003 (complete) | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, browser proof, passing CI, and merge. |
 | Taskmaster agent proof | HSD-004 | A Gemini/Genkit agent receives a guest-request event, plans, validates, routes, and completes it autonomously on Cloud Run. | Google stack requirement and safe failure paths are demonstrated in one continuous run. |
-| Controlled comparison | HSD-005 | Matched native-language requests expose baseline/intervention task and operational differences. | Frozen conditions, reviewed variants, invalid-run preservation, no research overclaim. |
+| Controlled comparison | HSD-005 | Matched authored-language requests expose baseline/intervention task and operational differences. | Frozen conditions, explicit review state, invalid-run preservation, no research overclaim. |
 | Evidence ledger | HSD-007 | A privacy-safe, portable PostgreSQL run history permits reproducible comparison across models, dates, modes, and interventions. | Append-only evidence, least-privilege access, idempotent writes, cost/security review. |
 | Evidence experience | HSD-006 | Accessible lifecycle and comparison experience exports reproducible evidence. | Failure states, privacy-safe export, responsive E2E coverage. |
 | Submission release | HSD-008 | Reproducible hackathon submission and recorded limitations. | Full verification and disclosure review. |
@@ -37,8 +37,9 @@ must follow—not delay—the HSD-004 deployment proof.
 HSD-004's deterministic boundary, failure-state UX, real Gemini path,
 standalone/non-root image, least-privilege identities, bounded Cloud Run
 revision, deployed success/failure paths, sanitized logs, and responsive UI were
-verified on 2026-08-26. PR #2 CI passes; merge is the remaining closure gate
-before HSD-005 begins.
+verified on 2026-08-26; PR #2 CI passed and merged as `36d02f6`. HSD-005's
+engineering implementation, full local QA, focused real-provider success, and
+nine-block attempt retention are complete; Git delivery remains.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.
 
@@ -48,8 +49,9 @@ official rules immediately before submitting.
 - Do not call the project a Taskmaster submission until HSD-004 proves a guest
   request event is autonomously planned, safely routed, and completed with the
   required Google stack.
-- Do not make multilingual claims before contracts, fixture conditions,
-  baseline/intervention settings, and review status are frozen and visible.
+- Do not make reviewer-qualified multilingual claims before contracts, fixture
+  conditions, baseline/intervention settings, and review status are frozen and
+  visible. Pending drafts may run for engineering evidence when clearly excluded.
 - Do not add persistence or cloud queues before the local evidence flow is
   reliable, its failure behavior is understood, and the persisted schema is
   justified by a comparison or release requirement.

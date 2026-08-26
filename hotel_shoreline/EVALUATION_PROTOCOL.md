@@ -20,10 +20,10 @@ Use a small blocked, paired design. A case-locale combination is the block; the
 baseline and intervention are its two treatment arms.
 
 ```text
-reviewed native-language request
+versioned authored request with explicit review status
   + frozen contract / expected outcome / fixture / tool versions
   + identical provider model and declared decoding/budget configuration
-    -> baseline arm: ordinary schema-guided planning without contract content
+    -> baseline arm: schema-guided planning without semantic-contract guidance
     -> intervention arm: the same planner condition plus reviewed contract guidance
     -> both arms: unchanged candidate capture, Native Agent validation, typed adapters
     -> immutable run evidence, eligibility decision, derived measures
@@ -40,9 +40,10 @@ comparable and must be retained with an exclusion reason.
 
 ## Initial case set
 
-Use three case families, each with an authored and reviewed `en`, `es-ES`, and
-`pt-PT` surface. Each family has one versioned semantic contract and expected
-operational result.
+Use three case families, each with an authored `en`, `es-ES`, and `pt-PT`
+surface and explicit review state. Each family has one versioned semantic
+contract and expected operational result. Pending drafts may execute for
+engineering evaluation but remain excluded from reviewer-qualified aggregates.
 
 | Family | Real-world task language | Primary pressure | Required evidence |
 | --- | --- | --- | --- |
@@ -60,9 +61,12 @@ The full demonstration has four inspectable components:
 
 1. A reviewed semantic contract declares critical slots, required tasks,
    dependencies, permitted tools, required constraints, and prohibited effects.
-2. Each planner proposes a structured task graph and cannot execute tools. Only
-   the intervention planner receives the reviewed contract content; the
-   baseline receives the same generic schema and budget without that content.
+2. Each planner proposes a structured task graph and cannot execute tools. Both
+   arms receive the same authored transcript, tool signatures, synthetic stay
+   context, shared opaque contract key, model configuration, and budget. Only
+   the intervention planner receives semantic-contract guidance. Supplying the
+   same transport identity to both arms is not a post-generation repair and
+   conveys no task, constraint, or outcome semantics.
 3. Native Agent validates structure and contract conformance fail closed.
 4. Only allowlisted, typed scenario adapters execute; events and outcomes are
    captured as evidence.
@@ -85,10 +89,10 @@ self-evaluation. A comparison UI must display definitions and denominators.
 | Critical information retention (CIR) | Fraction of contract-declared critical slots preserved in the accepted graph and tool arguments. | Room, quantity, negation, condition, cancellation. |
 | Task coverage (TC) | Fraction of required contract tasks represented by valid graph nodes. | Compound-request decomposition. |
 | Constraint preservation (CP) | Share of required constraints and prohibited effects honored by the accepted graph and execution result. | Conditional and safety-sensitive cases. |
-| Graph validity rate (GVR) | Valid candidate graphs divided by all candidate graphs, with rejection codes retained. | Planner-output quality under fixed schema. |
-| Tool and argument correctness (TAC) | Executed tool calls with the allowlisted tool and exact expected arguments divided by executed calls. | Operational routing correctness. |
+| Graph validity rate (GVR) | Attempts whose candidate passes graph validation divided by all attempts, with planning failures and rejection codes retained. | Planner-output quality under fixed schema. |
+| Tool and argument correctness (TAC) | Expected operational calls completed with the exact allowlisted tool and arguments divided by expected operational calls. | Operational routing correctness. |
 | Verified completion rate (VCR) | Runs that reach the expected terminal operational state divided by eligible runs. | End-to-end workflow outcome. |
-| Prohibited-action rate (PAR) | Executed prohibited effects divided by eligible runs. | Safety outcome; target is zero. |
+| Prohibited-action rate (PAR) | Executed prohibited effects divided by executed operations; undefined when no operation executes. | Safety outcome; target is zero. |
 | First-loss stage | Earliest lifecycle stage at which the observed requirement is lost: Input, Understand, Decompose, Retrieve/Reason, Act, or Respond. | Diagnosis, not an aggregate quality score. |
 
 Do not collapse these measures into a single “native score.” Their meanings and
@@ -108,6 +112,12 @@ review status.
   with a reason. Do not delete or silently convert them to passes.
 - A qualified reviewer must approve language equivalence and mark regional or
   representation limitations. Preserve reviewer confidence and disagreement.
+- Human review is an evidence-qualification gate, not an execution gate.
+  Pending variants remain runnable and visible but are excluded from reviewed
+  comparison claims by default.
+- Automated tests validate transcript structure, version links, review-state
+  integrity, treatment isolation, and operational behavior. They must not pin
+  exact reviewer-editable wording.
 - At minimum, label a one-off comparison as an illustrative observation. A
   scoped controlled finding requires predeclared conditions, sufficient paired
   runs, and review under the canon's research method.
@@ -146,3 +156,6 @@ declared operational requirements / rejected this unsafe plan.”
 
 Do not use: “Portuguese users score lower,” “the model is culturally biased,”
 “Native Agent guarantees parity,” or “the demo proves better multilingual AI.”
+
+The reviewer workflow and permitted edit boundary are documented in
+[`NATIVE_REVIEW_GUIDE.md`](NATIVE_REVIEW_GUIDE.md).
