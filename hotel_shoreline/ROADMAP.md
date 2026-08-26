@@ -36,14 +36,16 @@ fixed event route, timeout, malformed output/envelopes, unavailable planning,
 unsafe candidates, turn/token/node limits, actual candidate evidence, sanitized
 server response and browser projection, structured run telemetry, and visible
 success/failure lifecycles. The authorized real-Gemini smoke and PR #2 CI pass;
-Cloud Run deployment proof is the remaining gate.
+the standalone/non-root runtime and deployment runbooks pass local verification.
+Cloud Build and Cloud Run revision/IAM/success/failure proof remain the gate.
 
 ### HSD-005 — Controlled native-adoption comparison
 
 Run a small, pre-specified, paired baseline/intervention study across reviewed
-`en`, `es-ES`, and `pt-PT` variants. The intervention is semantic
-contract-guided task assurance: Gemini may propose a graph, but Native Agent
-checks critical facts, constraints, tools, and effects before execution.
+`en`, `es-ES`, and `pt-PT` variants. Both arms use the same model condition,
+Native Agent validation, and typed execution boundary; the intervention adds
+only versioned, reviewed semantic-contract guidance during planning. This
+isolates the treatment without giving the baseline unsafe execution authority.
 
 Expose the request, reviewed semantic contract, candidate graph, validation,
 tool calls, terminal outcome, model/configuration, and scoped limitations. The

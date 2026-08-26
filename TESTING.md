@@ -40,6 +40,11 @@ explicit Gemini mode and remains opt-in. Browser evidence is therefore
 independent of a developer's `.env.local` planner selection or an already
 running development server.
 
+If port 3000 is occupied by a manual server, choose an unused test-only port
+without stopping it, for example `HSD_E2E_PORT=3102 pnpm test:all`. The
+Playwright configuration accepts only integer ports from 1024 through 65535 and
+still refuses server reuse.
+
 ## HSD traceability
 
 | Acceptance ID | Requirement | Test |
@@ -57,10 +62,10 @@ running development server.
 | HSD4-P-002, HSD4-P-004 | Locally verified: a deterministic fixed event is planned, validated, and executed without per-step user direction; an unsafe tool proposal is rejected before execution. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts` |
 | HSD4-P-003 | Locally verified: malformed output/envelopes, malformed usage, unsupported configuration, unsafe candidates, timeout, unavailable planning, and turn/output-token/node budget breaches fail closed; crash telemetry excludes exception messages; the Genkit logging boundary does not forward raw provider diagnostics. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; `hotel_shoreline/src/unit/taskmaster-telemetry.unit.test.ts`; `hotel_shoreline/src/unit/genkit-logging.unit.test.ts` |
 | HSD4-UI-001 | Locally verified: the server response and client parser whitelist candidate/lifecycle/outcome evidence; browser tests prove the actual candidate, success, typed failure, malformed fallback, zero-operation truth, and disclosures. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts` |
-| HSD5-D-001, HSD5-D-002 | Planned: reviewed case/locale variants retain contract, expected-outcome, reviewer, and provenance links. | `hotel_shoreline/src/unit/native-adoption.unit.test.ts` |
-| HSD5-I-001 | Planned: an intervention is versioned, immutable after use, and declares target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/intervention.unit.test.ts` |
-| HSD5-E-001, HSD5-E-003 | Planned: paired baseline/intervention conditions are comparable; invalid or non-comparable runs are preserved and excluded by default. | `hotel_shoreline/src/integration/native-adoption.integration.test.ts` |
-| HSD5-E-002 | Planned: deterministic measures are calculated from versioned evidence, not model self-assessment. | `hotel_shoreline/src/unit/measures.unit.test.ts` |
+| HSD5-D-001, HSD5-D-002 | Planned: reviewed case/locale variants retain contract, expected-outcome, reviewer, provenance, and representation-limitation links; pending review fails closed. | `hotel_shoreline/src/unit/native-adoption/cases.unit.test.ts` |
+| HSD5-I-001 | Planned: control and intervention conditions are versioned, immutable after use, and declare target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/native-adoption/interventions.unit.test.ts` |
+| HSD5-E-001, HSD5-E-003 | Planned: paired conditions differ only by declared contract guidance; invalid, failed, or non-comparable attempts are preserved with typed exclusion reasons. | `hotel_shoreline/src/integration/native-adoption/comparison.integration.test.ts` |
+| HSD5-E-002 | Planned: named deterministic measures retain numerators and denominators and are calculated from immutable versioned evidence, not model self-assessment. | `hotel_shoreline/src/unit/native-adoption/evaluation.unit.test.ts` |
 | HSD5-UI-001 | Planned: browser users can inspect conditions, evidence, diagnosis, measures, and limitations. | `hotel_shoreline/e2e/native-adoption.spec.ts` |
 | HSD7-R-001, HSD7-R-002, HSD7-R-003 | Planned: append-only sanitized PostgreSQL run ledger, provenance, and server-only repository boundary. | `hotel_shoreline/src/integration/run-ledger.integration.test.ts` |
 | HSD7-D-001, HSD7-D-002 | Planned if background delivery is enabled: authenticated duplicate-safe worker and terminal failure state. | `hotel_shoreline/src/integration/worker.integration.test.ts` |

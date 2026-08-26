@@ -48,6 +48,6 @@ and ordered evidence; it never becomes an optimistic completion message.
 - Letting a run-history comparison silently mix model, fixture, prompt,
   intervention, or locale conditions, or collapse distinct measures into a
   general “native score.”
-- Giving the baseline arm direct execution authority. Both comparison arms keep
-  the same server-side structural safety envelope; the intervention adds only
-  the declared contract-guided assurance treatment.
+- Giving the baseline arm direct execution authority. Both comparison arms use
+  the same server-side Native Agent validation and typed execution boundary;
+  the intervention adds only the declared contract guidance during planning.

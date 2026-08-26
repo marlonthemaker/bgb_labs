@@ -37,8 +37,9 @@ human-readable, non-sensitive, and connected to diagnostic evidence.
 
 Presentation consumes a sanitized run projection; it cannot execute tools or
 change evidence. `HSD6-U-001` maps to lifecycle projection tests and browser
-state tests, `HSD6-U-002` to export serialization/redaction tests, and
-`HSD6-U-003` to desktop/mobile keyboard E2E checks. QA verifies an exported
+state tests, `HSD6-U-002` to comparison-source/measure/claim-boundary tests,
+`HSD6-U-003` to deterministic export serialization and redaction tests, and
+`HSD6-U-004` to desktop/mobile keyboard E2E checks. QA verifies an exported
 fixture contains run/contract/tool versions but no secrets or personal data.
 Update actual test paths in `TESTING.md`, all user-visible limitations, the
 roadmaps, and this Completion Record. Branch/commits/review use `TEMPLATE.md`;

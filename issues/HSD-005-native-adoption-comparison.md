@@ -5,6 +5,13 @@
 **Depends on:** HSD-004
 **Branch:** `feat/hsd-005-native-adoption-comparison`
 
+## Entry gate
+
+Do not create the HSD-005 branch until HSD-004 has deployed success and
+zero-operation failure evidence, PR #2 is merged, and `main` is green. Locale
+content may be drafted earlier, but it cannot be marked reviewed without an
+identified qualified human reviewer and a representation-limitation record.
+
 ## Outcome
 
 Demonstrate a small, pre-specified, paired comparison of baseline planning and
@@ -21,6 +28,25 @@ constraints, select undeclared tools, or produce prohibited effects. It must
 not silently translate, repair, or overwrite the authored language variant.
 
 Read `hotel_shoreline/EVALUATION_PROTOCOL.md` before implementation.
+
+## Frozen treatment contract
+
+The comparison isolates one planning intervention while keeping execution
+safety constant.
+
+| Condition | Planner receives | Shared after planning |
+| --- | --- | --- |
+| Baseline | Authored locale request, generic graph schema, declared planning budget, and no semantic-contract content. | Candidate captured unchanged; full Native Agent validation against the frozen contract; rejected candidates remain evidence and execute no tool; valid candidates use the same typed adapters. |
+| Intervention | The identical request, schema, model/configuration, and budget plus the reviewed semantic contract and its versioned contract-guidance instructions. | The identical Native Agent validation, typed adapters, fresh fixture, evidence projection, and measure derivation. |
+
+The intervention is therefore contract guidance during decomposition, not a
+permission to repair output, change decoding settings, retry selectively, or
+bypass validation. Both arms are safe to demonstrate: a baseline candidate may
+be rejected more often or reach an operational adapter failure when its
+arguments lose a critical fact, while an unsafe or contract-invalid candidate
+is preserved and rejected rather than executed. Evaluation compares the
+original candidates and truthful terminal outcomes; it never mutates either arm
+into a pass.
 
 ## Acceptance criteria
 
@@ -48,6 +74,56 @@ configuration equivalence, measure calculations, and invalid-run exclusion. Do
 not use runtime translation as a hidden fallback. Human review is required for
 pragmatics, register, idiomaticity, or cultural interpretation; automated
 checks only establish deterministic properties.
+
+Boundary cases must include duplicate case/variant/version identifiers,
+unknown locale, missing or pending review, mismatched fixture/tool/contract
+versions, changed model or planning budget, malformed candidate, provider
+failure, validation rejection, partial tool failure, zero-denominator measure,
+prohibited effect, and a derived record whose source hash does not match the
+run. Every attempted run remains visible with an eligibility or exclusion
+reason.
+
+## Implementation slices inside HSD-005
+
+These slices are ordered and non-overlapping. They remain one issue/PR because
+the value gate is the matched comparison, but each slice should be a separate
+reviewable commit.
+
+1. **Case and review registry (`HSD5-D-*`).** Define immutable case families,
+   authored locale variants, expected outcomes, provenance, review state, and
+   representation limitations. No planner or scoring code belongs here.
+2. **Intervention registry (`HSD5-I-001`).** Define immutable treatment
+   versions and activation/regression/rollback rules. It may describe a
+   treatment but cannot execute or score one.
+3. **Run-condition builder (`HSD5-E-001`, `HSD5-E-003`).** Construct paired
+   baseline/intervention specifications, hash comparison-critical
+   configuration, and return typed exclusion reasons before orchestration.
+4. **Evaluation (`HSD5-E-002`).** Derive individually named measures,
+   numerators, denominators, and first-loss stage from immutable evidence. No
+   aggregate “native score” and no model self-grading.
+5. **Controlled orchestrator (`HSD5-E-*`).** Execute fresh, independent arms;
+   preserve original candidates and all terminal states; never silently retry,
+   translate, repair, or discard.
+6. **Minimal comparison inspector (`HSD5-UI-001`).** Show one selected pair,
+   its source facts, measures, exclusions, and limitations. HSD-006—not this
+   issue—owns historical navigation, polished dashboards, export, and the
+   submission-grade responsive experience.
+
+Planned application paths are `src/lib/native-adoption/cases.ts`,
+`interventions.ts`, `conditions.ts`, `evaluation.ts`, and `orchestrator.ts`,
+with a narrow presentation projection. If implementation reveals a genuinely
+domain-neutral SDK primitive, record a follow-up instead of expanding the SDK
+during this issue.
+
+## External evidence gate
+
+Engineering completion requires at least one real-provider paired attempt for
+each of the nine case-locale blocks (18 attempted runs), with invalid/provider
+failed attempts retained. This supports an illustrative workflow observation
+only. Three repetitions per arm (54 attempted runs) are required before
+reporting a scoped descriptive difference under the protocol. If reviewer,
+time, quota, or cost constraints prevent that sample, reduce the claim rather
+than omitting attempts or weakening provenance.
 
 ## Domain, traceability, and delivery
 

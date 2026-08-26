@@ -40,12 +40,12 @@ case and reviewed language variant
 
 ## Baseline safety rule
 
-“Baseline” must not mean an unsafe production path. Both arms retain a minimum
-structural safety envelope: server-side invocation, schema parsing, tool
-allowlisting, synthetic state, and typed adapters. The intervention arm adds
-the declared semantic-contract assurance checks. Unsafe candidate graphs may be
-recorded and evaluated in shadow, but never execute effects merely to make a
-comparison look dramatic.
+“Baseline” must not mean an unsafe production path. Both arms retain the same
+server-side invocation, schema parsing, full Native Agent contract validation,
+tool allowlisting, synthetic state, and typed adapters. The intervention arm
+adds only the declared semantic-contract guidance to planning. Unsafe or
+contract-invalid candidates are recorded and rejected, never executed merely
+to make a comparison look dramatic.
 
 ## Productization rule
 

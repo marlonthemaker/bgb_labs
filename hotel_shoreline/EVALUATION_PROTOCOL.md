@@ -23,15 +23,17 @@ baseline and intervention are its two treatment arms.
 reviewed native-language request
   + frozen contract / expected outcome / fixture / tool versions
   + identical provider model and declared decoding/budget configuration
-    -> baseline arm: ordinary planner path behind the minimum safety envelope
-    -> intervention arm: semantic-contract-guided planning plus Native Agent validation
+    -> baseline arm: ordinary schema-guided planning without contract content
+    -> intervention arm: the same planner condition plus reviewed contract guidance
+    -> both arms: unchanged candidate capture, Native Agent validation, typed adapters
     -> immutable run evidence, eligibility decision, derived measures
 ```
 
 Only the declared intervention may differ between paired arms. Both arms retain
-server-side schema parsing, tool allowlisting, typed synthetic adapters, and
-the same structural safety envelope; an unsafe candidate is recorded in shadow
-rather than executed for dramatic effect. If model,
+server-side schema parsing, the same frozen semantic-contract validation, tool
+allowlisting, typed synthetic adapters, and the same execution boundary. An
+unsafe or contract-invalid candidate is recorded and rejected rather than
+executed for dramatic effect. If model,
 provider, prompt version, fixture, tool contract, locale text, temperature,
 token/turn budget, time window, or review state differs, the runs are not
 comparable and must be retained with an exclusion reason.
@@ -52,17 +54,22 @@ The existing hot-water/two-towels flow is a suitable compound family seed. Do
 not reuse the research canon's Hotel Aurora fixture or present Hotel Shoreline
 as a real hotel.
 
-## Intervention definition
+## Intervention and shared assurance definition
 
-The intervention has four inspectable components:
+The full demonstration has four inspectable components:
 
 1. A reviewed semantic contract declares critical slots, required tasks,
    dependencies, permitted tools, required constraints, and prohibited effects.
-2. The planner proposes a structured task graph; it is not allowed to execute
-   tools directly.
+2. Each planner proposes a structured task graph and cannot execute tools. Only
+   the intervention planner receives the reviewed contract content; the
+   baseline receives the same generic schema and budget without that content.
 3. Native Agent validates structure and contract conformance fail closed.
 4. Only allowlisted, typed scenario adapters execute; events and outcomes are
    captured as evidence.
+
+Steps 3 and 4 are identical safety controls in both arms. The treatment contrast
+is step 2's versioned contract guidance, so a result cannot be attributed to a
+different validator, tool set, retry policy, or decoding configuration.
 
 This design tests operational information preservation and safety enforcement.
 It does not assert that the intervention improves idiomaticity, trust, or
