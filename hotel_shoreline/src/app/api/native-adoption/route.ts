@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import { projectPublicEvidenceExport } from "../../../lib/evidence-ledger/export";
+import {
+	evidenceLedgerErrorResponse,
+	evidenceResponseHeaders,
+} from "../../../lib/evidence-ledger/http";
 import { createComparisonEvidenceRecord } from "../../../lib/evidence-ledger/records";
 import { EvidenceLedgerError } from "../../../lib/evidence-ledger/repository";
 import { getEvidenceLedgerRepository } from "../../../lib/evidence-ledger/server-repository";
@@ -15,14 +20,13 @@ import {
 	createComparisonTelemetry,
 	writeComparisonTelemetry,
 } from "../../../lib/native-adoption/telemetry";
-import { projectComparisonView } from "../../../lib/native-adoption/view";
 import { resolveTaskmasterPlannerMode } from "../../../lib/taskmaster";
 
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
 	const requestId = crypto.randomUUID();
-	const headers = { "Cache-Control": "no-store", "X-Request-Id": requestId };
+	const headers = evidenceResponseHeaders(requestId);
 	try {
 		const limit = parseLimit(new URL(request.url).searchParams.get("limit"));
 		const repository = await getEvidenceLedgerRepository();
@@ -32,14 +36,14 @@ export async function GET(request: Request) {
 			{ status: 200, headers },
 		);
 	} catch (error) {
-		return ledgerErrorResponse(error, requestId, headers);
+		return evidenceLedgerErrorResponse(error, requestId, headers);
 	}
 }
 
 export async function POST(request: Request) {
 	const requestId = crypto.randomUUID();
 	const startedAt = performance.now();
-	const headers = { "Cache-Control": "no-store", "X-Request-Id": requestId };
+	const headers = evidenceResponseHeaders(requestId);
 	try {
 		const parsedBody = await readBoundedJson(request);
 		if (!parsedBody.ok) {
@@ -59,8 +63,9 @@ export async function POST(request: Request) {
 			locale: body.locale,
 			planner,
 		});
+		const record = createComparisonEvidenceRecord(run);
 		const repository = await getEvidenceLedgerRepository();
-		await repository.append(createComparisonEvidenceRecord(run));
+		await repository.append(record);
 		writeComparisonTelemetry(
 			createComparisonTelemetry({
 				requestId,
@@ -68,10 +73,13 @@ export async function POST(request: Request) {
 				run,
 			}),
 		);
-		return NextResponse.json(projectComparisonView(run), { status: 200, headers });
+		return NextResponse.json(projectPublicEvidenceExport(record).comparison, {
+			status: 200,
+			headers,
+		});
 	} catch (error) {
 		if (error instanceof EvidenceLedgerError) {
-			return ledgerErrorResponse(error, requestId, headers);
+			return evidenceLedgerErrorResponse(error, requestId, headers);
 		}
 		if (error instanceof NativeAdoptionCaseError || error instanceof ComparisonConditionError) {
 			return NextResponse.json(
@@ -106,31 +114,6 @@ function parseLimit(value: string | null): number {
 		throw new EvidenceLedgerError("INVALID_LEDGER_QUERY", "History limit is invalid.");
 	}
 	return limit;
-}
-
-function ledgerErrorResponse(error: unknown, requestId: string, headers: Record<string, string>) {
-	const ledgerError =
-		error instanceof EvidenceLedgerError
-			? error
-			: new EvidenceLedgerError("LEDGER_UNAVAILABLE", "Evidence ledger is unavailable.");
-	const status =
-		ledgerError.code === "INVALID_LEDGER_QUERY" || ledgerError.code === "INVALID_EVIDENCE_RECORD"
-			? 400
-			: ledgerError.code === "LEDGER_CONFLICT"
-				? 409
-				: 503;
-	if (status >= 500) {
-		console.error(
-			JSON.stringify({
-				severity: "ERROR",
-				message: "Evidence ledger request failed",
-				event: "evidence_ledger.request.failed",
-				requestId,
-				errorCode: ledgerError.code,
-			}),
-		);
-	}
-	return NextResponse.json({ error: { code: ledgerError.code, requestId } }, { status, headers });
 }
 
 function requestTooLarge(requestId: string, headers: Record<string, string>) {

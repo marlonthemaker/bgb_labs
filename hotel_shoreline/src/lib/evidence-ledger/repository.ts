@@ -8,6 +8,7 @@ export interface EvidenceLedgerRepository {
 }
 
 export type EvidenceLedgerErrorCode =
+	| "EVIDENCE_NOT_FOUND"
 	| "INVALID_EVIDENCE_RECORD"
 	| "INVALID_LEDGER_QUERY"
 	| "LEDGER_CONFLICT"

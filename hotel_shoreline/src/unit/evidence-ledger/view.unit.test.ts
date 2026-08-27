@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { createComparisonEvidenceRecord } from "../../lib/evidence-ledger/records";
-import { projectEvidenceHistoryItem } from "../../lib/evidence-ledger/view";
+import {
+	parseEvidenceHistoryResponse,
+	projectEvidenceHistoryItem,
+} from "../../lib/evidence-ledger/view";
 import {
 	DeterministicComparisonPlanner,
 	executeMatchedComparison,
@@ -42,5 +45,22 @@ describe("HSD7-R-003: sanitized evidence history projection", () => {
 		]) {
 			expect(serialized).not.toContain(forbidden);
 		}
+	});
+
+	it("HSD6-H-001: accepts only bounded public history item shapes", async () => {
+		const run = await executeMatchedComparison({
+			caseId: "compound-recovery",
+			locale: "en",
+			planner: new DeterministicComparisonPlanner(),
+		});
+		const item = projectEvidenceHistoryItem(
+			createComparisonEvidenceRecord(run, { recordedAt: "2026-08-27T12:00:00.000Z" }),
+		);
+
+		expect(parseEvidenceHistoryResponse({ records: [item] })).toEqual({ records: [item] });
+		expect(
+			parseEvidenceHistoryResponse({ records: [{ ...item, arms: [{ operationCount: -1 }] }] }),
+		).toBeUndefined();
+		expect(parseEvidenceHistoryResponse({ records: "not-an-array" })).toBeUndefined();
 	});
 });

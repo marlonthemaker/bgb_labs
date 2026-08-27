@@ -1,8 +1,7 @@
 import type { JsonObject } from "@bomgoodbueno/native-agent-sdk";
 
-import { getLanguageVariant, getNativeAdoptionCase, type NativeAdoptionLocale } from "./cases";
+import type { NativeAdoptionLocale } from "./cases";
 import type { DescriptiveMeasure, FirstLossStage } from "./evaluation";
-import type { MatchedComparisonRun } from "./orchestrator";
 
 export interface ComparisonView {
 	readonly comparisonId: string;
@@ -25,6 +24,22 @@ export interface ComparisonView {
 	readonly pairEligibility: {
 		readonly eligible: boolean;
 		readonly reasons: readonly string[];
+	};
+	readonly evidence: {
+		readonly schemaVersion: string;
+		readonly recordedAt: string;
+		readonly sourceContentHash: string;
+		readonly caseVersion: string;
+		readonly variantId: string;
+		readonly variantVersion: string;
+		readonly fixtureVersion: string;
+		readonly toolContractVersion: string;
+	};
+	readonly claimBoundary: {
+		readonly environment: "fictional_synthetic_demo";
+		readonly findingStatus: "illustrative_observation";
+		readonly reviewerQualified: boolean;
+		readonly statement: string;
 	};
 	readonly arms: readonly ArmView[];
 }
@@ -66,67 +81,14 @@ export interface ArmView {
 	readonly firstLossStage: FirstLossStage;
 }
 
-export function projectComparisonView(run: MatchedComparisonRun): ComparisonView {
-	const caseDefinition = getNativeAdoptionCase(run.caseId);
-	const variant = getLanguageVariant(caseDefinition, run.locale);
-	const arm = (current: MatchedComparisonRun["baseline"]): ArmView => ({
-		arm: current.condition.arm,
-		status: current.status,
-		...(current.errorCode === undefined ? {} : { errorCode: current.errorCode }),
-		intervention: {
-			id: current.condition.interventionId,
-			version: current.condition.interventionVersion,
-		},
-		configuration: {
-			...current.condition.planner,
-			sharedConfigurationHash: current.condition.sharedConfigurationHash,
-			conditionHash: current.condition.conditionHash,
-		},
-		lifecycle: current.lifecycle,
-		candidateNodes:
-			current.candidateGraph?.nodes.map(({ id, toolName, input, constraintIds }) => ({
-				id,
-				toolName,
-				input,
-				constraintIds,
-			})) ?? [],
-		operations: current.operations,
-		validationIssues:
-			current.run?.validation.ok === false
-				? current.run.validation.issues.map(({ code, path }) => ({ code, path }))
-				: [],
-		measures: current.evaluation.measures,
-		firstLossStage: current.evaluation.firstLossStage,
-	});
-	return {
-		comparisonId: run.id,
-		case: {
-			id: caseDefinition.id,
-			title: caseDefinition.title,
-			version: caseDefinition.version,
-			locale: variant.locale,
-			turns: variant.turns.map(({ sequence, text }) => ({ sequence, text })),
-			reviewStatus: variant.review.status,
-			representationLimitations: variant.review.representationLimitations,
-		},
-		contract: {
-			id: caseDefinition.contract.id,
-			version: caseDefinition.contract.version,
-			allowedTools: caseDefinition.contract.allowedTools,
-			requiredConstraintIds: caseDefinition.contract.requiredConstraintIds,
-			prohibitedEffects: caseDefinition.contract.prohibitedEffects,
-		},
-		pairEligibility: run.pairEligibility,
-		arms: [arm(run.baseline), arm(run.intervention)],
-	};
-}
-
 export function parseComparisonView(value: unknown): ComparisonView | undefined {
 	if (!isRecord(value) || typeof value.comparisonId !== "string") return undefined;
 	if (
 		!isCaseView(value.case) ||
 		!isContractView(value.contract) ||
-		!isEligibility(value.pairEligibility)
+		!isEligibility(value.pairEligibility) ||
+		!isEvidenceMetadata(value.evidence) ||
+		!isClaimBoundary(value.claimBoundary)
 	)
 		return undefined;
 	if (!Array.isArray(value.arms) || value.arms.length !== 2 || !value.arms.every(isArmView))
@@ -134,6 +96,35 @@ export function parseComparisonView(value: unknown): ComparisonView | undefined 
 	const arms = value.arms as unknown as readonly ArmView[];
 	if (arms[0]?.arm !== "baseline" || arms[1]?.arm !== "contract_guided") return undefined;
 	return value as unknown as ComparisonView;
+}
+
+function isEvidenceMetadata(value: unknown): boolean {
+	return (
+		isRecord(value) &&
+		[
+			"schemaVersion",
+			"recordedAt",
+			"sourceContentHash",
+			"caseVersion",
+			"variantId",
+			"variantVersion",
+			"fixtureVersion",
+			"toolContractVersion",
+		].every((key) => typeof value[key] === "string") &&
+		!Number.isNaN(Date.parse(value.recordedAt as string)) &&
+		/^[a-f0-9]{64}$/.test(value.sourceContentHash as string)
+	);
+}
+
+function isClaimBoundary(value: unknown): boolean {
+	return (
+		isRecord(value) &&
+		value.environment === "fictional_synthetic_demo" &&
+		value.findingStatus === "illustrative_observation" &&
+		typeof value.reviewerQualified === "boolean" &&
+		typeof value.statement === "string" &&
+		value.statement.length > 0
+	);
 }
 
 function isCaseView(value: unknown): boolean {
@@ -274,7 +265,8 @@ function isJsonObject(value: unknown): value is JsonObject {
 }
 
 function isJsonValue(value: unknown): boolean {
-	if (value === null || ["string", "boolean", "number"].includes(typeof value)) return true;
+	if (value === null || typeof value === "string" || typeof value === "boolean") return true;
+	if (typeof value === "number") return Number.isFinite(value);
 	if (Array.isArray(value)) return value.every(isJsonValue);
 	return isJsonObject(value);
 }
