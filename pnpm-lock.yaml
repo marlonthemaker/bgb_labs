@@ -15,8 +15,8 @@ importers:
         specifier: 1.62.1
         version: 1.62.1
       '@types/node':
-        specifier: 26.2.0
-        version: 26.2.0
+        specifier: 22.20.1
+        version: 22.20.1
       '@types/react':
         specifier: 19.2.18
         version: 19.2.18
@@ -31,7 +31,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 4.1.11
-        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0))
+        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0))
 
   hotel_shoreline:
     dependencies:
@@ -40,13 +40,13 @@ importers:
         version: link:../native_agent_sdk
       '@genkit-ai/google-genai':
         specifier: ^1.41.0
-        version: 1.41.0(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
+        version: 1.41.0(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
       genkit:
         specifier: ^1.41.0
-        version: 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)
+        version: 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)
       next:
-        specifier: 16.3.2
-        version: 16.3.2(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 16.3.3
+        version: 16.3.3(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.20.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -481,53 +481,53 @@ packages:
     peerDependencies:
       jsep: ^0.4.0||^1.0.0
 
-  '@next/env@16.3.2':
-    resolution: {integrity: sha512-8k4YoG8cM7LWlkfzGNYCRBbFNlernLiMw4s0btVl+CmmWqn3VpYypA72/5Feb1UWdxe6tHqr5KHP4p4Y4m9luA==}
+  '@next/env@16.3.3':
+    resolution: {integrity: sha512-U2eYQRwXj+dsqxV79zFqExDdatnNY/ZWc2nsJU1p/OgT7fd3dXwlF6OjYaFQCfMoeTA19PWq+wVmYgimVA+V+g==}
 
-  '@next/swc-darwin-arm64@16.3.2':
-    resolution: {integrity: sha512-ib5Llm93YCKoKWDh6ZaHq6QWTuOZ2bRkSnUwMmX8dsRIOkBNL1vVlSiUKSfixPL9SSh9pvukzqajk/klkn5vqg==}
+  '@next/swc-darwin-arm64@16.3.3':
+    resolution: {integrity: sha512-8Hiv32QJPwdV6KYJ8meR9SBA061tQqnIKTJDocvOXlEQqib0xMFpzArosuffFUUc0sslbh7QQ8a3Yey1QV8EIw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@16.3.2':
-    resolution: {integrity: sha512-qd98fX2+I5nYJDioW2o7nSjoxM5KvWdeDefM80igia4+C/qSIEhH4MhTE+hO/7qKM7W37/Mq+dOWp8UePSyLHw==}
+  '@next/swc-darwin-x64@16.3.3':
+    resolution: {integrity: sha512-A1lgKgwVchRYmSe467zdwhxT9040dd8lH+o65sL5Jet8fjB4kegw/rDyPIpYVRb6jAqwXFOJpjIXJLxQKLiE3A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@16.3.2':
-    resolution: {integrity: sha512-vqsgb6FAOzcrCccsLXiKtAy5t8EzO+uOazuFaSkQxeY0tNONG3vpHYy8pyBafcI5SNFPTeyard6yTr6SzNGo2A==}
+  '@next/swc-linux-arm64-gnu@16.3.3':
+    resolution: {integrity: sha512-bf0FIssMFueU2dm7vQEWWxk0c8UjKTdW0yzuh0sQsD8pf1+KCLDdaqhYZNMYGmXwEOiHAUzgBKudovIlcvvBjg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@16.3.2':
-    resolution: {integrity: sha512-xIe1eujfHUB2XcxHGddxJyu6TJRPjC5NpIkQYB/32ESkt5VkQyIAjmLRS38c+s6QY+qjtY/4KarVDzXRuD7lZQ==}
+  '@next/swc-linux-arm64-musl@16.3.3':
+    resolution: {integrity: sha512-W7viwCk9JY/cAkdz/A273rd5bb3RgT/IHwR7Upv90tunjBWNtAAhGhoecHh+teRNRSinuAFmE+l7fwZ4YKkrXg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@16.3.2':
-    resolution: {integrity: sha512-Fe0SA2j8X0kmc3aveuHD7UktO3AE2+mH3LguP60vGbz7u0z+MrDXbeb5iZFYAwR7EzzzXJ2Yk966w9mGTFMqfA==}
+  '@next/swc-linux-x64-gnu@16.3.3':
+    resolution: {integrity: sha512-0W46zw1N3ODpI6n0GeivHvvob1pooozgZVqy65k0mh4/7vr+FbY9+WpHzNVXjHipJf/A3FDheBG19H1s5A25rA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@16.3.2':
-    resolution: {integrity: sha512-TFBipb+gyesI/2Ve4zVu7kGltBWN/R466G5/1gtt2lECfc22G1pjkTxu68Q9aFcOaXiRGTQfvDbQQFe7mYgxiQ==}
+  '@next/swc-linux-x64-musl@16.3.3':
+    resolution: {integrity: sha512-H4mBso8ZTMBPtdT0PN0pBx2ayTvQuTuvS6qT13d77yVFJXAPCxkyIhLTmdMaGTJs0krQYI/qpzdHijCeihXhbg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-win32-arm64-msvc@16.3.2':
-    resolution: {integrity: sha512-rVtmnNpBYIosDnKD/96dKxFsJnwnn1WRGG/HioSe8XCm2ksSHNrd2R6+hSjvTBxeMNhJ9pYeu/90cWB1nQLuNA==}
+  '@next/swc-win32-arm64-msvc@16.3.3':
+    resolution: {integrity: sha512-cTMUJpcEGmeywofCUfhR+rSsoE33+rVPnPEYNTNdLNlsOeEg/vktOsKUSTb28vUGqD2jkm4Zaskcwn7OCI6FQg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@16.3.2':
-    resolution: {integrity: sha512-H4Y2o2/JcHu8LtwzD5CXfHhwxwz8gfsx2HXDEw46Mtev5xHnEmB7HNtZtmriw5ReUOjRtcDqo7XSbU01FT9NlA==}
+  '@next/swc-win32-x64-msvc@16.3.3':
+    resolution: {integrity: sha512-2VR4cTBzHXaBjnGsuH6GyJjENzQOmHeAh11uY1iUhjm3j5dEUrVJuUj+VL78jaGi/Dik8xS76zEj18BsFhlVZQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -1148,6 +1148,9 @@ packages:
 
   '@types/node@20.19.43':
     resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
+
+  '@types/node@22.20.1':
+    resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
 
   '@types/node@26.2.0':
     resolution: {integrity: sha512-5IviulTZeRNp2vAJ514cc/HUlY5nZ9fCbq9DMyC52BrhFZACo3nI0R7qBxhQmo/d27NFe96ur/b7Wwxklda+kg==}
@@ -2178,8 +2181,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next@16.3.2:
-    resolution: {integrity: sha512-/ZCaubUy17Lld1SiPWxuPbCk2ihqAxF2QNQaPZeEaEb7t1I58qhsJN187D7AfpapHAqUPXH0f/thtdW9dWgWFg==}
+  next@16.3.3:
+    resolution: {integrity: sha512-tuRTx1nQ/yVw83cwJBo9F+njGUgMn3UHQycreWHB8XsStvvAh1AthbI8/4IpKnFaF58F+iSiHejYOlMQ/eq83g==}
     engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
@@ -2961,9 +2964,9 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@genkit-ai/ai@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))':
+  '@genkit-ai/ai@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))':
     dependencies:
-      '@genkit-ai/core': 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
+      '@genkit-ai/core': 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
       '@opentelemetry/api': 1.9.1
       '@types/node': 20.19.43
       colorette: 2.0.20
@@ -2984,7 +2987,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@genkit-ai/core@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))':
+  '@genkit-ai/core@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/api-logs': 0.52.1
@@ -3008,7 +3011,7 @@ snapshots:
       zod-to-json-schema: 3.25.2(zod@3.25.76)
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
-      '@genkit-ai/firebase': 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
+      '@genkit-ai/firebase': 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
     transitivePeerDependencies:
       - '@google-cloud/firestore'
       - bufferutil
@@ -3019,18 +3022,18 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@genkit-ai/firebase@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))':
+  '@genkit-ai/firebase@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))':
     dependencies:
-      '@genkit-ai/google-cloud': 1.41.0(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
-      '@google-cloud/firestore': 7.11.6
+      '@genkit-ai/google-cloud': 1.41.0(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
+      '@google-cloud/firestore': 8.7.1
       firebase-admin: 14.3.0
-      genkit: 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)
+      genkit: 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)
     transitivePeerDependencies:
       - encoding
       - supports-color
     optional: true
 
-  '@genkit-ai/google-cloud@1.41.0(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))':
+  '@genkit-ai/google-cloud@1.41.0(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))':
     dependencies:
       '@google-cloud/firestore': 7.11.6
       '@google-cloud/logging-winston': 6.0.2(winston@3.19.0)
@@ -3048,7 +3051,7 @@ snapshots:
       '@opentelemetry/sdk-metrics': 1.25.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-node': 0.52.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-trace-base': 1.25.1(@opentelemetry/api@1.9.1)
-      genkit: 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)
+      genkit: 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)
       google-auth-library: 9.15.1
       node-fetch: 3.3.2
       winston: 3.19.0
@@ -3057,9 +3060,9 @@ snapshots:
       - supports-color
     optional: true
 
-  '@genkit-ai/google-genai@1.41.0(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))':
+  '@genkit-ai/google-genai@1.41.0(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))':
     dependencies:
-      genkit: 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)
+      genkit: 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)
       google-auth-library: 9.15.1
       jsonpath-plus: 10.4.0
     transitivePeerDependencies:
@@ -3386,30 +3389,30 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@next/env@16.3.2': {}
+  '@next/env@16.3.3': {}
 
-  '@next/swc-darwin-arm64@16.3.2':
+  '@next/swc-darwin-arm64@16.3.3':
     optional: true
 
-  '@next/swc-darwin-x64@16.3.2':
+  '@next/swc-darwin-x64@16.3.3':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@16.3.2':
+  '@next/swc-linux-arm64-gnu@16.3.3':
     optional: true
 
-  '@next/swc-linux-arm64-musl@16.3.2':
+  '@next/swc-linux-arm64-musl@16.3.3':
     optional: true
 
-  '@next/swc-linux-x64-gnu@16.3.2':
+  '@next/swc-linux-x64-gnu@16.3.3':
     optional: true
 
-  '@next/swc-linux-x64-musl@16.3.2':
+  '@next/swc-linux-x64-musl@16.3.3':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@16.3.2':
+  '@next/swc-win32-arm64-msvc@16.3.3':
     optional: true
 
-  '@next/swc-win32-x64-msvc@16.3.2':
+  '@next/swc-win32-x64-msvc@16.3.3':
     optional: true
 
   '@nodable/entities@3.0.0':
@@ -4198,7 +4201,7 @@ snapshots:
   '@types/jsonwebtoken@9.0.10':
     dependencies:
       '@types/ms': 2.1.0
-      '@types/node': 26.2.0
+      '@types/node': 22.20.1
     optional: true
 
   '@types/long@4.0.2':
@@ -4218,6 +4221,10 @@ snapshots:
     optional: true
 
   '@types/node@20.19.43':
+    dependencies:
+      undici-types: 6.21.0
+
+  '@types/node@22.20.1':
     dependencies:
       undici-types: 6.21.0
 
@@ -4338,7 +4345,7 @@ snapshots:
       obug: 2.1.4
       std-env: 4.2.0
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0))
 
   '@vitest/expect@4.1.11':
     dependencies:
@@ -4349,13 +4356,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.1
 
-  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0))':
+  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0))':
     dependencies:
       '@vitest/spy': 4.1.11
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.2(@types/node@26.2.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@22.20.1)(yaml@2.9.0)
 
   '@vitest/pretty-format@4.1.11':
     dependencies:
@@ -4878,10 +4885,10 @@ snapshots:
       - supports-color
     optional: true
 
-  genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0):
+  genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0):
     dependencies:
-      '@genkit-ai/ai': 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
-      '@genkit-ai/core': 1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@7.11.6)(firebase-admin@14.3.0))
+      '@genkit-ai/ai': 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
+      '@genkit-ai/core': 1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0)(genkit@1.41.0(@google-cloud/firestore@8.7.1)(firebase-admin@14.3.0))
       uuid: 10.0.0
     transitivePeerDependencies:
       - '@google-cloud/firestore'
@@ -5389,9 +5396,9 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@16.3.2(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  next@16.3.3(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.20.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
-      '@next/env': 16.3.2
+      '@next/env': 16.3.3
       '@swc/helpers': 0.5.23
       baseline-browser-mapping: 2.11.18
       caniuse-lite: 1.0.30001809
@@ -5400,17 +5407,17 @@ snapshots:
       react-dom: 19.2.8(react@19.2.8)
       styled-jsx: 5.1.6(react@19.2.8)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 16.3.2
-      '@next/swc-darwin-x64': 16.3.2
-      '@next/swc-linux-arm64-gnu': 16.3.2
-      '@next/swc-linux-arm64-musl': 16.3.2
-      '@next/swc-linux-x64-gnu': 16.3.2
-      '@next/swc-linux-x64-musl': 16.3.2
-      '@next/swc-win32-arm64-msvc': 16.3.2
-      '@next/swc-win32-x64-msvc': 16.3.2
+      '@next/swc-darwin-arm64': 16.3.3
+      '@next/swc-darwin-x64': 16.3.3
+      '@next/swc-linux-arm64-gnu': 16.3.3
+      '@next/swc-linux-arm64-musl': 16.3.3
+      '@next/swc-linux-x64-gnu': 16.3.3
+      '@next/swc-linux-x64-musl': 16.3.3
+      '@next/swc-win32-arm64-msvc': 16.3.3
+      '@next/swc-win32-x64-msvc': 16.3.3
       '@opentelemetry/api': 1.9.1
       '@playwright/test': 1.62.1
-      sharp: 0.35.3(@types/node@26.2.0)
+      sharp: 0.35.3(@types/node@22.20.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -5710,7 +5717,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  sharp@0.35.3(@types/node@26.2.0):
+  sharp@0.35.3(@types/node@22.20.1):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -5741,7 +5748,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.3
       '@img/sharp-win32-ia32': 0.35.3
       '@img/sharp-win32-x64': 0.35.3
-      '@types/node': 26.2.0
+      '@types/node': 22.20.1
     optional: true
 
   shebang-command@2.0.0:
@@ -5952,7 +5959,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0):
+  vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.5
@@ -5960,14 +5967,14 @@ snapshots:
       rolldown: 1.2.5
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.2.0
+      '@types/node': 22.20.1
       fsevents: 2.3.3
       yaml: 2.9.0
 
-  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.2.0)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0)):
+  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@26.2.0)(yaml@2.9.0))
+      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@22.20.1)(yaml@2.9.0))
       '@vitest/pretty-format': 4.1.11
       '@vitest/runner': 4.1.11
       '@vitest/snapshot': 4.1.11
@@ -5984,11 +5991,11 @@ snapshots:
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.1
-      vite: 8.2.2(@types/node@26.2.0)(yaml@2.9.0)
+      vite: 8.2.2(@types/node@22.20.1)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
-      '@types/node': 26.2.0
+      '@types/node': 22.20.1
       '@vitest/coverage-v8': 4.1.11(vitest@4.1.11)
     transitivePeerDependencies:
       - msw
