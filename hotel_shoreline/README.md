@@ -38,9 +38,15 @@ Current capabilities are:
   explicit human-review eligibility; and
 - a release-security baseline with bounded public request bodies, sanitized 400
   and 413 failures, browser security headers, immutable CI actions, and a
-  time-bounded production dependency risk record.
+  time-bounded production dependency risk record; and
+- an in-progress evidence ledger with a versioned comparison record, matching
+  in-memory/`pg` repository contracts, forward-only PostgreSQL migration, and a
+  sanitized history API. The PostgreSQL 17 adapter is locally verified; Cloud
+  SQL persistence is not yet deployed or externally verified.
 
-There is no real hotel data or persistent run history. The
+There is no real hotel data. Memory-mode history is process-local; durable
+history requires the implemented PostgreSQL adapter and an approved Cloud SQL
+deployment. The
 [issue index](../issues/README.md) is the machine-checked delivery-status view,
 and the package [roadmap](ROADMAP.md) owns sequencing. Completed issue records retain the
 detailed local, provider, deployment, and CI evidence.
@@ -51,6 +57,8 @@ Language reviewers should follow the non-blocking
 [native-language review guide](NATIVE_REVIEW_GUIDE.md).
 The durable storage choice and portability rules are in
 [the PostgreSQL evidence-ledger architecture](DATA_ARCHITECTURE.md).
+Cloud SQL setup, cost, retention, migration, and rollback steps are in
+[`CLOUD_SQL.md`](CLOUD_SQL.md).
 
 “Evidence” means structured plans, validation decisions, tool calls/results,
 lifecycle events, sanitized configuration metadata, and evaluator annotations.
@@ -88,6 +96,11 @@ runs only the HSD-004 smoke, `:comparison` runs one focused HSD-005 pair, and
 the ignored Playwright HTML report. The matrix deliberately paces independent
 blocks to respect shared provider capacity; it does not retry either arm.
 Provider failure is evidence and does not authorize a retry or silent repair.
+
+Ledger mode defaults to `memory`, which keeps local/CI browser workflows
+credential-free. Set `HSD_LEDGER_MODE=postgres` and inject the server-only
+`DATABASE_URL` only after applying `migrations/001_evidence_ledger.sql` through
+the separate migration command. Neither value may use a `NEXT_PUBLIC_` prefix.
 
 ## Guardrails
 
