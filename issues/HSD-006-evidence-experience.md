@@ -1,6 +1,6 @@
 # HSD-006 — Evidence Experience
 
-**Status:** In progress
+**Status:** In review
 **Repository:** `hotel_shoreline`
 **Depends on:** HSD-005, HSD-007
 **Branch:** `feat/hsd-006-evidence-experience`
@@ -56,11 +56,11 @@ Out of scope:
 
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
-| HSD6-H-001 | Planned | Ledger list/get ports exist; detail route, public parser, and history UI remain. |
-| HSD6-U-001 | Planned | Raw lifecycle/status exists; truthful presentation mapping remains. |
-| HSD6-U-002 | Planned | Live comparison shows core facts; immutable-record provenance and full measure/condition definitions remain. |
-| HSD6-U-003 | Planned | Immutable records exist; public export schema, serialization, route, and download remain. |
-| HSD6-U-004 | Planned | Existing controls/disclosure are responsive; the new history/export flow needs keyboard/mobile/failure evidence. |
+| HSD6-H-001 | Locally verified | Real Route Handlers and browser tests cover append/list/get, typed 400/404, empty/malformed/unavailable history and detail, and non-destructive failure state. Repository-wide integration coverage retains the typed 503 boundary. |
+| HSD6-U-001 | Locally verified | Unit examples derive failed, completed, partial, and not-reached stages only from recorded lifecycle/status; browser evidence keeps pair exclusion separate. |
+| HSD6-U-002 | Locally verified | Record-derived DTO unit and browser tests expose the specified source, provenance, configuration, graph, operation, diagnosis, measure, review, and claim-boundary facts. |
+| HSD6-U-003 | Locally verified | Unit and real-browser download tests prove versioned deterministic JSON, safe filenames, immutable-record provenance, and forbidden-field exclusion. |
+| HSD6-U-004 | Locally and manually verified | Browser tests cover keyboard, polite status, destructive-failure prevention, disclosure, and 390 px overflow; manual desktop/390 px inspection found no browser-console errors. |
 
 The experience may display structured candidate plans, contract facts,
 validation issues, tool names/arguments/results, lifecycle events, model and
@@ -146,11 +146,42 @@ git diff --check
 
 ## Completion Record
 
-**Branch used:**
-**Commits:**
-**Review / PR:**
-**Acceptance evidence:**
-**QA commands and results:**
-**Docs updated:**
-**Known limitations / follow-up:**
-**Next issue readiness:**
+**Branch used:** `feat/hsd-006-evidence-experience`
+
+**Commits:** `8204715 docs(evidence): specify saved evidence experience
+[HSD-006]`; implementation and final documentation commit hashes will be added
+after review.
+
+**Review / PR:** Local implementation review and interactive browser QA passed;
+CI, PR, merged-main deployment, and external verification remain before
+completion.
+
+**Acceptance evidence:** `HSD6-H-001`, `HSD6-U-001`, `HSD6-U-002`,
+`HSD6-U-003`, and `HSD6-U-004` are locally verified by the traceable unit and
+browser tests named above. The browser was also inspected at desktop and 390 ×
+844: the saved flow, exact evidence, disclosures, wrapping, and focusable native
+controls remained usable with no horizontal overflow or console error.
+
+**QA commands and results:** `pnpm check`, `pnpm audit:prod`, `pnpm typecheck`,
+`HSD_E2E_PORT=3114 pnpm test:all`, `pnpm build`, and `git diff --check` passed.
+Unit: 81 passed (SDK 23, Hotel Shoreline 58). Integration: 27 passed (SDK 6,
+Hotel Shoreline 21) with the unchanged opt-in PostgreSQL suite skipped locally.
+E2E: 22 passed and 3 opt-in provider smokes skipped. Coverage: SDK 92.17%
+statements / 88.26% branches / 97.14% functions / 92.11% lines; Hotel
+Shoreline 91.80% / 87.94% / 99.45% / 93.80%; evidence-ledger modules 94.66% /
+93.38% / 100% / 95.38%. Production build and repository verification passed.
+The audit gate passed against the existing time-bounded dependency disposition.
+
+**Docs updated:** Issue specification/status, testing traceability, root/package
+capability summaries, and Hotel Shoreline sequencing.
+
+**Known limitations / follow-up:** The public demo is intentionally unauthenticated
+and contains synthetic evidence only. Memory history is process-local; deployed
+durability depends on the HSD-007 PostgreSQL configuration. This issue does not
+add aggregate analytics, reviewer mutations, human-reviewed variants,
+multi-tenancy, statistical inference, HA/backups/PITR, or provider availability.
+The USD 20 budget is an alert rather than a hard cap.
+
+**Next issue readiness:** HSD-008 remains Planned until HSD-006 passes CI,
+merged-main deployment verification, and final closeout. It must not begin
+before that gate.

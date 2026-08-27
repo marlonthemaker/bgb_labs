@@ -20,9 +20,11 @@ Shoreline provides the fictional deterministic and Gemini/Genkit demonstration,
 including a matched baseline/contract-guided comparison. HSD-007 completed the
 portable PostgreSQL evidence ledger: its shared contract, least-privilege Cloud
 SQL path, sanitized history API, and merged-main Cloud Run persistence are
-locally, CI, and externally verified. The evidence experience is ready for
-analysis; submission packaging follows in the order defined by the
-[roadmap](ROADMAP.md).
+locally, CI, and externally verified. The evidence experience now has a locally
+verified saved-history inspector, immutable-record retrieval, truthful
+lifecycle/provenance/measure views, and deterministic privacy-safe JSON export;
+it remains in review until CI and merged-main deployment proof. Submission
+packaging follows in the order defined by the [roadmap](ROADMAP.md).
 
 Individual issue metadata owns delivery status; the
 [issue index](issues/README.md) is its machine-checked derived view. Completed
