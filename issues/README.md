@@ -32,9 +32,10 @@ issue and [`TESTING.md`](../TESTING.md).
 
 ## Active next step
 
-HSD-007 is in review with local memory/PostgreSQL/API evidence complete. Its
-pinned CI PostgreSQL gate and deployed Cloud SQL proof remain before closure;
-no later issue or background-delivery work is active.
+HSD-007 is in review with local/CI memory/PostgreSQL/API evidence and a
+zero-traffic Cloud SQL persistence proof complete. Its least-privilege fix PR,
+production cutover, cross-revision retrieval, and closeout remain; no later
+issue or background-delivery work is active.
 
 ## Repository maintenance
 

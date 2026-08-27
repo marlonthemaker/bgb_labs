@@ -32,7 +32,9 @@ acceptance-oriented test.
 HSD-007 adds a real PostgreSQL contract gate. Ordinary local runs skip that one
 adapter suite when `HSD_TEST_DATABASE_URL` is absent; CI supplies a pinned
 PostgreSQL 17 service, and `pnpm test:postgres` fails immediately unless the
-server-only test URL is present. SQL mocks do not satisfy HSD7-R-004.
+server-only test URL is present. The contract executes through a login role
+with only `CONNECT`, schema `USAGE`, and table `SELECT`/`INSERT`; SQL mocks or a
+database-owner connection do not satisfy HSD7-R-004.
 
 GitHub Actions runs the same formatter/type/test/build gate on pull requests
 and pushes to `main`, plus the time-bounded production dependency audit. A local
@@ -86,12 +88,12 @@ still refuses server reuse.
 | HSD5-E-001, HSD5-E-003 | Locally and CI verified: paired conditions differ only by declared guidance; invalid, timed-out, quota-exhausted, failed, pending-review, or non-comparable attempts are retained with exclusions and zero unsafe operations. | `hotel_shoreline/src/unit/gemini-error.unit.test.ts`; `hotel_shoreline/src/unit/native-adoption/conditions.unit.test.ts`; `hotel_shoreline/src/integration/native-adoption.integration.test.ts`; `hotel_shoreline/e2e/native-adoption.spec.ts`; `hotel_shoreline/e2e/gemini-native-adoption.smoke.spec.ts` |
 | HSD5-E-002 | Locally and CI verified: seven named deterministic measures retain numerators/denominators and derive from hash-linked versioned evidence, not model self-assessment. | `hotel_shoreline/src/unit/native-adoption/evaluation.unit.test.ts`; `hotel_shoreline/src/unit/native-adoption/view.unit.test.ts` |
 | HSD5-UI-001 | Locally and CI verified: browser users inspect source turns, review state, contract, conditions, graphs, lifecycle, validation, operations, diagnosis, measures, and limitations. | `hotel_shoreline/e2e/native-adoption.spec.ts` |
-| HSD7-R-001 | Locally verified; CI pending: in-memory and PostgreSQL adapters obey one append-only/idempotent/conflict/order contract, including concurrent replay. | `hotel_shoreline/src/integration/evidence-ledger.contract.ts`; in-memory and PostgreSQL suites. |
-| HSD7-R-002 | Locally verified; CI pending: versioned immutable comparison evidence preserves required provenance and hashes without secrets. | `hotel_shoreline/src/unit/evidence-ledger/records.unit.test.ts` |
-| HSD7-R-003 | Locally verified; CI pending: server-only repository configuration and sanitized history APIs expose typed failures only. | `hotel_shoreline/src/unit/evidence-ledger/config.unit.test.ts`; `hotel_shoreline/src/unit/evidence-ledger/view.unit.test.ts`; `hotel_shoreline/e2e/evidence-ledger.spec.ts` |
-| HSD7-R-004 | Locally verified against PostgreSQL 17.8; CI pending: forward-only migrations and repository contract use real PostgreSQL. | `hotel_shoreline/src/integration/evidence-ledger.postgres.integration.test.ts` |
-| HSD7-O-001 | Implemented; deployment verification pending: Cloud SQL operations, identity, retention/export, recovery, cost, and rollback boundary. | `hotel_shoreline/CLOUD_SQL.md`; `hotel_shoreline/migrations/README.md` |
-| HSD7-Q-001 | In progress: full local/CI ledger QA and deployed persistence proof. | HSD-007 Completion Record. |
+| HSD7-R-001 | Locally and CI verified; externally verified on a zero-traffic Cloud Run revision: memory and PostgreSQL obey one append-only/idempotent/conflict/order contract, including concurrent replay. | `hotel_shoreline/src/integration/evidence-ledger.contract.ts`; in-memory and PostgreSQL suites. |
+| HSD7-R-002 | Locally and CI verified: versioned immutable comparison evidence preserves required provenance and hashes without secrets. | `hotel_shoreline/src/unit/evidence-ledger/records.unit.test.ts` |
+| HSD7-R-003 | Locally and CI verified; externally verified on a zero-traffic revision: server-only repository configuration and sanitized history APIs expose typed failures only. | `hotel_shoreline/src/unit/evidence-ledger/config.unit.test.ts`; `hotel_shoreline/src/unit/evidence-ledger/view.unit.test.ts`; `hotel_shoreline/e2e/evidence-ledger.spec.ts` |
+| HSD7-R-004 | CI verified against pinned PostgreSQL 17.8; the SELECT/INSERT-only runtime-role regression is locally and externally verified with its PR check pending. | `hotel_shoreline/src/integration/evidence-ledger.postgres.integration.test.ts` |
+| HSD7-O-001 | Externally verified on a zero-traffic revision: Cloud SQL shape, separate identities, secret/IAM boundary, least privilege, migration, persistence, cost, and rollback are recorded; production traffic cutover remains. | `hotel_shoreline/CLOUD_SQL.md`; `hotel_shoreline/migrations/README.md` |
+| HSD7-Q-001 | In progress: fix PR/CI, production traffic cutover, cross-revision replay, and final closeout remain. | HSD-007 Completion Record. |
 | SEC1-C-001 | Locally and CI verified: reject non-finite, cyclic, excessively deep, oversized, or uninspectable values at SDK parse boundaries without uncaught recursion. | `native_agent_sdk/src/unit/contracts.unit.test.ts` |
 | SEC1-C-002 | Locally and CI verified: reject registry key/tool identity mismatch before execution while coherent registries remain executable. | `native_agent_sdk/src/unit/validation.unit.test.ts`; `native_agent_sdk/src/integration/executor.integration.test.ts` |
 | SEC1-C-003 | Locally and CI verified: success and failure tool results are mutually exclusive at the type and execution boundaries. | `native_agent_sdk/src/unit/contracts.unit.test.ts`; SDK typecheck; `native_agent_sdk/src/integration/executor.integration.test.ts` |

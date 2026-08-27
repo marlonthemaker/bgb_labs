@@ -39,14 +39,15 @@ Current capabilities are:
 - a release-security baseline with bounded public request bodies, sanitized 400
   and 413 failures, browser security headers, immutable CI actions, and a
   time-bounded production dependency risk record; and
-- an in-progress evidence ledger with a versioned comparison record, matching
+- an in-review evidence ledger with a versioned comparison record, matching
   in-memory/`pg` repository contracts, forward-only PostgreSQL migration, and a
-  sanitized history API. The PostgreSQL 17 adapter is locally verified; Cloud
-  SQL persistence is not yet deployed or externally verified.
+  sanitized history API. PostgreSQL 17 and a least-privilege Cloud SQL path are
+  locally/CI verified; a zero-traffic Cloud Run revision has externally stored
+  and retrieved a synthetic comparison, with production cutover pending.
 
-There is no real hotel data. Memory-mode history is process-local; durable
-history requires the implemented PostgreSQL adapter and an approved Cloud SQL
-deployment. The
+There is no real hotel data. Memory-mode history is process-local; the deployed
+Cloud SQL path stores synthetic demo evidence without claiming HA, backups, or
+multi-tenant isolation. The
 [issue index](../issues/README.md) is the machine-checked delivery-status view,
 and the package [roadmap](ROADMAP.md) owns sequencing. Completed issue records retain the
 detailed local, provider, deployment, and CI evidence.

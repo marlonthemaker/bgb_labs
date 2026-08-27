@@ -1,10 +1,24 @@
 # Cloud SQL Evidence Ledger Runbook — HSD-007
 
-This runbook prepares the implemented PostgreSQL adapter for Cloud SQL in
-`native-agent-poc` / `europe-west1`. It does not claim that Cloud SQL is already
-provisioned or that HSD-007 is deployed. Cloud SQL does not scale to zero:
-inspect the current Google Cloud estimate and the existing USD 20 alert before
-creating an instance.
+This runbook records and operates the HSD-007 Cloud SQL deployment in
+`native-agent-poc` / `europe-west1`. As of 2026-08-27,
+`hotel-shoreline-ledger` is externally provisioned and a zero-traffic Cloud Run
+revision has persisted and retrieved one synthetic comparison. Production
+traffic cutover and cross-revision replay remain before HSD-007 closes. Cloud
+SQL does not scale to zero; the existing USD 20 alert is notification, not a
+spending cap.
+
+## Deployed development shape
+
+- PostgreSQL 17, Enterprise edition, zonal `europe-west1-b`.
+- `db-f1-micro`, fixed 10 GiB HDD, storage auto-growth disabled.
+- Automated backups and point-in-time recovery disabled; no HA or recovery
+  objective is claimed.
+- Deletion protection enabled; no authorized-network CIDR is configured.
+- Official 2026-08-27 list price for the shared-core compute in
+  `europe-west1` was USD 7.665/month before storage/network usage.
+- Cloud Run remains capped at two instances and four concurrent requests per
+  instance; the application pool is capped at three connections per instance.
 
 ## Release boundary
 
@@ -76,10 +90,17 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
 ```
 
 Create separate migration and runtime database users with generated random
-passwords. The migration user owns/applies schema changes. After migration,
-grant the runtime user only `CONNECT`, schema `USAGE`, and `SELECT`/`INSERT` on
-the evidence tables; do not grant `UPDATE`, `DELETE`, `TRUNCATE`, `CREATE`, or
+passwords. Cloud SQL admin-created PostgreSQL users initially inherit
+`cloudsqlsuperuser`; explicitly revoke that membership from both identities.
+The migration user applies and owns created tables. After migration, grant the
+runtime user only `CONNECT`, schema `USAGE`, and `SELECT`/`INSERT` on the
+evidence tables; do not grant `UPDATE`, `DELETE`, `TRUNCATE`, `CREATE`, or
 ownership. Revoke default public privileges.
+
+Do not use `SELECT ... FOR UPDATE` in the append-only repository: PostgreSQL
+requires UPDATE authority for that lock. Exact replay and races are resolved by
+the unique key plus `INSERT ... ON CONFLICT`, preserving the runtime role's
+strict SELECT/INSERT boundary.
 
 Store the runtime connection URL as one Secret Manager value. For the Cloud Run
 Unix socket, `pg` accepts a URL shaped like this, with URL-encoded credentials:
