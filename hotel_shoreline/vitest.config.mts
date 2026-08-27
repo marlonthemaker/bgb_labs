@@ -7,6 +7,7 @@ export default defineConfig({
 			provider: "v8",
 			include: [
 				"src/lib/gemini-error.ts",
+				"src/lib/http-input.ts",
 				"src/lib/shoreline.ts",
 				"src/lib/taskmaster.ts",
 				"src/lib/taskmaster-telemetry.ts",
