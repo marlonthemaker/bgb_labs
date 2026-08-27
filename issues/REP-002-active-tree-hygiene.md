@@ -1,6 +1,6 @@
 # REP-002 — Tighten Active Repository Surface
 
-**Status:** In review
+**Status:** Complete
 **Repository:** workspace
 **Depends on:** REP-001
 **Branch:** `chore/rep-002-canonical-integrity-gate`
@@ -161,4 +161,7 @@ remains ready for analysis but follows the release-security baseline.
 
 - `9b3a3e9 chore(workspace): enforce canonical repository checks [REP-002]`
 - `3aa10c8 docs(workspace): consolidate active authority [REP-002]`
-**Review / PR:** Pending PR checks and merge.
+- `a3ddca7 docs(workspace): record REP-002 verification [REP-002]`
+
+**Review / PR:** [PR #6](https://github.com/marlonthemaker/bgb_labs/pull/6)
+passed the `verify` check in 1m32s and merged as `896a280`.
