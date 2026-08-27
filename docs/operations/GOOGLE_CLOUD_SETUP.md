@@ -54,6 +54,15 @@ The first HSD-004 revision was deployed with those runtime bounds on 2026-08-26.
 Monthly budget `4ef0dad8-1d44-4037-8804-0f9d72ac55d6` is scoped only to project
 `1075716782706` at USD 20, with current-spend alerts at 50%, 90%, and 100%.
 
+The public demo is deliberately bounded rather than presented as an unlimited
+service: Cloud Run scales to zero and caps at two instances, planner calls have
+explicit time/turn/token/node budgets, provider failures are not retried, the
+fixed endpoint accepts no request body, and comparison JSON is capped at 4 KiB.
+The USD 20 budget is an alert, not a hard stop. Durable per-user or daily rate
+limits require an identity/ledger decision and remain outside SEC-001; add them
+before treating this as a general public API. Current transitive dependency
+risk is tracked in [`DEPENDENCY_RISK.md`](DEPENDENCY_RISK.md).
+
 ## 2. Use the installed `gcloud` CLI or Cloud Shell
 
 Google Cloud CLI 582.0.0 is installed on the current workstation. The isolated

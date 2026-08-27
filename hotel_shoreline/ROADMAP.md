@@ -17,12 +17,13 @@ This roadmap owns package sequence and capability gates.
 | Deterministic world | HSD-003 | Versioned synthetic fixture, typed hotel tools, fixed contract/graph, and ordered evidence. | Fresh state, idempotency, fail-closed inputs, and browser proof. |
 | Agent workflow | HSD-004 | Server-side Gemini/Genkit planning through Native Agent validation and typed tools on Cloud Run. | Budget/error boundaries, zero-operation unsafe failure, deployed proof, and sanitized telemetry. |
 | Controlled comparison | HSD-005 | Three case families × three authored locales × matched baseline/intervention evidence. | Treatment isolation, review gating, invalid-run retention, deterministic measures, and scoped claims. |
+| Release security baseline | SEC-001 | Bounded public inputs, browser headers, supply-chain controls, and explicit dependency risk. | Pathological input, sanitized 413 failures, immutable CI, and audit disposition. |
 | Evidence ledger | HSD-007 | Portable append-only PostgreSQL/Cloud SQL run history. | Provenance, sanitization, least privilege, idempotency, retention, and recovery. |
 | Evidence experience | HSD-006 | Accessible historical comparison and privacy-safe export. | Truthful states, reproducible source facts, responsive and keyboard E2E. |
 | Submission release | HSD-008 | Reproducible hackathon package and presentation. | Clean install, disclosure/claim review, live Cloud proof, and final full gate. |
 
 ```text
-HSD-001 -> HSD-003 -> HSD-004 -> HSD-005 -> HSD-007 -> HSD-006 -> HSD-008
+HSD-001 -> HSD-003 -> HSD-004 -> HSD-005 -> SEC-001 -> HSD-007 -> HSD-006 -> HSD-008
 ```
 
 The controlled comparison protocol is

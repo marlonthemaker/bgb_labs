@@ -40,6 +40,7 @@ Run before review:
 
 ```sh
 pnpm check
+pnpm audit:prod
 pnpm typecheck
 pnpm test:all
 pnpm build
@@ -51,6 +52,9 @@ permission. Do not skip the E2E test for a visible workflow change.
 
 A local pass and a GitHub Actions pass are separate quality evidence. Do not
 mark an issue complete while its required PR check is failing or has not run.
+New production advisory families and expired mitigations fail the audit gate;
+accepted residual families must remain time-bounded in the dependency risk
+register rather than hidden with an incompatible override.
 
 ## Commits
 

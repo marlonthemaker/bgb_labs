@@ -30,7 +30,8 @@ mock for the behavior under test. A coverage number never substitutes for an
 acceptance-oriented test.
 
 GitHub Actions runs the same formatter/type/test/build gate on pull requests
-and pushes to `main`. A local pass and a CI pass are distinct evidence; record
+and pushes to `main`, plus the time-bounded production dependency audit. A local
+pass and a CI pass are distinct evidence; record
 both when closing an issue. The repository-pinned pnpm version must be installed
 before setup-node enables pnpm caching.
 
@@ -82,7 +83,11 @@ still refuses server reuse.
 | HSD5-UI-001 | Locally and CI verified: browser users inspect source turns, review state, contract, conditions, graphs, lifecycle, validation, operations, diagnosis, measures, and limitations. | `hotel_shoreline/e2e/native-adoption.spec.ts` |
 | HSD7-R-001, HSD7-R-002, HSD7-R-003 | Planned: append-only sanitized PostgreSQL run ledger, provenance, and server-only repository boundary. | `hotel_shoreline/src/integration/run-ledger.integration.test.ts` |
 | HSD7-D-001, HSD7-D-002 | Planned if background delivery is enabled: authenticated duplicate-safe worker and terminal failure state. | `hotel_shoreline/src/integration/worker.integration.test.ts` |
-| SEC1-C-001, SEC1-C-002, SEC1-C-003, SEC1-W-001, SEC1-D-001, SEC1-CI-001, SEC1-Q-001 | Planned: release trust-boundary, dependency, HTTP, and repository security baseline. | Exact paths will be frozen during SEC-001 analysis. |
+| SEC1-C-001 | Locally verified: reject non-finite, cyclic, excessively deep, oversized, or uninspectable values at SDK parse boundaries without uncaught recursion. | `native_agent_sdk/src/unit/contracts.unit.test.ts` |
+| SEC1-C-002 | Locally verified: reject registry key/tool identity mismatch before execution while coherent registries remain executable. | `native_agent_sdk/src/unit/validation.unit.test.ts`; `native_agent_sdk/src/integration/executor.integration.test.ts` |
+| SEC1-C-003 | Locally verified: success and failure tool results are mutually exclusive at the type and execution boundaries. | `native_agent_sdk/src/unit/contracts.unit.test.ts`; SDK typecheck; `native_agent_sdk/src/integration/executor.integration.test.ts` |
+| SEC1-W-001 | Locally verified: browser responses carry the declared security headers and oversized/malformed API input fails with sanitized typed errors before provider execution. | `hotel_shoreline/src/unit/http-input.unit.test.ts`; `hotel_shoreline/e2e/security.spec.ts` |
+| SEC1-D-001, SEC1-CI-001, SEC1-Q-001 | Locally verified; CI/merge pending: aligned runtime/types, time-bounded audit disposition, immutable CI and live repository controls, and full deterministic gate. | Package/workflow configuration; `SECURITY.md`; SEC-001 Completion Record. |
 | REP1-A-001, REP1-A-002, REP1-A-003, REP1-A-004, REP1-A-005 | Repository consolidation is verified through active-link/stale-reference audits, Git-recoverable migration evidence, and the unchanged full runtime gate. | `issues/REP-001-repository-research-consolidation.md`; repository QA commands in its Completion Record. |
 | REP2-A-001, REP2-A-002, REP2-A-003, REP2-A-004, REP2-A-005, REP2-A-006, REP2-A-007 | Active-tree hygiene removes verified duplicate/stale surfaces, preserves current evidence owners, leaves runtime behavior unchanged, makes the ordinary E2E gate explicitly provider-free, and machine-checks authority drift. | `issues/REP-002-active-tree-hygiene.md`; `pnpm verify:repo`; repository QA commands in its Completion Record. |
 

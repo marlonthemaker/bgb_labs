@@ -35,7 +35,10 @@ Current capabilities are:
   fail-closed errors, sanitized telemetry, and Cloud Run delivery; and
 - an in-memory matched baseline/contract-guided comparison across three case
   families and three authored locale variants, with deterministic measures and
-  explicit human-review eligibility.
+  explicit human-review eligibility; and
+- a release-security baseline with bounded public request bodies, sanitized 400
+  and 413 failures, browser security headers, immutable CI actions, and a
+  time-bounded production dependency risk record.
 
 There is no real hotel data or persistent run history. The
 [issue index](../issues/README.md) is the machine-checked delivery-status view,
@@ -91,6 +94,8 @@ Provider failure is evidence and does not authorize a retry or silent repair.
 - Keep all fixture state synthetic and deterministic.
 - Keep secrets, guest data, and operational credentials out of the browser.
 - Introduce provider calls only server-side and keep malformed output fail-closed.
+- Keep the comparison request at or below 4 KiB of UTF-8 JSON; the fixed
+  Taskmaster request accepts no client-supplied body.
 - Retain the fictional, non-affiliation, and non-research disclosure in visible
   flows.
 - Do not describe demonstration runs as research findings.

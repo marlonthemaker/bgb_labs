@@ -43,6 +43,9 @@ Read the package roadmaps before changing behavior:
 - [Contributor guide](CONTRIBUTING.md)
 - [Issue index](issues/README.md)
 - [Google Cloud setup and deployment guide](docs/operations/GOOGLE_CLOUD_SETUP.md)
+- [Security policy](SECURITY.md)
+- [Production dependency risk](docs/operations/DEPENDENCY_RISK.md)
+- [Repository security controls](docs/operations/REPOSITORY_SECURITY.md)
 
 ## Local setup
 
