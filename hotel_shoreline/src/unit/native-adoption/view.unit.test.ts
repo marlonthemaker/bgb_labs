@@ -1,12 +1,14 @@
 import { describe, expect, it } from "vitest";
 
+import { projectPublicEvidenceExport } from "../../lib/evidence-ledger/export";
+import { createComparisonEvidenceRecord } from "../../lib/evidence-ledger/records";
 import { GeminiPlannerError } from "../../lib/gemini-error";
 import {
 	type ComparisonPlanner,
 	DeterministicComparisonPlanner,
 	executeMatchedComparison,
 } from "../../lib/native-adoption/orchestrator";
-import { parseComparisonView, projectComparisonView } from "../../lib/native-adoption/view";
+import { parseComparisonView } from "../../lib/native-adoption/view";
 
 describe("HSD-005 public comparison evidence", () => {
 	it("HSD5-UI-001: projects inspectable evidence without exposing SDK run internals", async () => {
@@ -16,7 +18,7 @@ describe("HSD-005 public comparison evidence", () => {
 			planner: new DeterministicComparisonPlanner(),
 			idFactory: () => "public-projection",
 		});
-		const view = projectComparisonView(internal);
+		const view = projectView(internal);
 		expect(parseComparisonView(view)).toEqual(view);
 		expect(view.arms).toHaveLength(2);
 		expect(view.arms[0]?.validationIssues).toContainEqual({
@@ -35,10 +37,25 @@ describe("HSD-005 public comparison evidence", () => {
 			planner: new DeterministicComparisonPlanner(),
 			idFactory: () => "parser",
 		});
-		const view = projectComparisonView(internal);
+		const view = projectView(internal);
 		expect(parseComparisonView({ ...view, arms: [...view.arms].reverse() })).toBeUndefined();
 		expect(parseComparisonView({ ...view, case: { ...view.case, turns: [] } })).toBeUndefined();
 		expect(parseComparisonView({ ...view, arms: [{ status: "succeeded" }] })).toBeUndefined();
+		expect(
+			parseComparisonView({
+				...view,
+				arms: view.arms.map((arm, index) =>
+					index === 0
+						? {
+								...arm,
+								candidateNodes: arm.candidateNodes.map((node, nodeIndex) =>
+									nodeIndex === 0 ? { ...node, input: { invalid: Number.NaN } } : node,
+								),
+							}
+						: arm,
+				),
+			}),
+		).toBeUndefined();
 	});
 
 	it("HSD5-UI-001/HSD5-E-003: projects sanitized arm failure codes", async () => {
@@ -49,7 +66,7 @@ describe("HSD-005 public comparison evidence", () => {
 				throw new GeminiPlannerError("PLANNER_QUOTA_EXHAUSTED");
 			},
 		};
-		const view = projectComparisonView(
+		const view = projectView(
 			await executeMatchedComparison({
 				caseId: "compound-recovery",
 				locale: "en",
@@ -64,3 +81,9 @@ describe("HSD-005 public comparison evidence", () => {
 		expect(JSON.stringify(view)).not.toContain("provider detail");
 	});
 });
+
+function projectView(run: Awaited<ReturnType<typeof executeMatchedComparison>>) {
+	return projectPublicEvidenceExport(
+		createComparisonEvidenceRecord(run, { recordedAt: "2026-08-27T12:00:00.000Z" }),
+	).comparison;
+}
