@@ -65,8 +65,10 @@ SQL path, sanitized history API, and merged-main Cloud Run persistence are
 locally, CI, and externally verified. The saved-history inspector,
 immutable-record retrieval, truthful lifecycle/provenance/measure views, and
 deterministic privacy-safe JSON export are also locally, CI, and externally
-verified on the merged-main Cloud Run revision. HSD-008 submission packaging is
-the only active delivery stage in the order defined by the [roadmap](ROADMAP.md).
+verified on the merged-main Cloud Run revision. HSD-008 repository, CI, and
+deployment gates are complete and the release is in owner review for the public
+video, Devpost submission, approved tag, and judging freeze defined by the
+[roadmap](ROADMAP.md).
 
 Individual issue metadata owns delivery status; the
 [issue index](issues/README.md) is its machine-checked derived view. Completed

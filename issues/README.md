@@ -28,14 +28,16 @@ issue and [`TESTING.md`](../TESTING.md).
 | [HSD-005](HSD-005-native-adoption-comparison.md) | Complete | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
 | [HSD-007](HSD-007-evidence-ledger.md) | Complete | HSD-005, SEC-001 | Privacy-safe PostgreSQL evidence ledger; background execution remains deferred. |
 | [HSD-006](HSD-006-evidence-experience.md) | Complete | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
-| [HSD-008](HSD-008-submission-release.md) | In progress | HSD-006, HSD-007 | Reproducible submission package. |
+| [HSD-008](HSD-008-submission-release.md) | In review | HSD-006, HSD-007 | Reproducible submission package. |
 
 ## Active next step
 
 HSD-006 is complete with local, CI, and externally verified saved history,
 exact evidence export, deployed desktop/390 px proof, and durable Cloud SQL
-retrieval. HSD-008 is In progress and is the only active delivery issue; no
-background-delivery or post-release research work is active.
+retrieval. HSD-008 repository, CI, provider, public-repository, and deployed
+release gates are verified. It is In review pending only owner video, Devpost,
+approved-tag, and judging-freeze actions; no background-delivery or post-release
+research work is active.
 
 ## Repository maintenance
 

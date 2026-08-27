@@ -248,12 +248,12 @@ and [`hotel_shoreline/CLOUD_RUN.md`](../../hotel_shoreline/CLOUD_RUN.md).
 
 Repository-complete gates:
 
-- [ ] HSD-008 release verifier, clean clone, full deterministic gate, build,
+- [x] HSD-008 release verifier, clean clone, full deterministic gate, build,
   PR CI, public repository, live service, API, browser, cloud config, and logs pass.
 - [ ] Official rules/FAQ are re-read on the submission date.
 - [ ] Root README, this package, deployed revision, screenshots, video narration,
   and Devpost text describe the same behavior and limitations.
-- [ ] Dependency/security disposition is current and no credential/generated
+- [x] Dependency/security disposition is current and no credential/generated
   artifact is tracked.
 
 Owner actions:

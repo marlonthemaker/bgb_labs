@@ -5,10 +5,11 @@ This runbook records and operates the HSD-007 Cloud SQL deployment in
 `hotel-shoreline-ledger` is externally provisioned. Merged-main revision
 `hotel-shoreline-hsd007-4f1a1d5` first proved persistence by retrieving a
 synthetic comparison written before its deployment. Current merged-main
-revision `hotel-shoreline-hsd006-388f840` retrieved that same record through
+revision `hotel-shoreline-hsd008-b7fd869` retrieved that same record through
 the public evidence boundary and now receives 100% of production traffic.
-HSD-007 and HSD-006 are complete. Cloud SQL does not scale to zero; the existing
-USD 20 alert is notification, not a spending cap.
+HSD-007 and HSD-006 are complete; HSD-008 is in owner release review. Cloud SQL
+does not scale to zero; the existing USD 20 alert is notification, not a
+spending cap.
 
 ## Deployed development shape
 
