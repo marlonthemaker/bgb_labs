@@ -8,9 +8,10 @@ It deliberately has no dependency on Hotel Shoreline, Next.js, Genkit, a model
 provider, a database, or cloud infrastructure. Applications may depend on this
 package; this package must not depend on applications.
 
-This package is private during the hackathon demonstration. Its licence and
-publication terms have not been selected. Version `0.0.0` is a prototype
-boundary, not a published package or compatibility commitment.
+This package is private and unpublished during the hackathon demonstration.
+Repository code is covered by the root MIT licence; no registry publication or
+compatibility commitment has been made. Version `0.0.0` is a prototype boundary,
+not a released product package.
 
 ## Public primitives
 

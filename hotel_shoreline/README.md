@@ -12,6 +12,10 @@ It is built independently for a hackathon and is not affiliated with, endorsed
 by, or operated by Google. Its results are illustrative demonstrations, not
 research findings or claims of general language parity.
 
+Live demo: <https://hotel-shoreline-7larmcl4aa-ew.a.run.app>. The canonical
+judge-facing description, architecture, claims, disclosures, and video plan are
+in the [submission package](../docs/submission/README.md).
+
 The application may depend on `@bomgoodbueno/native-agent-sdk`. Hotel facts,
 tools, UI, and model integrations stay in this application and must not leak
 back into the SDK.
@@ -44,7 +48,8 @@ Current capabilities are:
   sanitized history API. PostgreSQL 17 and a least-privilege Cloud SQL path are
   locally/CI verified; the merged-main Cloud Run revision externally retrieved
   pre-deployment synthetic evidence and now serves production traffic; and
-- a locally, CI, and externally verified saved-evidence experience that reopens immutable records,
+- a locally, CI, and externally verified saved-evidence experience that reopens
+  immutable records,
   distinguishes lifecycle and eligibility state, exposes versioned provenance
   and measure definitions, and downloads a deterministic privacy-safe JSON
   artifact. The merged-main Cloud Run revision retrieved evidence written
@@ -54,8 +59,8 @@ There is no real hotel data. Memory-mode history is process-local; the deployed
 Cloud SQL path stores synthetic demo evidence without claiming HA, backups, or
 multi-tenant isolation. The
 [issue index](../issues/README.md) is the machine-checked delivery-status view,
-and the package [roadmap](ROADMAP.md) owns sequencing. Completed issue records retain the
-detailed local, provider, deployment, and CI evidence.
+and the package [roadmap](ROADMAP.md) owns sequencing. Completed issue records
+retain the detailed local, provider, deployment, and CI evidence.
 
 The planned comparison method and its claim limits are in
 [the controlled comparison protocol](EVALUATION_PROTOCOL.md).
