@@ -31,10 +31,10 @@ The controlled comparison protocol is
 [`NATIVE_REVIEW_GUIDE.md`](NATIVE_REVIEW_GUIDE.md); and the approved persistence
 boundary is in [`DATA_ARCHITECTURE.md`](DATA_ARCHITECTURE.md).
 
-HSD-007 has locally/CI verified record, in-memory/PostgreSQL repository,
-migration, and sanitized API behavior. Its bounded Cloud SQL instance and
-zero-traffic Cloud Run persistence path are externally verified; fix CI,
-production cutover, cross-revision retrieval, and closeout remain.
+HSD-007 is complete: its record, in-memory/PostgreSQL repository, migration,
+sanitized API, bounded Cloud SQL instance, append-only runtime role, and
+merged-main Cloud Run persistence are locally, CI, and externally verified.
+HSD-006 is ready for analysis and is the only next delivery issue.
 
 ## Deferred until earned
 

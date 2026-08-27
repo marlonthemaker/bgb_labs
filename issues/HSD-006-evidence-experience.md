@@ -1,6 +1,6 @@
 # HSD-006 — Evidence Experience
 
-**Status:** Planned
+**Status:** Ready for analysis
 **Repository:** `hotel_shoreline`
 **Depends on:** HSD-005, HSD-007
 **Branch:** `feat/hsd-006-evidence-experience`

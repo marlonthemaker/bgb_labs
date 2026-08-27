@@ -17,11 +17,12 @@ separate native-adoption research program.
 
 Native Agent provides the validated, evidence-producing task runtime. Hotel
 Shoreline provides the fictional deterministic and Gemini/Genkit demonstration,
-including a matched baseline/contract-guided comparison. HSD-007 is closing the
-portable PostgreSQL evidence ledger: its local/CI contract and a zero-traffic
-Cloud SQL persistence path are verified, while fix CI and production cutover
-remain. The final evidence experience and submission packaging follow in the
-order defined by the [roadmap](ROADMAP.md).
+including a matched baseline/contract-guided comparison. HSD-007 completed the
+portable PostgreSQL evidence ledger: its shared contract, least-privilege Cloud
+SQL path, sanitized history API, and merged-main Cloud Run persistence are
+locally, CI, and externally verified. The evidence experience is ready for
+analysis; submission packaging follows in the order defined by the
+[roadmap](ROADMAP.md).
 
 Individual issue metadata owns delivery status; the
 [issue index](issues/README.md) is its machine-checked derived view. Completed

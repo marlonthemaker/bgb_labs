@@ -1,6 +1,6 @@
 # HSD-007 — Portable Evidence Ledger
 
-**Status:** In review
+**Status:** Complete
 **Repository:** `hotel_shoreline`
 **Depends on:** HSD-005, SEC-001
 **Branch:** `feat/hsd-007-evidence-ledger`
@@ -33,12 +33,12 @@ authenticated worker without changing this repository port.
 
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
-| HSD7-R-001 | Locally and CI verified | Shared contract passed in memory and pinned PostgreSQL 17.8; the zero-traffic Cloud Run/Cloud SQL append path also preserved invalid/failure evidence. |
+| HSD7-R-001 | Locally, CI, and externally verified | Shared contract passed in memory and pinned PostgreSQL 17.8; merged-main Cloud Run retrieved evidence written before its deployment. |
 | HSD7-R-002 | Locally and CI verified | Version/hash/failure/provenance tests pass without raw provider detail. |
 | HSD7-R-003 | Externally verified | Tagged Cloud Run POST persistence, sanitized GET history, typed invalid query, and disclosure checks pass. |
-| HSD7-R-004 | In review | Migration and real PostgreSQL contract passed in CI; the SELECT/INSERT-only runtime-role regression passed locally and externally, with fix CI pending. |
+| HSD7-R-004 | Locally, CI, and externally verified | Migration and real PostgreSQL contract passed in PR #13; the SELECT/INSERT-only runtime-role regression passed locally, in CI, and on Cloud SQL. |
 | HSD7-O-001 | Externally verified | Bounded Cloud SQL shape, separate identities, revoked `cloudsqlsuperuser`, Secret Manager v2, IAM, migration, least privilege, cost, and limitations are recorded. |
-| HSD7-Q-001 | In progress | Fix PR/CI, production traffic cutover, cross-revision retrieval, and final closeout remain. |
+| HSD7-Q-001 | Locally, CI, and externally verified | PR #13 passed, merged-main revision `hotel-shoreline-hsd007-4f1a1d5` receives 100% production traffic, and the normal service URL retrieves pre-deployment evidence. |
 
 ## Test and error strategy
 
@@ -90,8 +90,8 @@ until genuine review is recorded.
 
 ## Completion Record
 
-Complete only after the least-privilege fix passes CI and the verified Cloud SQL
-revision receives production traffic and retrieves its prior record.
+Completed after the least-privilege fix passed CI and the merged-main Cloud SQL
+revision received production traffic and retrieved its prior record.
 
 **Branches used:** `feat/hsd-007-evidence-ledger` and
 `fix/hsd-007-least-privilege-runtime`.
@@ -100,9 +100,8 @@ revision receives production traffic and retrieves its prior record.
 ledger through PR #12; `50e5ead` removes an UPDATE-requiring row lock and runs
 the PostgreSQL contract through a SELECT/INSERT-only role.
 
-**Review / PR:** PR #12 passed its pinned PostgreSQL CI service and merged.
-The least-privilege runtime fix is locally and externally verified; its PR is
-pending.
+**Review / PR:** PR #12 delivered the core ledger. PR #13 passed its pinned
+PostgreSQL CI service in 1m36s and merged into `main` as `4f1a1d5`.
 
 **Acceptance evidence:** R001/R002 use one shared contract and version/hash
 record tests; R003 uses configuration/projection unit tests and live Route
@@ -112,6 +111,12 @@ Handler E2E; R004 uses PostgreSQL 17.8 and migration 001. Cloud SQL instance
 `c076d46e-1043-4073-a25f-66086d8a01d1` and retrieved its sanitized summary.
 The preserved arms were a typed baseline rejection and intervention planner
 timeout; pending human review correctly excluded the pair from aggregates.
+Merged-main revision `hotel-shoreline-hsd007-4f1a1d5` then retrieved the same
+record at 0% traffic, was promoted to 100%, and retrieved it again through the
+normal service URL. Its Cloud Build was
+`ba08e259-ea30-4699-a933-6b1701069328`; disclosure, typed invalid-query, and
+history redaction checks passed, with zero error-severity revision log entries
+at closeout.
 
 **QA commands and results:**
 
@@ -142,8 +147,8 @@ Cloud SQL/migration runbooks, environment example, issue/index.
 HA, automated backup, PITR, or SLA claim and does not scale to zero. The USD 20
 alert is not a cap. Runtime authentication/multi-tenant isolation and Cloud
 Tasks remain out of scope. Review annotations remain empty until genuine human
-review. Production traffic still serves the prior revision until the fix passes
-CI.
+review. The two prior revisions remain at 0% as explicit rollback targets.
 
-**Next issue readiness:** HSD-006 remains Planned. Do not begin it until HSD-007
-passes CI, deploys/retains one comparison across restart, and closes.
+**Next issue readiness:** HSD-006 is Ready for analysis. Its prerequisite ledger
+is complete; implementation must begin from its acceptance/test plan rather
+than expanding the dashboard surface opportunistically.
