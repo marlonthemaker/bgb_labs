@@ -16,6 +16,22 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      HSD_TEST_DATABASE_URL: postgresql://hsd_test:hsd_test@127.0.0.1:5432/hsd_test
+    services:
+      postgres:
+        image: postgres:17.8-alpine@sha256:3430fe182f5065a6ea505c3d432d2c7fff18fbab954df8f277c1dbf4c70124af
+        env:
+          POSTGRES_DB: hsd_test
+          POSTGRES_PASSWORD: hsd_test
+          POSTGRES_USER: hsd_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U hsd_test -d hsd_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
