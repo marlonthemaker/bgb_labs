@@ -5,6 +5,9 @@
 **Depends on:** HSD-XXX
 **Branch:** `<type>/hsd-xxx-short-description`
 
+This status field is authoritative. Update its derived row in
+`issues/README.md`; `pnpm verify:repo` rejects drift between them.
+
 ## Outcome
 
 State the user-visible or engineering capability and why it matters. State what

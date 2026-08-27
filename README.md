@@ -13,34 +13,19 @@ separate native-adoption research program.
 | [`research/`](research/README.md) | Research canon and versioned studies | Never a runtime dependency; public studies require their own access and evidence gates. |
 | [`docs/`](docs/README.md) | Cross-project architecture, product, operations, and decisions | Owns shared guidance, not package behavior or mutable issue status. |
 
-## HSD status
+## Current product lifecycle
 
-Snapshot verified 2026-08-26. The [issue index](issues/README.md) is the sole
-owner of mutable issue status; this section summarizes current capability.
+Native Agent provides the validated, evidence-producing task runtime. Hotel
+Shoreline provides the fictional deterministic and Gemini/Genkit demonstration,
+including a matched baseline/contract-guided comparison. Durable run history,
+the final evidence experience, and submission packaging follow in the order
+defined by the [roadmap](ROADMAP.md).
 
-- **HSD-001 complete:** workspace, strict TypeScript, private package boundary,
-  minimal demo shell, and disclosure.
-- **HSD-002 complete:** JSON-safe semantic contracts and task graphs,
-  fail-closed validation (including defensive tool-registry checks), deterministic
-  execution, explicit execution failures, and run-scoped idempotency.
-- **HSD-003 complete:** a versioned synthetic fixture, deterministic hotel tool
-  adapters, frozen English contract/graph, ordered run evidence, and browser
-  vertical slice passed locally and in CI; PR #1 merged on 2026-08-24.
-- **HSD-004 complete:** a server-side planner port, Genkit/Gemini adapter,
-  deterministic test path, explicit timeout/turn/token/node budgets, SDK
-  validation boundary, server-sanitized evidence, structured telemetry, and
-  Cloud Run delivery exist and pass. The real-Gemini smoke, Cloud Build,
-  bounded Cloud Run revision, deployed success/failure evidence, responsive UI,
-  sanitized logs, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
-- **HSD-005 complete:** three case families and nine authored
-  `en`, `es-ES`, and `pt-PT` variants run as matched baseline/contract-guided
-  pairs with hash-linked conditions, deterministic measures, safe failure
-  retention, telemetry, and an inspectable UI. Variants remain explicitly
-  pending human review and excluded from reviewer-qualified aggregate claims.
-  PR #3 passed CI and merged on 2026-08-26 as `d7a8963`.
-- **Next:** HSD-007 is ready for analysis and owns the portable PostgreSQL
-  evidence ledger. The Iberia field study remains pre-pilot until HSD-008 and
-  its responsible-access gate are complete.
+Individual issue metadata owns delivery status; the
+[issue index](issues/README.md) is its machine-checked derived view. Completed
+acceptance and QA evidence remains in the individual issue records.
+The Iberia study is a separate pre-pilot research proposal and does not
+authorize public-agent execution.
 
 Read the package roadmaps before changing behavior:
 

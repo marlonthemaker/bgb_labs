@@ -29,7 +29,7 @@ A system can be accessible without meaningful language support and can support a
 
 ## Diagnostic Lifecycle
 
-Canon v0.2 uses a lean six-stage lifecycle:
+The canon uses a lean six-stage lifecycle:
 
 1. **Input** - receive the user's language, message, context, and interaction state.
 2. **Understand** - infer meaning, intent, entities, constraints, references, and pragmatic force.
@@ -112,7 +112,9 @@ Evaluation may consider:
 - parity against a declared baseline;
 - stability across reruns or releases.
 
-Parity should be reported per capability or outcome. A single aggregate language score can hide the actual failure and should not be treated as a universal Native Adoption Index without separate validation.
+Parity should be reported per capability or outcome. A single aggregate
+language score can hide the actual failure and is not authorized without
+separate validation.
 
 ## Initial Language Scope
 

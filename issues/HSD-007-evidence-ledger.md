@@ -1,8 +1,8 @@
 # HSD-007 — Evidence Ledger and Bounded Background Delivery
 
-**Status:** Ready for analysis
+**Status:** Planned
 **Repository:** `hotel_shoreline`
-**Depends on:** HSD-005
+**Depends on:** HSD-005, SEC-001
 **Branch:** `feat/hsd-007-evidence-ledger`
 
 ## Outcome

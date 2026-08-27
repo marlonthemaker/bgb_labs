@@ -85,7 +85,7 @@ Do not generalize from a tested workflow to an entire language, culture, market,
 
 ## Evidence Levels
 
-Canon v0.2 uses one evidence scale:
+The canon uses one evidence scale:
 
 - **E0 - Untested claim**: assertion, vendor statement, model self-description, or internal hypothesis without direct observation.
 - **E1 - Exploratory observation**: anecdotal or single observation without a controlled protocol.

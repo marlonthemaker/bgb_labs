@@ -59,6 +59,8 @@ still refuses server reuse.
 
 | Acceptance ID | Requirement | Test |
 | --- | --- | --- |
+| HSD1-F-001 | Root install, format, type, test, and build commands provide the workspace QA boundary. | Full verification gate and HSD-001 Completion Record. |
+| HSD1-F-002 | The SDK dependency graph remains free of hotel, provider, cloud, and application dependencies. | Build/typecheck plus `pnpm verify:repo` dependency-direction audit. |
 | HSD1-UI-001 | The demo visibly identifies itself as fictional, independent, and non-research. | `hotel_shoreline/e2e/foundation.spec.ts` |
 | HSD2-C-001 | Non-object or non-JSON-safe contracts, graphs, nodes, and tool inputs are rejected with stable structured issues. | `contracts.unit.test.ts` |
 | HSD2-C-002 | A graph preserves contract boundaries: identity, dependencies, tools, effects, constraints, acyclicity, and a callable tool registry. | `validation.unit.test.ts` |
@@ -71,6 +73,7 @@ still refuses server reuse.
 | HSD4-P-001 | Externally verified: the server-only Genkit adapter uses Gemini 3.5 Flash with minimal thinking and declared limits; the opt-in local smoke and deployed Cloud Run flow passed. | `hotel_shoreline/e2e/gemini.smoke.spec.ts`; production build; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
 | HSD4-P-002, HSD4-P-004 | Externally verified: deterministic and deployed Gemini events are planned, SDK-validated, and executed without per-step direction; an unsafe proposal is rejected before execution. | `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
 | HSD4-P-003 | Externally verified: malformed, unsafe, unavailable, quota-exhausted, timeout, and budget failures fail closed locally; the deployed no-secret proof returned `PLANNER_UNAVAILABLE` with zero operations and a sanitized warning envelope. | `hotel_shoreline/src/unit/gemini-error.unit.test.ts`; `hotel_shoreline/src/integration/taskmaster.integration.test.ts`; `hotel_shoreline/src/unit/taskmaster-telemetry.unit.test.ts`; `hotel_shoreline/src/unit/genkit-logging.unit.test.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
+| HSD4-C-001 | Cloud Run deployment uses bounded resources, scoped identities, sanitized telemetry, and recorded immutable deployment evidence. | `hotel_shoreline/src/unit/taskmaster-telemetry.unit.test.ts`; `hotel_shoreline/src/unit/genkit-logging.unit.test.ts`; deployment evidence in `issues/HSD-004-controlled-planning-boundary.md`. |
 | HSD4-UI-001 | Externally verified: allowlisted candidate/lifecycle/outcome evidence, failures, malformed fallback, disclosures, and deployed desktop/390px layouts passed. | `hotel_shoreline/src/unit/taskmaster-view.unit.test.ts`; `hotel_shoreline/e2e/foundation.spec.ts`; deployed evidence in `issues/HSD-004-controlled-planning-boundary.md` |
 | HSD5-D-001, HSD5-D-002 | Locally and CI verified: three case families and nine version-linked authored variants retain review state, provenance, and limitations; prose may evolve without weakening structural tests. | `hotel_shoreline/src/unit/native-adoption/cases.unit.test.ts`; `hotel_shoreline/e2e/native-adoption.spec.ts` |
 | HSD5-I-001 | Locally and CI verified: control and intervention conditions are versioned, immutable, and declare target failure, mechanism, activation, regression, and rollback conditions. | `hotel_shoreline/src/unit/native-adoption/interventions.unit.test.ts` |
@@ -79,7 +82,9 @@ still refuses server reuse.
 | HSD5-UI-001 | Locally and CI verified: browser users inspect source turns, review state, contract, conditions, graphs, lifecycle, validation, operations, diagnosis, measures, and limitations. | `hotel_shoreline/e2e/native-adoption.spec.ts` |
 | HSD7-R-001, HSD7-R-002, HSD7-R-003 | Planned: append-only sanitized PostgreSQL run ledger, provenance, and server-only repository boundary. | `hotel_shoreline/src/integration/run-ledger.integration.test.ts` |
 | HSD7-D-001, HSD7-D-002 | Planned if background delivery is enabled: authenticated duplicate-safe worker and terminal failure state. | `hotel_shoreline/src/integration/worker.integration.test.ts` |
-| REP1-A-001..005 | Repository consolidation is verified through active-link/stale-reference audits, Git-recoverable migration evidence, and the unchanged full runtime gate. | `issues/REP-001-repository-research-consolidation.md`; repository QA commands in its Completion Record. |
+| SEC1-C-001, SEC1-C-002, SEC1-C-003, SEC1-W-001, SEC1-D-001, SEC1-CI-001, SEC1-Q-001 | Planned: release trust-boundary, dependency, HTTP, and repository security baseline. | Exact paths will be frozen during SEC-001 analysis. |
+| REP1-A-001, REP1-A-002, REP1-A-003, REP1-A-004, REP1-A-005 | Repository consolidation is verified through active-link/stale-reference audits, Git-recoverable migration evidence, and the unchanged full runtime gate. | `issues/REP-001-repository-research-consolidation.md`; repository QA commands in its Completion Record. |
+| REP2-A-001, REP2-A-002, REP2-A-003, REP2-A-004, REP2-A-005, REP2-A-006, REP2-A-007 | Active-tree hygiene removes verified duplicate/stale surfaces, preserves current evidence owners, leaves runtime behavior unchanged, makes the ordinary E2E gate explicitly provider-free, and machine-checks authority drift. | `issues/REP-002-active-tree-hygiene.md`; `pnpm verify:repo`; repository QA commands in its Completion Record. |
 
 ## Writing rule
 
