@@ -87,3 +87,11 @@ fixture/contract/tool version, status, eligibility, and timestamps.
 No real guest data, full-text customer transcripts, embeddings/vector search,
 generic analytics warehouse, public administration API, or customer accounts
 belong in the hackathon ledger.
+
+## Implementation status
+
+HSD-007 implements the application record, repository port, in-memory adapter,
+SQL migration, `pg` adapter, and sanitized history boundary. PostgreSQL contract
+tests run against a real disposable PostgreSQL 17 database; they do not mock
+SQL. Cloud SQL provisioning and deployed persistence remain unverified until
+the cost/operations gate in [`CLOUD_SQL.md`](CLOUD_SQL.md) is explicitly run.
