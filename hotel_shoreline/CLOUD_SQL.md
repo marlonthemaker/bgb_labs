@@ -3,10 +3,12 @@
 This runbook records and operates the HSD-007 Cloud SQL deployment in
 `native-agent-poc` / `europe-west1`. As of 2026-08-27,
 `hotel-shoreline-ledger` is externally provisioned. Merged-main revision
-`hotel-shoreline-hsd007-4f1a1d5` retrieved a synthetic comparison written before
-its deployment and now receives 100% of production traffic. HSD-007 is
-complete. Cloud SQL does not scale to zero; the existing USD 20 alert is
-notification, not a spending cap.
+`hotel-shoreline-hsd007-4f1a1d5` first proved persistence by retrieving a
+synthetic comparison written before its deployment. Current merged-main
+revision `hotel-shoreline-hsd006-388f840` retrieved that same record through
+the public evidence boundary and now receives 100% of production traffic.
+HSD-007 and HSD-006 are complete. Cloud SQL does not scale to zero; the existing
+USD 20 alert is notification, not a spending cap.
 
 ## Deployed development shape
 
@@ -33,9 +35,12 @@ public Cloud Run service
   -> append-only evidence tables
 ```
 
-The browser receives history summaries only. It never receives `DATABASE_URL`,
-Cloud SQL administration, raw candidate artifacts, authored turns, credentials,
-or database-driver types.
+The browser receives sanitized history summaries and may request a versioned
+public projection of one exact synthetic record. That projection intentionally
+contains authored synthetic turns, structured candidate/validation/operation
+evidence, measures, provenance, and claim limits. It never contains
+`DATABASE_URL`, Cloud SQL administration, credentials, raw database rows,
+database-driver types, provider prompts/responses, or raw exceptions.
 
 ## 1. Verify code and cost before provisioning
 
@@ -139,13 +144,16 @@ for traffic rollback.
 
 1. Run a deterministic matched comparison.
 2. Fetch `GET /api/native-adoption?limit=20` and find its sanitized summary.
-3. Restart or redeploy the service and confirm the summary remains.
-4. Confirm an exact record replay is idempotent and a conflicting identity is
+3. Fetch `GET /api/native-adoption/{comparisonId}` twice and confirm the
+   versioned public JSON artifacts are byte-identical and privacy-safe.
+4. Restart or redeploy the service and confirm both summary and exact export
+   remain.
+5. Confirm an exact record replay is idempotent and a conflicting identity is
    rejected.
-5. Inspect Cloud Logging for typed ledger availability errors only; logs must
+6. Inspect Cloud Logging for typed ledger availability errors only; logs must
    not include the URL, password, request turns, candidate graph, operation
    input, or raw database exception.
-6. Verify the runtime database role still cannot mutate or delete evidence.
+7. Verify the runtime database role still cannot mutate or delete evidence.
 
 ## Retention, export, recovery, and deletion
 

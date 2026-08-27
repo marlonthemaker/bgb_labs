@@ -44,10 +44,11 @@ Current capabilities are:
   sanitized history API. PostgreSQL 17 and a least-privilege Cloud SQL path are
   locally/CI verified; the merged-main Cloud Run revision externally retrieved
   pre-deployment synthetic evidence and now serves production traffic; and
-- a locally verified saved-evidence experience that reopens immutable records,
+- a locally, CI, and externally verified saved-evidence experience that reopens immutable records,
   distinguishes lifecycle and eligibility state, exposes versioned provenance
   and measure definitions, and downloads a deterministic privacy-safe JSON
-  artifact. CI and merged-main deployment proof remain before HSD-006 closes.
+  artifact. The merged-main Cloud Run revision retrieved evidence written
+  before its deployment and passed desktop/390 px inspection.
 
 There is no real hotel data. Memory-mode history is process-local; the deployed
 Cloud SQL path stores synthetic demo evidence without claiming HA, backups, or

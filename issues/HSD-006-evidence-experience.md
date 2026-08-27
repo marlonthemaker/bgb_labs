@@ -1,6 +1,6 @@
 # HSD-006 — Evidence Experience
 
-**Status:** In review
+**Status:** Complete
 **Repository:** `hotel_shoreline`
 **Depends on:** HSD-005, HSD-007
 **Branch:** `feat/hsd-006-evidence-experience`
@@ -56,11 +56,11 @@ Out of scope:
 
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
-| HSD6-H-001 | Locally verified | Real Route Handlers and browser tests cover append/list/get, typed 400/404, empty/malformed/unavailable history and detail, and non-destructive failure state. Repository-wide integration coverage retains the typed 503 boundary. |
-| HSD6-U-001 | Locally verified | Unit examples derive failed, completed, partial, and not-reached stages only from recorded lifecycle/status; browser evidence keeps pair exclusion separate. |
-| HSD6-U-002 | Locally verified | Record-derived DTO unit and browser tests expose the specified source, provenance, configuration, graph, operation, diagnosis, measure, review, and claim-boundary facts. |
-| HSD6-U-003 | Locally verified | Unit and real-browser download tests prove versioned deterministic JSON, safe filenames, immutable-record provenance, and forbidden-field exclusion. |
-| HSD6-U-004 | Locally and manually verified | Browser tests cover keyboard, polite status, destructive-failure prevention, disclosure, and 390 px overflow; manual desktop/390 px inspection found no browser-console errors. |
+| HSD6-H-001 | Locally, CI, and externally verified | Real Route Handlers and browser tests cover append/list/get, typed 400/404, empty/malformed/unavailable history and detail, and non-destructive failure state. The deployed PostgreSQL-backed service retrieved evidence written before this revision. |
+| HSD6-U-001 | Locally, CI, and externally verified | Unit examples derive failed, completed, partial, and not-reached stages only from recorded lifecycle/status; the deployed browser kept pair exclusion separate from a mixed provider outcome. |
+| HSD6-U-002 | Locally, CI, and externally verified | Record-derived DTO unit/browser tests and the deployed inspector expose the specified source, provenance, configuration, graph, operation, diagnosis, measure, review, and claim-boundary facts. |
+| HSD6-U-003 | Locally, CI, and externally verified | Unit, CI, local-browser, and deployed HTTP evidence prove versioned byte-stable JSON, safe filenames, immutable-record provenance, and forbidden-field exclusion. |
+| HSD6-U-004 | Locally, CI, and externally verified | Browser tests cover keyboard, polite status, destructive-failure prevention, disclosure, and 390 px overflow; deployed desktop/390 px inspection found no browser-console errors. |
 
 The experience may display structured candidate plans, contract facts,
 validation issues, tool names/arguments/results, lifecycle events, model and
@@ -148,19 +148,32 @@ git diff --check
 
 **Branch used:** `feat/hsd-006-evidence-experience`
 
-**Commits:** `8204715 docs(evidence): specify saved evidence experience
-[HSD-006]`; implementation and final documentation commit hashes will be added
-after review.
+**Commits:** `33d8f4f docs(evidence): specify saved evidence experience
+[HSD-006]`; `b25fe38 feat(evidence): add saved evidence experience [HSD-006]`;
+`388f840 docs(evidence): record local HSD-006 gate [HSD-006]`. GitHub rebased
+the approved branch commits onto `main`, so these are the merged identities.
 
-**Review / PR:** Local implementation review and interactive browser QA passed;
-CI, PR, merged-main deployment, and external verification remain before
-completion.
+**Review / PR:** PR #15, `[HSD-006] Add saved evidence experience`, passed the
+required `Quality/verify` check in 1m55s and was rebased into `main` on
+2026-08-27. Local implementation review, automated CI, and interactive browser
+QA found no blocking issue.
 
 **Acceptance evidence:** `HSD6-H-001`, `HSD6-U-001`, `HSD6-U-002`,
-`HSD6-U-003`, and `HSD6-U-004` are locally verified by the traceable unit and
-browser tests named above. The browser was also inspected at desktop and 390 ×
-844: the saved flow, exact evidence, disclosures, wrapping, and focusable native
-controls remained usable with no horizontal overflow or console error.
+`HSD6-U-003`, and `HSD6-U-004` are locally, CI, and externally verified by the
+traceable tests named above. Cloud Build
+`78c4bb63-6fa6-4eda-8aeb-1f4848feb660` produced image digest
+`sha256:6982c94812df2403eafda448d457b12ed199f29fa78392f89f78e3671f6da8dd`
+from merged commit `388f8402b89d6e523e2b14433127e871c138b790`. Revision
+`hotel-shoreline-hsd006-388f840` first served zero traffic behind tag `hsd006`,
+then received 100% after the candidate gate. Both the tagged and normal service
+URLs returned 200 for home, history, and exact evidence. The revision retrieved
+pre-existing comparison `c076d46e-1043-4073-a25f-66086d8a01d1`; two exports
+were byte-identical with the declared schema/claim boundary and no forbidden
+server fields. Invalid and valid-missing identities returned typed 400 and 404.
+Deployed desktop and 390 × 844 flows reopened this mixed provider record with
+truthful rejected/timeout/zero-operation states, reviewer exclusion, and visible
+disclosures; there was no horizontal overflow, browser-console error, or
+error-severity revision log at closeout.
 
 **QA commands and results:** `pnpm check`, `pnpm audit:prod`, `pnpm typecheck`,
 `HSD_E2E_PORT=3114 pnpm test:all`, `pnpm build`, and `git diff --check` passed.
@@ -172,8 +185,10 @@ Shoreline 91.80% / 87.94% / 99.45% / 93.80%; evidence-ledger modules 94.66% /
 93.38% / 100% / 95.38%. Production build and repository verification passed.
 The audit gate passed against the existing time-bounded dependency disposition.
 
-**Docs updated:** Issue specification/status, testing traceability, root/package
-capability summaries, and Hotel Shoreline sequencing.
+**Docs updated:** Issue specification/status/evidence, testing traceability,
+root/package capability summaries, Hotel Shoreline sequencing, issue index,
+HSD-008 readiness, Cloud Run candidate-first release procedure, Cloud SQL
+current production evidence, Google Cloud bootstrap, and deployed data decision.
 
 **Known limitations / follow-up:** The public demo is intentionally unauthenticated
 and contains synthetic evidence only. Memory history is process-local; deployed
@@ -182,6 +197,6 @@ add aggregate analytics, reviewer mutations, human-reviewed variants,
 multi-tenancy, statistical inference, HA/backups/PITR, or provider availability.
 The USD 20 budget is an alert rather than a hard cap.
 
-**Next issue readiness:** HSD-008 remains Planned until HSD-006 passes CI,
-merged-main deployment verification, and final closeout. It must not begin
-before that gate.
+**Next issue readiness:** HSD-008 prerequisites are met and it is Ready for
+analysis. Its release specification must be refined before implementation; no
+submission-release work was started as part of HSD-006.
