@@ -157,5 +157,8 @@ remains ready for analysis but follows the release-security baseline.
 ## Branch, commits, and review
 
 **Branch used:** `chore/rep-002-canonical-integrity-gate`
-**Commits:** Pending final delivery.
+**Commits:**
+
+- `9b3a3e9 chore(workspace): enforce canonical repository checks [REP-002]`
+- `3aa10c8 docs(workspace): consolidate active authority [REP-002]`
 **Review / PR:** Pending PR checks and merge.
