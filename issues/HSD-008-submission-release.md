@@ -52,7 +52,7 @@ In scope:
   link, stack, disclosure, and evidence-navigation needs;
 - deterministic release verification for required artifacts, tracked-file
   hygiene, high-confidence secret patterns, and submission/README invariants;
-- clean-archive installation, full deterministic QA, production build, public
+- clean-clone installation, full deterministic QA, production build, public
   repository/live-service checks, and recorded current deployment proof;
 - one deliberate provider proof attempt when quota/cost are approved, retaining
   a typed failure as truthful evidence rather than retrying; and
@@ -74,7 +74,7 @@ Out of scope:
 | ID | Observable criterion | Test layer | Evidence location |
 | --- | --- | --- | --- |
 | HSD8-C-001 | The dated constraint record matches the current official rules for deadline, Taskmaster selection, mandatory stack, repository/spin-up/architecture fields, public ≤4-minute English video, Cloud proof, new-project/pre-existing-work disclosure, judging weights, and post-deadline freeze. | Documentation QA | `issues/HACKATHON-CONSTRAINTS.md`; official rules/FAQ links |
-| HSD8-R-001 | A clean Git archive of the exact release commit installs with the pinned Node/pnpm contract and passes repository, audit, strict type, unit, integration, real PostgreSQL CI, coverage, deterministic browser, and production-build gates without local secrets or generated state. | Clean-room QA / CI | HSD-008 Completion Record; `TESTING.md` |
+| HSD8-R-001 | A clean Git clone of the exact release commit installs with the pinned Node/pnpm contract and passes repository, audit, strict type, unit, integration, real PostgreSQL CI, coverage, deterministic browser, and production-build gates without local secrets or generated state. | Clean-room QA / CI | HSD-008 Completion Record; `TESTING.md` |
 | HSD8-D-001 | The root README exposes the live demo/repository, fictional boundary, product value, exact Google stack, Mermaid architecture, clean local spin-up, optional provider setup, deployment path, evidence tour, and authoritative limitations without requiring another document to understand the project. | Release verification / review | `README.md`; `scripts/verify-release.mjs` |
 | HSD8-D-002 | One canonical submission package contains copy-ready description/features/technology/data/findings fields, accurate third-party and pre-existing-work disclosures, scoped claim language, known limitations, public-good contribution, and links that match the release commit and deployment. | Release verification / review | `docs/submission/README.md`; `scripts/verify-release.mjs` |
 | HSD8-V-001 | A timed storyboard stays within 4:00, is English-ready, opens with real friction/value, includes an unedited live autonomous action and visible `.run.app`/Cloud proof, shows architecture/evidence/failure limits, contains no secret or hidden-reasoning capture, and ends with a precise claim. | Manual rehearsal / review | `docs/submission/README.md`; HSD-008 Completion Record |
@@ -86,24 +86,25 @@ Out of scope:
 
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
-| HSD8-C-001 | Implemented, pending repository review | Official rules and FAQ were accessible and re-read on 2026-08-27; the repository constraint record still needs reconciliation. |
-| HSD8-R-001 | Planned | Current main passed HSD-006 local/CI gates; a clean archive of the HSD-008 release commit remains. |
-| HSD8-D-001 | Planned | Root README has setup/boundaries but lacks the live link, complete system diagram, judge tour, and release-specific disclosures. |
-| HSD8-D-002 | Planned | No canonical submission package currently exists. |
-| HSD8-V-001 | Planned | No timed storyboard or recording safety checklist currently exists. |
-| HSD8-Q-001 | Partially implemented | Repository hygiene/audit gates exist and a high-confidence tracked-secret scan passed; release-specific invariant automation remains. |
+| HSD8-C-001 | Locally verified | Official rules and FAQ were accessible and re-read on 2026-08-27; the dated constraint record now matches the verified release requirements. |
+| HSD8-R-001 | Locally verified, pending CI | Exact commit `658ca36` passed install and the full deterministic gate/build in secret-free clean clone `/tmp/hsd008-clean.VJHUE6/repo`; PR CI must still supply the PostgreSQL 17 gate. |
+| HSD8-D-001 | Locally verified | The judge-complete root README passes repository and release invariant verification. |
+| HSD8-D-002 | Locally verified | `docs/submission/README.md` is the canonical copy-ready submission, architecture, claims, disclosure, recording, and operator package. |
+| HSD8-V-001 | Locally verified, owner recording pending | The English-ready storyboard totals 3:55, requires one unedited live action/Cloud proof segment, and includes an explicit recording-safety checklist. |
+| HSD8-Q-001 | Locally verified | Release verification checked 11 required artifacts, 158 release-visible paths, high-confidence secret patterns, required claims, direct production dependencies, and unresolved placeholders; repository/audit gates passed. |
 | HSD8-O-001 | Partially externally verified | HSD-006 production is healthy and externally verified; final release-commit proof remains. |
-| HSD8-F-001 | Planned | Owner-only video/Devpost/tag/freeze actions need an explicit handoff. |
+| HSD8-F-001 | Implemented | The final operator checklist separates repository-complete gates from owner-only video, Devpost, tag, and freeze actions. |
 
 ## Test and QA strategy
 
 - **Release unit:** a dependency-free Node script validates required files,
   exact URLs/labels, README/submission invariants, allowed explicit owner
   placeholders, tracked-path exclusions, and high-confidence secret patterns.
-- **Clean-room integration:** create a temporary `git archive` from the exact
+- **Clean-room integration:** create a temporary local clone of the exact
   commit, enable pinned pnpm, install with `--frozen-lockfile`, and run the full
   deterministic gate/build without copying `.env.local`, `.next`, coverage, or
-  untracked files.
+  untracked files. The clone retains Git metadata required by repository and
+  release integrity checks.
 - **Existing executable specifications:** rerun all unit/integration/E2E and
   coverage gates; do not add duplicated application tests for documentation-only
   behavior. CI supplies PostgreSQL 17 and the least-privilege adapter contract.
@@ -158,7 +159,7 @@ timed video plan, release verifier, video URL, or Devpost record.
 **Implementation order:** freeze this spec and test traceability; reconcile the
 official constraint record; add the release verifier; create one canonical
 submission package; make the root README judge-complete; run focused verifier
-and full local gate; inspect a clean archive; run external repository/cloud/
+and full local gate; inspect a clean clone; run external repository/cloud/
 browser/provider proof; reconcile docs and PR/CI; then hand off only the video,
 Devpost, approved tag, and freeze actions that require the owner.
 
@@ -187,21 +188,43 @@ pnpm build
 git diff --check
 ```
 
-Additional signoff: clean Git-archive gate, PR CI, official-rule recheck, public
+Additional signoff: clean Git-clone gate, PR CI, official-rule recheck, public
 repository/live-service/API/browser/cloud/log proof, timed storyboard rehearsal,
 and one deliberate provider attempt when approved.
 
 ## Completion Record
 
 **Completed date:**
-**Implementation summary:**
-**Acceptance evidence:**
-**QA commands and results:**
-**Clean-archive result:**
+**Implementation summary:** Added a judge-complete root README, canonical
+submission/architecture/video/operator package, current official constraint
+record, and dependency-free release integrity verifier. No runtime, authored
+variant, evaluator, intervention, SDK contract, schema, or research-canon
+behavior changed.
+**Acceptance evidence:** HSD8-C-001, HSD8-D-001, HSD8-D-002, HSD8-V-001,
+HSD8-Q-001, and HSD8-F-001 are locally verified. HSD8-R-001 awaits CI only;
+HSD8-O-001 awaits the merged-main candidate deployment and external proof.
+**QA commands and results:** `pnpm check`, `pnpm audit:prod`, `pnpm typecheck`,
+`HSD_E2E_PORT=3117 pnpm test:all`, `pnpm build`, and `git diff --check` passed.
+The gate recorded 81 unit tests, 27 ordinary integration tests, 22 deterministic
+E2E passes, and 3 intentionally skipped opt-in provider tests. SDK coverage was
+92.17% statements / 88.26% branches / 97.14% functions / 92.11% lines; Hotel
+Shoreline coverage was 91.80% / 87.94% / 99.45% / 93.80%.
+`pnpm test:e2e:gemini` passed 1/1 on the single deliberate live-provider attempt
+(4.2 seconds).
+**Clean-clone result:** Exact commit `658ca36` installed with the frozen lockfile
+and passed check, audit, strict types, 81 unit, 27 ordinary integration, 22 E2E,
+coverage, and production build without local secrets or generated state in
+`/tmp/hsd008-clean.VJHUE6/repo`.
 **External release evidence:**
-**Provider proof:**
+**Provider proof:** One deliberate `gemini-3.5-flash` Genkit Taskmaster smoke
+attempt passed on its first run; 1 test passed in 4.2 seconds. No retry was made.
 **Known limitations / follow-up:**
-**Owner-required final actions:**
-**Docs updated:**
-**Branch / commits / PR:**
+**Owner-required final actions:** Record/upload the public ≤4:00 video, add its
+URL in an approved release commit, complete/submit Devpost, approve the final
+annotated tag, and freeze the submitted surfaces through judging.
+**Docs updated:** Root/package READMEs and roadmaps, `TESTING.md`, `docs/README.md`,
+`docs/submission/README.md`, official constraint record, issue index, and this
+issue record.
+**Branch / commits / PR:** `docs/hsd-008-submission-release`; `88fb5a9`,
+`c6e5504`, and `658ca36`; PR pending.
 **Release tag and submitted commit:**
