@@ -92,6 +92,9 @@ belong in the hackathon ledger.
 
 HSD-007 implements the application record, repository port, in-memory adapter,
 SQL migration, `pg` adapter, and sanitized history boundary. PostgreSQL contract
-tests run against a real disposable PostgreSQL 17 database; they do not mock
-SQL. Cloud SQL provisioning and deployed persistence remain unverified until
-the cost/operations gate in [`CLOUD_SQL.md`](CLOUD_SQL.md) is explicitly run.
+tests run against a real disposable PostgreSQL 17 database through a
+SELECT/INSERT-only runtime role; they do not mock SQL. The bounded Cloud SQL
+instance, separate identities, migration, pinned secret, merged-main Cloud Run
+persistence, and cross-deployment retrieval are externally verified. Current
+cost, retention, recovery limitations, and rollback targets are recorded in
+[`CLOUD_SQL.md`](CLOUD_SQL.md).

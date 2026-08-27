@@ -27,14 +27,14 @@ issue and [`TESTING.md`](../TESTING.md).
 | [HSD-004](HSD-004-controlled-planning-boundary.md) | Complete | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
 | [HSD-005](HSD-005-native-adoption-comparison.md) | Complete | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
 | [HSD-007](HSD-007-evidence-ledger.md) | Complete | HSD-005, SEC-001 | Privacy-safe PostgreSQL evidence ledger; background execution remains deferred. |
-| [HSD-006](HSD-006-evidence-experience.md) | Ready for analysis | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
+| [HSD-006](HSD-006-evidence-experience.md) | In progress | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
 | [HSD-008](HSD-008-submission-release.md) | Planned | HSD-006, HSD-007 | Reproducible submission package. |
 
 ## Active next step
 
 HSD-007 is complete with local, CI, and externally verified PostgreSQL/Cloud
-SQL persistence under an append-only runtime identity. HSD-006 is Ready for
-analysis and is the only next delivery issue; no background-delivery or
+SQL persistence under an append-only runtime identity. HSD-006 is In progress
+and is the only active delivery issue; no background-delivery or
 submission-release work is active.
 
 ## Repository maintenance
