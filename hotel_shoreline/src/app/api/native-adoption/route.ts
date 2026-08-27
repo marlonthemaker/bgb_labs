@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-
+import { readBoundedJson } from "../../../lib/http-input";
 import { NativeAdoptionCaseError } from "../../../lib/native-adoption/cases";
 import { ComparisonConditionError } from "../../../lib/native-adoption/conditions";
 import { GeminiComparisonPlanner } from "../../../lib/native-adoption/genkit-comparison-planner";
@@ -21,12 +21,13 @@ export async function POST(request: Request) {
 	const startedAt = performance.now();
 	const headers = { "Cache-Control": "no-store", "X-Request-Id": requestId };
 	try {
-		let body: unknown;
-		try {
-			body = await request.json();
-		} catch {
-			return invalidRequest(requestId, headers);
+		const parsedBody = await readBoundedJson(request);
+		if (!parsedBody.ok) {
+			return parsedBody.code === "REQUEST_TOO_LARGE"
+				? requestTooLarge(requestId, headers)
+				: invalidRequest(requestId, headers);
 		}
+		const body = parsedBody.value;
 		if (!isComparisonRequest(body)) {
 			return invalidRequest(requestId, headers);
 		}
@@ -68,6 +69,13 @@ export async function POST(request: Request) {
 			{ status: 500, headers },
 		);
 	}
+}
+
+function requestTooLarge(requestId: string, headers: Record<string, string>) {
+	return NextResponse.json(
+		{ error: { code: "REQUEST_TOO_LARGE", requestId } },
+		{ status: 413, headers },
+	);
 }
 
 function invalidRequest(requestId: string, headers: Record<string, string>) {

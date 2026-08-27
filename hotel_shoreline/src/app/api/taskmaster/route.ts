@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { GeminiTaskPlanner } from "../../../lib/genkit-planner";
+import { readEmptyBody } from "../../../lib/http-input";
 import {
 	DeterministicTaskPlanner,
 	executeGuestRequest,
@@ -35,6 +36,13 @@ export async function POST(request: Request) {
 	};
 
 	try {
+		const body = await readEmptyBody(request);
+		if (!body.ok) {
+			return NextResponse.json(
+				{ error: { code: "REQUEST_TOO_LARGE", requestId } },
+				{ status: 413, headers: responseHeaders },
+			);
+		}
 		const mode = resolveTaskmasterPlannerMode(process.env.HSD_PLANNER_MODE);
 		const isGemini = mode === "gemini";
 		const planner = isGemini ? new GeminiTaskPlanner() : new DeterministicTaskPlanner();
