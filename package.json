@@ -4,9 +4,10 @@
 	"private": true,
 	"packageManager": "pnpm@10.13.1",
 	"engines": {
-		"node": ">=22.0.0"
+		"node": ">=22.17.0 <23"
 	},
 	"scripts": {
+		"audit:prod": "node scripts/verify-production-audit.mjs",
 		"build": "pnpm --filter @bomgoodbueno/native-agent-sdk build && pnpm --filter @bomgoodbueno/hotel-shoreline build",
 		"check": "biome check . && pnpm verify:repo",
 		"format": "biome format --write .",
@@ -29,7 +30,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.10",
 		"@playwright/test": "1.62.1",
-		"@types/node": "26.2.0",
+		"@types/node": "22.20.1",
 		"@types/react": "19.2.18",
 		"@types/react-dom": "19.2.5",
 		"@vitest/coverage-v8": "4.1.11",
