@@ -1,6 +1,6 @@
 # SEC-001 — Release Security Baseline
 
-**Status:** In review
+**Status:** Complete
 **Repository:** workspace
 **Depends on:** REP-002
 **Branch:** `fix/sec-001-release-security-baseline`
@@ -114,17 +114,19 @@ git diff --check
 
 ## Completion Record
 
-Complete only after the required GitHub check and merge.
+Completed after the required GitHub check and merge.
 
-**Completed date:** Pending merge.
+**Completed date:** 2026-08-27
 
 **Branch used:** `fix/sec-001-release-security-baseline`
 
-**Commits:** Pending creation; proposed boundaries are SDK/HTTP behavior,
-repository/dependency controls, and documentation/evidence.
+**Commits:** `86a71f6` SDK trust boundary; `cfcd430` demo HTTP boundary;
+`819732e` release supply chain; `6ae9aa6` documentation and evidence.
 
-**Review / PR:** Pending. Local strict review found no blocking acceptance or
-boundary defect after the final full gate. GitHub settings were externally
+**Review / PR:** [PR #8](https://github.com/marlonthemaker/bgb_labs/pull/8)
+passed Quality `verify` in 1m48s and merged by rebase at `6ae9aa6`. Local strict
+review found no blocking acceptance or boundary defect after the final full
+gate. GitHub settings were externally
 verified: private vulnerability reporting is enabled; `main` requires a strict
 `verify` check and pull-request delivery with zero current approvals; linear
 history and conversation resolution are required; force pushes and deletion
@@ -168,5 +170,5 @@ plausibly reachable. Re-review or upgrade before expiry. The USD 20 budget is
 an alert rather than a hard stop; durable identity/rate limiting is not claimed.
 Licensing remains an owner decision.
 
-**Next issue readiness:** HSD-007 remains Planned until this PR passes CI and
-merges; its specification may then move to Ready for analysis.
+**Next issue readiness:** HSD-007 prerequisites are met and its specification is
+Ready for analysis. No HSD-007 implementation is included in this closeout.

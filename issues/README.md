@@ -26,14 +26,15 @@ issue and [`TESTING.md`](../TESTING.md).
 | [HSD-003](HSD-003-deterministic-hotel-shoreline-vertical-slice.md) | Complete | HSD-002 | Synthetic fixture, typed tools, and one English vertical slice. |
 | [HSD-004](HSD-004-controlled-planning-boundary.md) | Complete | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
 | [HSD-005](HSD-005-native-adoption-comparison.md) | Complete | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
-| [HSD-007](HSD-007-evidence-ledger.md) | Planned | HSD-005, SEC-001 | Privacy-safe durable run ledger; background execution requires a separate decision. |
+| [HSD-007](HSD-007-evidence-ledger.md) | Ready for analysis | HSD-005, SEC-001 | Privacy-safe durable run ledger; background execution requires a separate decision. |
 | [HSD-006](HSD-006-evidence-experience.md) | Planned | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
 | [HSD-008](HSD-008-submission-release.md) | Planned | HSD-006, HSD-007 | Reproducible submission package. |
 
 ## Active next step
 
-SEC-001 is in review with the concrete release-security findings implemented
-and locally verified. HSD-007 follows only after the required CI check and merge.
+SEC-001 is merged and complete. HSD-007 is the only issue ready for analysis;
+its first step is to freeze the evidence-ledger contract and local PostgreSQL
+test boundary before choosing Cloud SQL provisioning details.
 
 ## Repository maintenance
 
@@ -46,4 +47,4 @@ and locally verified. HSD-007 follows only after the required CI check and merge
 
 | Issue | Status | Outcome |
 | --- | --- | --- |
-| [SEC-001](SEC-001-release-security-baseline.md) | In review | Harden SDK/HTTP trust boundaries and establish the release dependency/repository security baseline. |
+| [SEC-001](SEC-001-release-security-baseline.md) | Complete | Harden SDK/HTTP trust boundaries and establish the release dependency/repository security baseline. |
