@@ -33,9 +33,9 @@ Current capabilities are:
   execution, and inspectable ordered evidence;
 - an opt-in server-side Gemini/Genkit planner with explicit budgets,
   fail-closed errors, sanitized telemetry, and Cloud Run delivery; and
-- an in-memory matched baseline/contract-guided comparison across three case
+- a matched baseline/contract-guided comparison across three case
   families and three authored locale variants, with deterministic measures and
-  explicit human-review eligibility; and
+  explicit human-review eligibility;
 - a release-security baseline with bounded public request bodies, sanitized 400
   and 413 failures, browser security headers, immutable CI actions, and a
   time-bounded production dependency risk record; and
@@ -43,7 +43,11 @@ Current capabilities are:
   in-memory/`pg` repository contracts, forward-only PostgreSQL migration, and a
   sanitized history API. PostgreSQL 17 and a least-privilege Cloud SQL path are
   locally/CI verified; the merged-main Cloud Run revision externally retrieved
-  pre-deployment synthetic evidence and now serves production traffic.
+  pre-deployment synthetic evidence and now serves production traffic; and
+- a locally verified saved-evidence experience that reopens immutable records,
+  distinguishes lifecycle and eligibility state, exposes versioned provenance
+  and measure definitions, and downloads a deterministic privacy-safe JSON
+  artifact. CI and merged-main deployment proof remain before HSD-006 closes.
 
 There is no real hotel data. Memory-mode history is process-local; the deployed
 Cloud SQL path stores synthetic demo evidence without claiming HA, backups, or
