@@ -32,8 +32,8 @@ issue and [`TESTING.md`](../TESTING.md).
 
 ## Active next step
 
-SEC-001 is ready for analysis and owns the concrete release-security findings
-from the final repository audit. HSD-007 follows after that baseline passes.
+SEC-001 is in review with the concrete release-security findings implemented
+and locally verified. HSD-007 follows only after the required CI check and merge.
 
 ## Repository maintenance
 
@@ -46,4 +46,4 @@ from the final repository audit. HSD-007 follows after that baseline passes.
 
 | Issue | Status | Outcome |
 | --- | --- | --- |
-| [SEC-001](SEC-001-release-security-baseline.md) | Ready for analysis | Harden SDK/HTTP trust boundaries and establish the release dependency/repository security baseline. |
+| [SEC-001](SEC-001-release-security-baseline.md) | In review | Harden SDK/HTTP trust boundaries and establish the release dependency/repository security baseline. |

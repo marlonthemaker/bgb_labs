@@ -28,6 +28,13 @@ flows use the existing `ToolRegistry` and task-graph contracts without an SDK
 change. Provider, Cloud Run, fixture, locale, evaluation, persistence, and UI
 concerns remain application-owned.
 
+### SEC-001 — Release trust-boundary baseline
+
+- Bounded, cycle-safe JSON parsing rejects pathological values without an
+  uncaught recursion failure.
+- Tool registry keys and declared identities must agree before execution.
+- Tool success and failure results are mutually exclusive typed states.
+
 ## Next SDK change only if earned
 
 The evidence-ledger work may reveal a repeated, domain-neutral need for

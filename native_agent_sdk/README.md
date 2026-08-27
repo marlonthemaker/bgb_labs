@@ -18,12 +18,21 @@ boundary, not a published package or compatibility commitment.
   constraints for one bounded intent.
 - `TaskGraph` represents a proposed decomposition and its dependencies.
 - `validateTaskGraph` rejects malformed, cyclic, unsafe, or incomplete plans
-  with stable machine-readable codes. It accepts only JSON-safe task input and
-  verifies that each registered tool is callable at the runtime boundary.
+  with stable machine-readable codes. It accepts only bounded JSON-safe task
+  input, verifies registry keys and declared tool identities, and confirms that
+  every registered tool is callable at the runtime boundary.
 - `executeTaskGraph` invokes validated tools sequentially, records ordered
   events, skips dependent work after a failure, and supports run-scoped
   idempotent retries through an `ExecutionLedger`. Missing or throwing tools are
   represented as deterministic run outcomes rather than uncaught exceptions.
+- `ToolExecutionResult` is a discriminated success/failure union: successful
+  evidence may contain output, while failed evidence may contain an error code,
+  but a result cannot claim both.
+
+The prototype JSON boundary accepts finite numbers and plain JSON containers up
+to 32 nested levels, 2,048 visited values, and 65,536 aggregate string/key
+units. Cycles, accessors, sparse arrays, non-finite numbers, and values beyond
+those limits fail closed with stable parse issues.
 
 Applications define their own domain facts and tools. The SDK cannot prove that
 a model understood a user's natural-language request; it makes the proposed

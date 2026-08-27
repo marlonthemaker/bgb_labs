@@ -6,7 +6,7 @@ Cross-project documentation is organized by ownership:
 | --- | --- |
 | [`architecture/`](architecture/BOUNDARIES.md) | Bounded contexts, dependency direction, and shared system flow. |
 | [`product/`](product/SURFACES.md) | Separation of company, Native Agent product, and Hotel Shoreline demo surfaces. |
-| [`operations/`](operations/GOOGLE_CLOUD_SETUP.md) | Shared cloud bootstrap and operational prerequisites. |
+| [`operations/`](operations/GOOGLE_CLOUD_SETUP.md) | Cloud bootstrap, dependency risk, and repository security controls. |
 | [`decisions/`](decisions/README.md) | Current durable decisions and explicit Git recovery for superseded records. |
 
 Package-specific behavior remains documented next to its package. Research
