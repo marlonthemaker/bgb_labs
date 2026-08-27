@@ -5,10 +5,12 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
+		"migrate:ledger": "node scripts/migrate-ledger.mjs",
 		"pretypecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk build && next typegen",
 		"start": "next start",
 		"test:coverage": "vitest run --coverage",
 		"test:integration": "vitest run src/integration",
+		"test:postgres": "HSD_REQUIRE_POSTGRES_TEST=1 vitest run src/integration/evidence-ledger.postgres.integration.test.ts",
 		"test:unit": "vitest run src/unit",
 		"typecheck": "tsc --noEmit --project tsconfig.json"
 	},
@@ -17,7 +19,11 @@
 		"@genkit-ai/google-genai": "^1.41.0",
 		"genkit": "^1.41.0",
 		"next": "16.3.3",
+		"pg": "8.23.0",
 		"react": "19.2.8",
 		"react-dom": "19.2.8"
+	},
+	"devDependencies": {
+		"@types/pg": "8.23.1"
 	}
 }
