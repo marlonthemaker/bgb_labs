@@ -37,8 +37,9 @@ merged-main Cloud Run persistence are locally, CI, and externally verified.
 HSD-006 is complete: saved history, exact-record inspection, lifecycle and
 provenance presentation, deterministic JSON export, and desktop/390 px failure
 flows are locally, CI, and externally verified on merged-main revision
-`hotel-shoreline-hsd006-388f840`. HSD-008 is In progress and is the only active
-delivery issue.
+`hotel-shoreline-hsd008-b7fd869`. HSD-008 repository, CI, clean-clone, provider,
+public-repository, and deployment gates are verified. The issue is In review
+pending the owner-only video, Devpost, tag, and judging-freeze actions.
 
 ## Deferred until earned
 

@@ -7,10 +7,10 @@ authority: reconfirm the approved issue, commit, account, project, region, and
 cost boundary before any mutation.
 
 As of 2026-08-27, merged-main revision
-`hotel-shoreline-hsd006-388f840` serves 100% of production traffic in
+`hotel-shoreline-hsd008-b7fd869` serves 100% of production traffic in
 `native-agent-poc` / `europe-west1`. Build
-`78c4bb63-6fa6-4eda-8aeb-1f4848feb660` produced image digest
-`sha256:6982c94812df2403eafda448d457b12ed199f29fa78392f89f78e3671f6da8dd`.
+`3befd474-9e8b-4e41-bb71-6c70b30cfabd` produced image digest
+`sha256:6bc41c3d379c1653f2dbf8b638b3f217539aa6da0bf544390c85d05f6bceae4c`.
 
 ## Release invariants
 

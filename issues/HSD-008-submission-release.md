@@ -1,6 +1,6 @@
 # HSD-008 — Submission Release
 
-**Status:** In progress
+**Status:** In review
 **Repository:** both
 **Depends on:** HSD-006 and HSD-007
 **Branch:** `docs/hsd-008-submission-release`
@@ -87,12 +87,12 @@ Out of scope:
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
 | HSD8-C-001 | Locally verified | Official rules and FAQ were accessible and re-read on 2026-08-27; the dated constraint record now matches the verified release requirements. |
-| HSD8-R-001 | Locally verified, pending CI | Exact commit `658ca36` passed install and the full deterministic gate/build in secret-free clean clone `/tmp/hsd008-clean.VJHUE6/repo`; PR CI must still supply the PostgreSQL 17 gate. |
-| HSD8-D-001 | Locally verified | The judge-complete root README passes repository and release invariant verification. |
-| HSD8-D-002 | Locally verified | `docs/submission/README.md` is the canonical copy-ready submission, architecture, claims, disclosure, recording, and operator package. |
+| HSD8-R-001 | Locally and CI verified | Exact merged commit `b7fd869` passed frozen install and the full deterministic gate/build in a secret-free clean clone; PR #17 passed the PostgreSQL 17 CI gate in 2m12s. |
+| HSD8-D-001 | Locally and CI verified | The judge-complete root README passes repository and release invariant verification. |
+| HSD8-D-002 | Locally and CI verified | `docs/submission/README.md` is the canonical copy-ready submission, architecture, claims, disclosure, recording, and operator package. |
 | HSD8-V-001 | Locally verified, owner recording pending | The English-ready storyboard totals 3:55, requires one unedited live action/Cloud proof segment, and includes an explicit recording-safety checklist. |
-| HSD8-Q-001 | Locally verified | Release verification checked 11 required artifacts, 158 release-visible paths, high-confidence secret patterns, required claims, direct production dependencies, and unresolved placeholders; repository/audit gates passed. |
-| HSD8-O-001 | Partially externally verified | HSD-006 production is healthy and externally verified; final release-commit proof remains. |
+| HSD8-Q-001 | Locally and CI verified | Release verification checked 11 required artifacts, 158 release-visible paths, high-confidence secret patterns, required claims, direct production dependencies, and unresolved placeholders; repository/audit gates passed. |
+| HSD8-O-001 | Externally verified | Public `main` and revision `hotel-shoreline-hsd008-b7fd869` passed merged-commit, Cloud configuration/traffic/log, persisted API/export, and desktop/390 px browser gates. |
 | HSD8-F-001 | Implemented | The final operator checklist separates repository-complete gates from owner-only video, Devpost, tag, and freeze actions. |
 
 ## Test and QA strategy
@@ -150,7 +150,7 @@ fields prevent final submission signoff but do not invalidate verified code.
 
 ## Analysis record
 
-**Current state:** HSD-001 through HSD-007 and SEC/REP gates are complete. PR
+**Initial state at issue start:** HSD-001 through HSD-007 and SEC/REP gates are complete. PR
 #15 and #16 passed; merged-main revision `hotel-shoreline-hsd006-388f840` serves
 100% of Cloud Run traffic and reads the append-only Cloud SQL ledger. The
 repository is public. There is no submission package, root architecture diagram,
@@ -194,15 +194,17 @@ and one deliberate provider attempt when approved.
 
 ## Completion Record
 
-**Completed date:**
+**Completed date:** Pending owner submission signoff; repository-complete and
+deployed on 2026-08-27.
 **Implementation summary:** Added a judge-complete root README, canonical
 submission/architecture/video/operator package, current official constraint
 record, and dependency-free release integrity verifier. No runtime, authored
 variant, evaluator, intervention, SDK contract, schema, or research-canon
 behavior changed.
-**Acceptance evidence:** HSD8-C-001, HSD8-D-001, HSD8-D-002, HSD8-V-001,
-HSD8-Q-001, and HSD8-F-001 are locally verified. HSD8-R-001 awaits CI only;
-HSD8-O-001 awaits the merged-main candidate deployment and external proof.
+**Acceptance evidence:** HSD8-C-001, HSD8-R-001, HSD8-D-001, HSD8-D-002,
+HSD8-Q-001, and HSD8-O-001 are locally/CI/externally verified as applicable;
+HSD8-V-001 has a verified 3:55 storyboard but awaits owner recording.
+HSD8-F-001 is implemented and makes the remaining owner authority explicit.
 **QA commands and results:** `pnpm check`, `pnpm audit:prod`, `pnpm typecheck`,
 `HSD_E2E_PORT=3117 pnpm test:all`, `pnpm build`, and `git diff --check` passed.
 The gate recorded 81 unit tests, 27 ordinary integration tests, 22 deterministic
@@ -210,21 +212,46 @@ E2E passes, and 3 intentionally skipped opt-in provider tests. SDK coverage was
 92.17% statements / 88.26% branches / 97.14% functions / 92.11% lines; Hotel
 Shoreline coverage was 91.80% / 87.94% / 99.45% / 93.80%.
 `pnpm test:e2e:gemini` passed 1/1 on the single deliberate live-provider attempt
-(4.2 seconds).
-**Clean-clone result:** Exact commit `658ca36` installed with the frozen lockfile
+(4.2 seconds). The closeout gate initially found four duplicate ignored
+Next.js type artifacts ending in ` 2.ts`; only those generated files were
+removed, and the complete gate then passed.
+**Clean-clone result:** Exact merged commit
+`b7fd8691ffc05bea02d59e608643c444a1a41c7f` installed with the frozen lockfile
 and passed check, audit, strict types, 81 unit, 27 ordinary integration, 22 E2E,
 coverage, and production build without local secrets or generated state in
-`/tmp/hsd008-clean.VJHUE6/repo`.
-**External release evidence:**
+`/tmp/hsd008-merged.QBVnYG/repo`. PR #17 passed its required PostgreSQL-backed
+`verify` check in 2m12s and was rebased into `main`.
+**External release evidence:** Public repository
+`https://github.com/marlonthemaker/bgb_labs` is visible with default branch
+`main`. Build `3befd474-9e8b-4e41-bb71-6c70b30cfabd` produced digest
+`sha256:6bc41c3d379c1653f2dbf8b638b3f217539aa6da0bf544390c85d05f6bceae4c`.
+Revision `hotel-shoreline-hsd008-b7fd869` passed zero-traffic candidate checks
+and now serves 100% at `https://hotel-shoreline-7larmcl4aa-ew.a.run.app` with
+numeric secret versions 1/2, Cloud SQL, runtime identity, 60-second timeout,
+concurrency 4, 1 CPU/512 MiB, zero minimum/default and two maximum instances.
+Home, history, and two detail requests returned 200; malformed/missing identity
+returned typed 400/404. Preserved comparison
+`c076d46e-1043-4073-a25f-66086d8a01d1`
+reopened and exported byte-identically with SHA-256
+`38eceb2cde7d0b32c4fedf06ad5a72fcbc3be75725b289e768f68a02132750c5`.
+Desktop and 390×844 browser checks retained disclosure, history, download, no
+horizontal overflow, and an empty console. Final error-severity revision logs:
+zero.
 **Provider proof:** One deliberate `gemini-3.5-flash` Genkit Taskmaster smoke
 attempt passed on its first run; 1 test passed in 4.2 seconds. No retry was made.
-**Known limitations / follow-up:**
+**Known limitations / follow-up:** Provider availability remains external; the
+saved proof is fictional and mixed-status, all authored variants remain
+`pending_review`, and no native-language, causal, statistical, real-hotel,
+recovery, or hidden-reasoning claim is authorized. Execution remains a bounded
+synchronous HTTP workflow, not a queue-backed long-running worker.
 **Owner-required final actions:** Record/upload the public ≤4:00 video, add its
 URL in an approved release commit, complete/submit Devpost, approve the final
 annotated tag, and freeze the submitted surfaces through judging.
 **Docs updated:** Root/package READMEs and roadmaps, `TESTING.md`, `docs/README.md`,
 `docs/submission/README.md`, official constraint record, issue index, and this
 issue record.
-**Branch / commits / PR:** `docs/hsd-008-submission-release`; `88fb5a9`,
-`c6e5504`, and `658ca36`; PR pending.
-**Release tag and submitted commit:**
+**Branch / commits / PR:** `docs/hsd-008-submission-release`; rebased main
+commits `4b7cdd0`, `f8161ae`, `0e2bb2f`, and `b7fd869`; PR #17 passed and merged.
+Closeout branch: `docs/hsd-008-release-evidence`.
+**Release tag and submitted commit:** Tag and final submitted commit remain
+owner-approved actions. Deployed source commit: `b7fd8691ffc05bea02d59e608643c444a1a41c7f`.

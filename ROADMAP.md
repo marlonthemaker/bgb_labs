@@ -45,7 +45,8 @@ official rules immediately before submitting.
 
 ## Post-release research sequence
 
-The hackathon release remains the only active critical path:
+The HSD-008 repository and deployment gates are complete. Owner video, Devpost,
+tag, and judging-freeze signoff remain the only active release critical path:
 
 ```text
 HSD-007 -> HSD-006 -> HSD-008
@@ -58,7 +59,8 @@ HSD-007 -> HSD-006 -> HSD-008
 
 The detailed follow-up and commercialization gates live in the
 [Iberia integration guide](research/ailitw/studies/iberia-2026/INTEGRATION_GUIDE.md).
-Public-agent collection is not authorized and must not delay HSD-008.
+Public-agent collection is not authorized and must not delay HSD-008 owner
+release signoff.
 
 ## Exit principles
 
