@@ -26,11 +26,17 @@ export interface TaskGraph {
 	readonly nodes: readonly TaskNode[];
 }
 
-export interface ToolExecutionResult {
-	readonly ok: boolean;
-	readonly output?: JsonValue;
-	readonly errorCode?: string;
-}
+export type ToolExecutionResult =
+	| {
+			readonly ok: true;
+			readonly output?: JsonValue;
+			readonly errorCode?: never;
+	  }
+	| {
+			readonly ok: false;
+			readonly output?: never;
+			readonly errorCode?: string;
+	  };
 
 export interface TaskTool {
 	readonly name: string;
@@ -53,6 +59,7 @@ export type ValidationErrorCode =
 	| "MISSING_REQUIRED_CONSTRAINT"
 	| "PROHIBITED_EFFECT"
 	| "TOOL_NOT_ALLOWED"
+	| "TOOL_IDENTITY_MISMATCH"
 	| "UNKNOWN_DEPENDENCY"
 	| "UNKNOWN_TOOL";
 
@@ -67,22 +74,74 @@ export type ValidationResult =
 	| { readonly ok: false; readonly issues: readonly ValidationIssue[] };
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
-	if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
-	const prototype = Object.getPrototypeOf(value);
-	return prototype === Object.prototype || prototype === null;
+	try {
+		if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+		const prototype = Object.getPrototypeOf(value);
+		return prototype === Object.prototype || prototype === null;
+	} catch {
+		return false;
+	}
 }
 
+export const jsonValueLimits = Object.freeze({
+	maxDepth: 32,
+	maxValues: 2_048,
+	maxTotalStringLength: 65_536,
+});
+
 export function isJsonValue(value: unknown): value is JsonValue {
-	if (
-		value === null ||
-		typeof value === "boolean" ||
-		typeof value === "number" ||
-		typeof value === "string"
-	) {
-		return true;
+	let visitedValues = 0;
+	let totalStringLength = 0;
+	const ancestors = new Set<object>();
+
+	const visit = (current: unknown, depth: number): boolean => {
+		visitedValues += 1;
+		if (visitedValues > jsonValueLimits.maxValues || depth > jsonValueLimits.maxDepth) {
+			return false;
+		}
+		if (current === null || typeof current === "boolean") return true;
+		if (typeof current === "number") return Number.isFinite(current);
+		if (typeof current === "string") {
+			totalStringLength += current.length;
+			return totalStringLength <= jsonValueLimits.maxTotalStringLength;
+		}
+		if (!Array.isArray(current) && !isRecord(current)) return false;
+		if (ancestors.has(current)) return false;
+
+		ancestors.add(current);
+		try {
+			if (Array.isArray(current)) {
+				if (current.length + visitedValues > jsonValueLimits.maxValues) return false;
+				for (let index = 0; index < current.length; index += 1) {
+					const descriptor = Object.getOwnPropertyDescriptor(current, String(index));
+					if (!descriptor || !("value" in descriptor) || !visit(descriptor.value, depth + 1)) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			for (const key of Object.keys(current)) {
+				totalStringLength += key.length;
+				if (totalStringLength > jsonValueLimits.maxTotalStringLength) return false;
+				const descriptor = Object.getOwnPropertyDescriptor(current, key);
+				if (!descriptor || !("value" in descriptor) || !visit(descriptor.value, depth + 1)) {
+					return false;
+				}
+			}
+			return true;
+		} catch {
+			return false;
+		} finally {
+			ancestors.delete(current);
+		}
+	};
+
+	try {
+		return visit(value, 0);
+	} catch {
+		return false;
 	}
-	if (Array.isArray(value)) return value.every(isJsonValue);
-	return isRecord(value) && Object.values(value).every(isJsonValue);
 }
 
 export function parseSemanticContract(value: unknown): SemanticContract | ValidationIssue[] {
@@ -95,6 +154,9 @@ export function parseSemanticContract(value: unknown): SemanticContract | Valida
 		"requiredConstraintIds",
 	] as const;
 	const issues = fields.flatMap((field) => validateField(value, field, "INVALID_CONTRACT"));
+	if (!isJsonValue(value) && issues.length === 0) {
+		issues.push(invalid("INVALID_CONTRACT", "$", "Contract must be a bounded JSON-safe object."));
+	}
 	return issues.length > 0 ? issues : (value as unknown as SemanticContract);
 }
 
@@ -103,8 +165,9 @@ export function parseTaskGraph(value: unknown): TaskGraph | ValidationIssue[] {
 	const issues = ["id", "contractId", "preservedConstraintIds", "nodes"].flatMap((field) =>
 		validateField(value, field, "INVALID_GRAPH"),
 	);
-	if (Array.isArray(value.nodes)) {
-		value.nodes.forEach((node, index) => {
+	const nodes = readOwnDataProperty(value, "nodes");
+	if (isArray(nodes)) {
+		nodes.forEach((node, index) => {
 			if (!isRecord(node)) {
 				issues.push(invalid("INVALID_GRAPH", `nodes.${index}`, "Node must be an object."));
 				return;
@@ -121,6 +184,9 @@ export function parseTaskGraph(value: unknown): TaskGraph | ValidationIssue[] {
 			}
 		});
 	}
+	if (!isJsonValue(value) && issues.length === 0) {
+		issues.push(invalid("INVALID_GRAPH", "$", "Task graph must be bounded JSON-safe data."));
+	}
 	return issues.length > 0 ? issues : (value as unknown as TaskGraph);
 }
 
@@ -130,32 +196,53 @@ function validateField(
 	code: ValidationErrorCode,
 	prefix = "",
 ): ValidationIssue[] {
-	const current = value[field];
 	const path = prefix ? `${prefix}.${field}` : field;
-	const isStringArray = [
-		"allowedTools",
-		"prohibitedEffects",
-		"requiredConstraintIds",
-		"preservedConstraintIds",
-		"dependsOn",
-		"constraintIds",
-	].includes(field);
-	if (field === "input")
-		return isRecord(current) && isJsonValue(current)
+	try {
+		const current = readOwnDataProperty(value, field);
+		const isStringArray = [
+			"allowedTools",
+			"prohibitedEffects",
+			"requiredConstraintIds",
+			"preservedConstraintIds",
+			"dependsOn",
+			"constraintIds",
+		].includes(field);
+		if (field === "input")
+			return isRecord(current) && isJsonValue(current)
+				? []
+				: [invalid(code, path, "Input must be a JSON-safe object.")];
+		if (field === "nodes")
+			return Array.isArray(current) && current.length > 0
+				? []
+				: [invalid(code, path, "Nodes must be a non-empty array.")];
+		if (isStringArray)
+			return Array.isArray(current) &&
+				current.every((item) => typeof item === "string" && item.length > 0)
+				? []
+				: [invalid(code, path, "Must be an array of non-empty strings.")];
+		return typeof current === "string" && current.length > 0
 			? []
-			: [invalid(code, path, "Input must be a JSON-safe object.")];
-	if (field === "nodes")
-		return Array.isArray(current) && current.length > 0
-			? []
-			: [invalid(code, path, "Nodes must be a non-empty array.")];
-	if (isStringArray)
-		return Array.isArray(current) &&
-			current.every((item) => typeof item === "string" && item.length > 0)
-			? []
-			: [invalid(code, path, "Must be an array of non-empty strings.")];
-	return typeof current === "string" && current.length > 0
-		? []
-		: [invalid(code, path, "Must be a non-empty string.")];
+			: [invalid(code, path, "Must be a non-empty string.")];
+	} catch {
+		return [invalid(code, path, "Field cannot be inspected safely.")];
+	}
+}
+
+function isArray(value: unknown): value is unknown[] {
+	try {
+		return Array.isArray(value);
+	} catch {
+		return false;
+	}
+}
+
+function readOwnDataProperty(value: Record<string, unknown>, field: string): unknown {
+	try {
+		const descriptor = Object.getOwnPropertyDescriptor(value, field);
+		return descriptor && "value" in descriptor ? descriptor.value : undefined;
+	} catch {
+		return undefined;
+	}
 }
 
 function invalid(code: ValidationErrorCode, path: string, message: string): ValidationIssue {

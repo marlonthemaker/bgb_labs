@@ -60,12 +60,18 @@ export function validateTaskGraph(input: {
 					path: `nodes.${node.id}.dependsOn`,
 					message: `Unknown dependency ${dependency}.`,
 				});
-		const tool = input.tools[node.toolName];
+		const tool = getRegisteredTool(input.tools, node.toolName);
 		if (!isTaskTool(tool))
 			issues.push({
 				code: "UNKNOWN_TOOL",
 				path: `nodes.${node.id}.toolName`,
 				message: `Unknown tool ${node.toolName}.`,
+			});
+		else if (tool.name !== node.toolName)
+			issues.push({
+				code: "TOOL_IDENTITY_MISMATCH",
+				path: `nodes.${node.id}.toolName`,
+				message: `Registry key ${node.toolName} must match declared tool name ${tool.name}.`,
 			});
 		else {
 			if (!contract.allowedTools.includes(tool.name))
@@ -105,12 +111,34 @@ export function validateTaskGraph(input: {
 }
 
 function isTaskTool(value: unknown): value is ToolRegistry[string] {
-	return (
-		isRecord(value) &&
-		typeof value.name === "string" &&
-		typeof value.effect === "string" &&
-		typeof value.execute === "function"
-	);
+	if (!isRecord(value)) return false;
+	try {
+		const name = Object.getOwnPropertyDescriptor(value, "name");
+		const effect = Object.getOwnPropertyDescriptor(value, "effect");
+		const execute = Object.getOwnPropertyDescriptor(value, "execute");
+		return (
+			name !== undefined &&
+			"value" in name &&
+			typeof name.value === "string" &&
+			effect !== undefined &&
+			"value" in effect &&
+			typeof effect.value === "string" &&
+			execute !== undefined &&
+			"value" in execute &&
+			typeof execute.value === "function"
+		);
+	} catch {
+		return false;
+	}
+}
+
+function getRegisteredTool(tools: ToolRegistry, key: string): unknown {
+	try {
+		const descriptor = Object.getOwnPropertyDescriptor(tools, key);
+		return descriptor && "value" in descriptor ? descriptor.value : undefined;
+	} catch {
+		return undefined;
+	}
 }
 
 function hasCycle(graph: TaskGraph): boolean {

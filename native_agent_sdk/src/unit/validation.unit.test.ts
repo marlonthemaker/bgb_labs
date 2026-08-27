@@ -141,3 +141,28 @@ describe("HSD2-C-002: task graph validation", () => {
 		expect(result).toMatchObject({ ok: false, issues: [{ path: "tools" }] });
 	});
 });
+
+describe("SEC1-C-002: tool registry identity", () => {
+	it("rejects a registry key whose declared tool name does not match", () => {
+		const result = validateTaskGraph({
+			contract,
+			graph: validGraph(),
+			tools: {
+				request_service: {
+					name: "different_service",
+					effect: "hotel.service.request",
+					execute: async () => ({ ok: true }),
+				},
+			},
+		});
+
+		expect(result).toMatchObject({ ok: false });
+		if (!result.ok) {
+			expect(result.issues).toContainEqual({
+				code: "TOOL_IDENTITY_MISMATCH",
+				path: "nodes.service.toolName",
+				message: "Registry key request_service must match declared tool name different_service.",
+			});
+		}
+	});
+});

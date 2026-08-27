@@ -167,3 +167,24 @@ describe("HSD2-C-003 and HSD2-C-004: deterministic execution", () => {
 		expect(replay.events).toEqual([expect.objectContaining({ type: "run.rejected" })]);
 	});
 });
+
+describe("SEC1-C-002: registry identity execution boundary", () => {
+	it("rejects a mismatched tool identity before invoking the adapter", async () => {
+		const execute = vi.fn(async () => ({ ok: true as const }));
+		const result = await executeTaskGraph({
+			contract: { ...contract, requiredConstraintIds: ["room"] },
+			graph: { ...graph, nodes: [graph.nodes[0]] },
+			tools: {
+				lookup: { name: "different_lookup", effect: "hotel.lookup", execute },
+			},
+			runId: "run-identity-mismatch",
+		});
+
+		expect(result.validation).toMatchObject({
+			ok: false,
+			issues: [expect.objectContaining({ code: "TOOL_IDENTITY_MISMATCH" })],
+		});
+		expect(result.events).toEqual([expect.objectContaining({ type: "run.rejected" })]);
+		expect(execute).not.toHaveBeenCalled();
+	});
+});
