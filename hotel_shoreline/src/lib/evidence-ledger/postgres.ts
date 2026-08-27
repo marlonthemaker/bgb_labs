@@ -34,7 +34,7 @@ export class PostgresEvidenceLedgerRepository implements EvidenceLedgerRepositor
 		try {
 			await client.query("BEGIN");
 			const existing = await client.query<{ content_hash: string }>(
-				"SELECT content_hash FROM evidence_comparison WHERE comparison_id = $1 FOR UPDATE",
+				"SELECT content_hash FROM evidence_comparison WHERE comparison_id = $1",
 				[record.comparisonId],
 			);
 			const existingHash = existing.rows[0]?.content_hash;
