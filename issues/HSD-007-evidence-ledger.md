@@ -117,7 +117,7 @@ timeout; pending human review correctly excluded the pair from aggregates.
 
 - `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm audit:prod`, and
   `pnpm typecheck` — passed.
-- `HSD_E2E_PORT=3107 pnpm test:all` — passed: 76 unit, 27 ordinary integration,
+- `HSD_E2E_PORT=3108 pnpm test:all` — passed: 76 unit, 27 ordinary integration,
   and 15 deterministic E2E tests; the credentialed provider tests (3) and local
   PostgreSQL adapter test (1) skipped by their explicit opt-in gates.
 - `pnpm test:postgres` with a disposable PostgreSQL 17.8 URL — 1 passed; shared
