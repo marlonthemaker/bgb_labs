@@ -39,11 +39,11 @@ Current capabilities are:
 - a release-security baseline with bounded public request bodies, sanitized 400
   and 413 failures, browser security headers, immutable CI actions, and a
   time-bounded production dependency risk record; and
-- an in-review evidence ledger with a versioned comparison record, matching
+- a completed evidence ledger with a versioned comparison record, matching
   in-memory/`pg` repository contracts, forward-only PostgreSQL migration, and a
   sanitized history API. PostgreSQL 17 and a least-privilege Cloud SQL path are
-  locally/CI verified; a zero-traffic Cloud Run revision has externally stored
-  and retrieved a synthetic comparison, with production cutover pending.
+  locally/CI verified; the merged-main Cloud Run revision externally retrieved
+  pre-deployment synthetic evidence and now serves production traffic.
 
 There is no real hotel data. Memory-mode history is process-local; the deployed
 Cloud SQL path stores synthetic demo evidence without claiming HA, backups, or

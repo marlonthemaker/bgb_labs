@@ -2,11 +2,11 @@
 
 This runbook records and operates the HSD-007 Cloud SQL deployment in
 `native-agent-poc` / `europe-west1`. As of 2026-08-27,
-`hotel-shoreline-ledger` is externally provisioned and a zero-traffic Cloud Run
-revision has persisted and retrieved one synthetic comparison. Production
-traffic cutover and cross-revision replay remain before HSD-007 closes. Cloud
-SQL does not scale to zero; the existing USD 20 alert is notification, not a
-spending cap.
+`hotel-shoreline-ledger` is externally provisioned. Merged-main revision
+`hotel-shoreline-hsd007-4f1a1d5` retrieved a synthetic comparison written before
+its deployment and now receives 100% of production traffic. HSD-007 is
+complete. Cloud SQL does not scale to zero; the existing USD 20 alert is
+notification, not a spending cap.
 
 ## Deployed development shape
 
