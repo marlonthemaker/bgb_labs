@@ -248,7 +248,7 @@ and [`hotel_shoreline/CLOUD_RUN.md`](../../hotel_shoreline/CLOUD_RUN.md).
 
 Repository-complete gates:
 
-- [ ] HSD-008 release verifier, clean archive, full deterministic gate, build,
+- [ ] HSD-008 release verifier, clean clone, full deterministic gate, build,
   PR CI, public repository, live service, API, browser, cloud config, and logs pass.
 - [ ] Official rules/FAQ are re-read on the submission date.
 - [ ] Root README, this package, deployed revision, screenshots, video narration,
