@@ -6,6 +6,10 @@ export default defineConfig({
 		coverage: {
 			provider: "v8",
 			include: [
+				"src/lib/evidence-ledger/config.ts",
+				"src/lib/evidence-ledger/in-memory.ts",
+				"src/lib/evidence-ledger/records.ts",
+				"src/lib/evidence-ledger/view.ts",
 				"src/lib/gemini-error.ts",
 				"src/lib/http-input.ts",
 				"src/lib/shoreline.ts",
