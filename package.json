@@ -9,7 +9,7 @@
 	"scripts": {
 		"audit:prod": "node scripts/verify-production-audit.mjs",
 		"build": "pnpm --filter @bomgoodbueno/native-agent-sdk build && pnpm --filter @bomgoodbueno/hotel-shoreline build",
-		"check": "biome check . && pnpm verify:repo",
+		"check": "biome check . && pnpm verify:repo && pnpm verify:release",
 		"format": "biome format --write .",
 		"format:check": "biome format .",
 		"lint": "biome lint .",
@@ -24,6 +24,7 @@
 		"test:postgres": "pnpm --filter @bomgoodbueno/hotel-shoreline test:postgres",
 		"test:unit": "pnpm --filter @bomgoodbueno/native-agent-sdk test:unit && pnpm --filter @bomgoodbueno/hotel-shoreline test:unit",
 		"typecheck": "pnpm --filter @bomgoodbueno/native-agent-sdk typecheck && pnpm --filter @bomgoodbueno/hotel-shoreline typecheck",
+		"verify:release": "node scripts/verify-release.mjs",
 		"verify:repo": "node scripts/verify-repository.mjs",
 		"meow": "HSD_PLANNER_MODE=deterministic pnpm --filter @bomgoodbueno/hotel-shoreline dev",
 		"meow:gemini": "HSD_PLANNER_MODE=gemini pnpm --filter @bomgoodbueno/hotel-shoreline dev"
