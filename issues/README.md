@@ -2,8 +2,9 @@
 
 An issue is the reviewable unit of delivery: one bounded outcome, one branch,
 and normally one pull request. The [product roadmap](../ROADMAP.md) defines the
-sequence; individual issue files define the executable specification and their
-Completion Record is the durable close-out evidence.
+sequence; each issue file owns its status, executable specification, and durable
+Completion Record. This index is a derived view validated by
+`pnpm verify:repo`.
 
 ## Workflow
 
@@ -25,18 +26,24 @@ issue and [`TESTING.md`](../TESTING.md).
 | [HSD-003](HSD-003-deterministic-hotel-shoreline-vertical-slice.md) | Complete | HSD-002 | Synthetic fixture, typed tools, and one English vertical slice. |
 | [HSD-004](HSD-004-controlled-planning-boundary.md) | Complete | HSD-003 | Gemini/Genkit Taskmaster event-to-outcome workflow on Cloud Run. |
 | [HSD-005](HSD-005-native-adoption-comparison.md) | Complete | HSD-004 | Pre-registered, matched baseline/intervention study across versioned authored-language variants. |
-| [HSD-007](HSD-007-evidence-ledger.md) | Ready for analysis | HSD-005 | Privacy-safe durable run ledger and optional asynchronous execution. |
+| [HSD-007](HSD-007-evidence-ledger.md) | Planned | HSD-005, SEC-001 | Privacy-safe durable run ledger; background execution requires a separate decision. |
 | [HSD-006](HSD-006-evidence-experience.md) | Planned | HSD-005, HSD-007 | Inspectable comparison, lifecycle, and export experience. |
 | [HSD-008](HSD-008-submission-release.md) | Planned | HSD-006, HSD-007 | Reproducible submission package. |
 
 ## Active next step
 
-HSD-005 passed its local and provider gates; PR #3 CI passed and merged as
-`d7a8963` on 2026-08-26. HSD-007 is the next product issue and is ready for
-analysis. Do not implement persistence until its analysis is approved.
+SEC-001 is ready for analysis and owns the concrete release-security findings
+from the final repository audit. HSD-007 follows after that baseline passes.
 
 ## Repository maintenance
 
 | Issue | Status | Outcome |
 | --- | --- | --- |
 | [REP-001](REP-001-repository-research-consolidation.md) | Complete | Consolidated active documentation/research authority and removed superseded artifacts without changing runtime behavior. |
+| [REP-002](REP-002-active-tree-hygiene.md) | In review | Removes residual duplicates, machine-checks repository authority, and makes the default test gate explicitly provider-free. |
+
+## Security maintenance
+
+| Issue | Status | Outcome |
+| --- | --- | --- |
+| [SEC-001](SEC-001-release-security-baseline.md) | Ready for analysis | Harden SDK/HTTP trust boundaries and establish the release dependency/repository security baseline. |

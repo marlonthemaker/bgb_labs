@@ -27,22 +27,20 @@ guest request
   -> outcome and run evidence
 ```
 
-The application has a verified deterministic English vertical slice: a
-versioned synthetic fixture, manually authored contract/graph, deterministic
-maintenance and housekeeping adapters, and inspectable ordered evidence. It has
-no real hotel data or persistent state. HSD-004 has added an opt-in server-side
-Gemini/Genkit planner, explicit planning budgets, fail-closed planner error
-classification, server-allowlisted candidate evidence, browser failure states,
-structured secret-free run telemetry, and Cloud Run delivery. The deterministic
-and credentialed Gemini paths pass locally; the bounded production revision,
-success and zero-operation failure paths, sanitized Cloud Logging envelopes,
-desktop/mobile UI, and PR #2 CI passed on 2026-08-26; PR #2 merged as `36d02f6`.
-HSD-005 now provides the in-memory controlled comparison, deterministic
-measurement dictionary, review gating, real-provider adapter, and sanitized
-comparison API/UI; PR #3 CI passed and merged as `d7a8963`. HSD-007 will add
-durable sanitized run history.
-HSD-003's scope and completion record are in
-[`issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md`](../issues/HSD-003-deterministic-hotel-shoreline-vertical-slice.md).
+Current capabilities are:
+
+- a versioned synthetic fixture, deterministic hotel tools, validated task
+  execution, and inspectable ordered evidence;
+- an opt-in server-side Gemini/Genkit planner with explicit budgets,
+  fail-closed errors, sanitized telemetry, and Cloud Run delivery; and
+- an in-memory matched baseline/contract-guided comparison across three case
+  families and three authored locale variants, with deterministic measures and
+  explicit human-review eligibility.
+
+There is no real hotel data or persistent run history. The
+[issue index](../issues/README.md) is the machine-checked delivery-status view,
+and the package [roadmap](ROADMAP.md) owns sequencing. Completed issue records retain the
+detailed local, provider, deployment, and CI evidence.
 
 The planned comparison method and its claim limits are in
 [the controlled comparison protocol](EVALUATION_PROTOCOL.md).

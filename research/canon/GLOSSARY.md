@@ -110,29 +110,6 @@ The active states are `concept`, `research_backed`, `treatment_backed`,
 `trust_reviewed`, `pilot_ready`, `package_ready`, and `retired`. Their
 requirements are defined in [`PRODUCTIZATION.md`](PRODUCTIZATION.md).
 
-## Historical Or Inactive Terms
-
-### CompanyBench
-
-An archived customer-specific benchmark concept. It is not an active offer or required architecture.
-
-### Hospeda
-
-A historical hotel-product direction. It has no current execution authority.
-Hotel Shoreline does not reactivate Hospeda.
-
-### Language Mesh
-
-A historical architecture and product direction. It is not part of the active
-roadmap.
-
-### Native Adoption Index
-
-A historical aggregate-score hypothesis. Current canon reports scoped
-capabilities and outcomes; no universal index is approved.
-
-### Wild, Lab, And Sandbox
-
-An earlier three-track program model. Current canon uses controlled research,
-AILITW, Applied Lab, and Product Engineering. Historical track IDs should not be
-introduced into new records without a decision.
+Historical terminology is intentionally absent from the active glossary. Use
+Git history for provenance; do not reintroduce a retired term without an
+accepted decision.

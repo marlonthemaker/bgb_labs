@@ -30,7 +30,10 @@ Durable identity, strategy, principles, method, scope, product gates, commercial
 
 ### Decision Records
 
-Append-only records of durable choices, rationale, consequences, and supersession. Do not rewrite accepted decision history to make it appear cleaner.
+Append-only choices, rationale, consequences, and supersession. Do not rewrite
+accepted history. A newer accepted decision may remove a superseded record from
+the active worktree only when it names an exact Git recovery point and the
+current owner of every still-applicable rule.
 
 ### Living Operating Records
 
@@ -52,9 +55,10 @@ Human-authored interpretation and communication. Editable as drafts; versioned o
 
 Derived indexes, tables, exports, and reports produced from source artifacts. Change the source or generator rather than hand-editing reproducible output.
 
-### Archive
+### Historical Git records
 
-Historical context and provenance. Archived files are never direct execution dependencies.
+Historical context and provenance recovered from named commits. Historical
+files are never direct execution dependencies.
 
 ## Status Vocabulary
 
@@ -68,7 +72,7 @@ Use these statuses when an artifact needs lifecycle state:
 - `complete` - the defined work and acceptance criteria are satisfied;
 - `superseded` - replaced by a newer artifact;
 - `retired` - intentionally no longer used;
-- `archived` - preserved outside active work.
+- `archived` - preserved outside the active worktree or in Git history.
 
 Do not use `complete` when required verification, review, or reporting remains.
 

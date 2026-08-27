@@ -4,7 +4,7 @@ Status: `accepted / active`
 
 This directory is the durable authority for bomgoodbueno's native-adoption
 strategy, research method, productization rules, commercial sequence, and
-governance. It was distilled from the former `initial_spike` tree by decision
+governance. Its active authority was consolidated by decision
 [`D003`](../../docs/decisions/D003-repository-research-consolidation.md).
 
 ## Authority

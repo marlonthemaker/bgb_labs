@@ -26,8 +26,9 @@ For a submission-facing issue, also read
 [`issues/HACKATHON-CONSTRAINTS.md`](issues/HACKATHON-CONSTRAINTS.md) and verify
 its official external source before changing a claim or delivery gate.
 
-For Next.js application changes, also read `hotel_shoreline/AGENTS.md` and the
-relevant locally installed Next.js guide before editing application code.
+For Next.js application changes, read the relevant guide under
+`hotel_shoreline/node_modules/next/dist/docs/` before editing application code.
+Next.js APIs and conventions may differ from training-era knowledge.
 
 ## Boundaries
 
@@ -81,9 +82,10 @@ Follow this issue lifecycle without skipping a record update:
 6. **Prepare next:** move only the immediate dependent issue to `Ready for
   analysis` when its prerequisites are met. Do not begin it without approval.
 
-Mutable status has one owner: `issues/README.md`. Roadmaps own sequencing,
-issue files own criteria and evidence, package READMEs own current capability,
-and other status summaries must be dated and link back to the issue index.
+Mutable status has one owner: the `**Status:**` metadata in each issue file.
+`issues/README.md` is a derived index validated by `pnpm verify:repo`. Roadmaps
+own sequencing, issue files own criteria and evidence, package READMEs own
+current capability, and other summaries link back to the issue index.
 
 ## Required task handoff
 

@@ -21,3 +21,8 @@ coverage/
 playwright-report/
 test-results/
 *.log
+
+# Next.js generates these package-local agent hints during development. Root
+# AGENTS.md owns repository guidance and points directly to the installed docs.
+hotel_shoreline/AGENTS.md
+hotel_shoreline/CLAUDE.md

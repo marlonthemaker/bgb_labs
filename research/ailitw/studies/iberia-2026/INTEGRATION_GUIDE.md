@@ -4,9 +4,6 @@
 
 **Study:** `AILITW-IBERIA-2026`
 
-**Repository snapshot assessed:** HSD-005 and REP-001 merged on `main`,
-2026-08-26
-
 ## 1. Decision
 
 Finish Hotel Shoreline before starting public-agent collection. Then create a
@@ -185,8 +182,8 @@ evidence, and product telemetry remain distinct data and governance domains.
 | Domain-neutral contracts, graph validation, execution evidence | `native_agent_sdk` | No company, locale, provider, or study concepts. |
 | Fictional hotel world, Gemini/Genkit adapter, demo UI | `hotel_shoreline` | No public crawler or third-party evidence warehouse. |
 | Study protocols, targets, cases, observations, evaluations, reports | `research/ailitw` | No runtime dependency from product packages. |
-| Company/product positioning and service definitions | future `docs/product/` | Claims link to versioned evidence; no demo-specific implementation. |
-| Historical source material | Git history/release archive | Not an active authority. |
+| Company/product positioning and service definitions | `research/canon/` and `docs/product/` | Claims link to versioned evidence; no demo-specific implementation. |
+| Historical source material | Git history | Not an active authority. |
 
 Evaluation remains separate from intervention. Evaluators consume immutable
 evidence and emit versioned derived records. Intervention specifications state
@@ -197,7 +194,7 @@ a hypothesis and treatment but cannot rewrite evidence or activate themselves.
 REP-001 established this active shape after HSD-005:
 
 ```text
-README.md                    # one front door and truthful current status
+README.md                    # one front door and current capability map
 ROADMAP.md                   # one cross-program dependency view
 AGENTS.md                    # contribution workflow and authority rules
 docs/
@@ -221,8 +218,7 @@ issues/                      # active/closed issue specifications
 
 Consolidation decisions:
 
-- durable canon was migrated from `initial_spike/docs/` into `research/canon/`;
-- provenance is preserved in Git history and decision D003;
+- D003 records the former-tree migration and Git recovery boundary;
 - exact duplicates, generated artifacts, superseded planning snapshots, and
   stale instructions were removed by REP-001;
 - make each fact authoritative in one document and link to it elsewhere;

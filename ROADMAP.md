@@ -15,9 +15,10 @@ limits, and completion record.
 | Stage | Issues | Product outcome | Quality gate |
 | --- | --- | --- | --- |
 | Foundation | HSD-001–002 | Strict workspace and fail-closed deterministic task runtime. | SDK contracts, errors, execution evidence, and test gates pass. |
-| Deterministic proof | HSD-003 (complete) | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, browser proof, passing CI, and merge. |
+| Deterministic proof | HSD-003 | One synthetic English hotel request runs end to end without a model. | Fresh state, typed tools, truthful evidence, and browser proof. |
 | Taskmaster agent proof | HSD-004 | A Gemini/Genkit agent receives a guest-request event, plans, validates, routes, and completes it autonomously on Cloud Run. | Google stack requirement and safe failure paths are demonstrated in one continuous run. |
 | Controlled comparison | HSD-005 | Matched authored-language requests expose baseline/intervention task and operational differences. | Frozen conditions, explicit review state, invalid-run preservation, no research overclaim. |
+| Release security baseline | SEC-001 | Public SDK, HTTP, dependency, and repository trust boundaries are hardened before persistence. | Pathological input, advisory disposition, headers, and immutable CI evidence pass. |
 | Evidence ledger | HSD-007 | A privacy-safe, portable PostgreSQL run history permits reproducible comparison across models, dates, modes, and interventions. | Append-only evidence, least-privilege access, idempotent writes, cost/security review. |
 | Evidence experience | HSD-006 | Accessible lifecycle and comparison experience exports reproducible evidence. | Failure states, privacy-safe export, responsive E2E coverage. |
 | Submission release | HSD-008 | Reproducible hackathon submission and recorded limitations. | Full verification and disclosure review. |
@@ -25,8 +26,13 @@ limits, and completion record.
 ## Dependency flow
 
 ```text
-HSD-001 -> HSD-002 -> HSD-003 -> HSD-004 -> HSD-005 -> HSD-007 -> HSD-006 -> HSD-008
+HSD-001 -> HSD-002 -> HSD-003 -> HSD-004 -> HSD-005 -> REP-002 -> SEC-001 -> HSD-007 -> HSD-006 -> HSD-008
 ```
+
+Individual issue metadata owns current status; the
+[issue index](issues/README.md) is its machine-checked derived view. Issue
+Completion Records own acceptance, QA, deployment, commit, and PR evidence;
+this roadmap owns only sequence and gates.
 
 HSD-004—not HSD-007—is the minimum hackathon-compliant submission gate:
 Gemini 3.5+, a Google agent framework (Genkit), and a Google Cloud service
@@ -34,12 +40,6 @@ Gemini 3.5+, a Google agent framework (Genkit), and a Google Cloud service
 durable model/history/intervention comparison now promised by this roadmap. It
 must follow—not delay—the HSD-004 deployment proof.
 
-HSD-004's deterministic boundary, failure-state UX, real Gemini path,
-standalone/non-root image, least-privilege identities, bounded Cloud Run
-revision, deployed success/failure paths, sanitized logs, and responsive UI were
-verified on 2026-08-26; PR #2 CI passed and merged as `36d02f6`. HSD-005's
-engineering implementation, full local QA, focused real-provider success, and
-nine-block attempt retention passed; PR #3 CI passed and merged as `d7a8963`.
 See [hackathon constraints](issues/HACKATHON-CONSTRAINTS.md), and re-check the
 official rules immediately before submitting.
 

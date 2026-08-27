@@ -3,7 +3,7 @@
 This roadmap governs the reusable SDK, not Hotel Shoreline's fictional domain.
 It avoids promoting demo-specific code into a public product contract.
 
-## Complete
+## Shipped capability
 
 ### HSD-001 — Package foundation
 
@@ -23,20 +23,17 @@ It avoids promoting demo-specific code into a public product contract.
 
 ## Current integration boundary
 
-### HSD-003 and HSD-004 — Application validation
-
-Hotel Shoreline's deterministic slice and partial HSD-004 implementation use
-the existing public `ToolRegistry` and task-graph contracts without an SDK
-change.
-Genkit/Gemini, Cloud Run, fixtures, locales, evaluation, persistence, and UI
-remain application concerns; none may become SDK dependencies.
+Hotel Shoreline's deterministic, Gemini/Genkit, and controlled-comparison
+flows use the existing `ToolRegistry` and task-graph contracts without an SDK
+change. Provider, Cloud Run, fixture, locale, evaluation, persistence, and UI
+concerns remain application-owned.
 
 ## Next SDK change only if earned
 
-HSD-005/HSD-007 may reveal a repeated, domain-neutral need for versioned run
-provenance or comparison metadata. Do not add it to the SDK from one demo:
-first show that the application schema is stable across multiple controlled
-cases and that a smaller application-owned record is insufficient.
+The evidence-ledger work may reveal a repeated, domain-neutral need for
+versioned run provenance. Do not add it from one application: first show that
+the application schema is stable across multiple controlled cases and that a
+smaller application-owned record is insufficient.
 
 ## Deferred until earned
 

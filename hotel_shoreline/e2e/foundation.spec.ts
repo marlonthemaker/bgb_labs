@@ -11,7 +11,7 @@ test("HSD1-UI-001: presents the fictional Hotel Shoreline boundary", async ({ pa
 	await expect(page.getByText("not research findings")).toBeVisible();
 });
 
-test("HSD3-UI-001/HSD4-UI-001: runs the fixed request and renders sanitized execution evidence", async ({
+test("HSD3-F-004/HSD3-UI-001/HSD4-UI-001: runs the fixed request and renders sanitized execution evidence", async ({
 	page,
 }) => {
 	await page.goto("/");
