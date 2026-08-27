@@ -40,7 +40,7 @@ from the final repository audit. HSD-007 follows after that baseline passes.
 | Issue | Status | Outcome |
 | --- | --- | --- |
 | [REP-001](REP-001-repository-research-consolidation.md) | Complete | Consolidated active documentation/research authority and removed superseded artifacts without changing runtime behavior. |
-| [REP-002](REP-002-active-tree-hygiene.md) | In review | Removes residual duplicates, machine-checks repository authority, and makes the default test gate explicitly provider-free. |
+| [REP-002](REP-002-active-tree-hygiene.md) | Complete | Removed residual duplicates, machine-checks repository authority, and makes the default test gate explicitly provider-free. |
 
 ## Security maintenance
 
