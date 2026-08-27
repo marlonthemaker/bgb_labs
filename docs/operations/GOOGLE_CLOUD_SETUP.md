@@ -1,8 +1,8 @@
 # Google Cloud Bootstrap — Hotel Shoreline
 
-This guide prepares a new, dedicated Google Cloud project for HSD-004. It owns
-account, identity, API, key, and secret setup. The repeatable deploy, evidence,
-rollback, and cleanup commands live in
+This guide prepares a dedicated Google Cloud project for the current Hotel
+Shoreline release. It owns account, identity, API, key, and secret setup. The
+repeatable candidate-first deploy, evidence, rollback, and cleanup commands live in
 [`hotel_shoreline/CLOUD_RUN.md`](../../hotel_shoreline/CLOUD_RUN.md).
 
 The commands below change Google Cloud state and may incur cost. Review the
@@ -20,20 +20,25 @@ public judge/browser
       -> synthetic Hotel Shoreline adapters
 
 Cloud Build identity -> builds source only
-Cloud Run identity   -> reads one pinned Secret Manager version only
+Cloud Run identity   -> reads pinned Gemini and database secrets
+                     -> connects to Cloud SQL with scoped authority
 ```
 
-Cloud SQL is intentionally deferred to HSD-007. HSD-004 needs Cloud Run,
-Secret Manager, Cloud Build, Artifact Registry, and the Gemini API only.
+The current release uses Cloud Run, Secret Manager, Cloud Build, Artifact
+Registry, the Gemini API, and the HSD-007 PostgreSQL/Cloud SQL evidence ledger.
+New environments must complete
+[`hotel_shoreline/CLOUD_SQL.md`](../../hotel_shoreline/CLOUD_SQL.md) after this
+bootstrap. Do not infer HA, backup, PITR, or multi-tenant guarantees from the
+development deployment.
 
 ## 1. Choose the project and region
 
 Create a dedicated project in the
 [Google Cloud console](https://console.cloud.google.com/), attach billing, and
 record the immutable **project ID**. For a Lisbon-based hackathon deployment,
-`europe-west1` is a reasonable default and keeps the future HSD-007 Cloud SQL
-instance co-locatable. Use a different supported region if policy or judging
-latency requires it.
+`europe-west1` is a reasonable default and keeps the Cloud SQL ledger
+co-located. Use a different supported region if policy or judging latency
+requires it.
 
 Create a billing budget before deployment. A normal budget sends alerts; it
 does not automatically stop usage. Cloud Run's scale-to-zero and maximum
@@ -50,7 +55,9 @@ provider response still identified a free-tier daily model limit, demonstrating
 that project billing linkage alone does not prove that a particular key/request
 is using paid Gemini API quota.
 
-The first HSD-004 revision was deployed with those runtime bounds on 2026-08-26.
+The first HSD-004 revision was deployed with those runtime bounds on 2026-08-26;
+the HSD-006 evidence-experience revision was promoted through a tagged
+zero-traffic candidate gate on 2026-08-27.
 Monthly budget `4ef0dad8-1d44-4037-8804-0f9d72ac55d6` is scoped only to project
 `1075716782706` at USD 20, with current-spend alerts at 50%, 90%, and 100%.
 
@@ -167,6 +174,7 @@ gcloud services enable \
   artifactregistry.googleapis.com \
   secretmanager.googleapis.com \
   iam.googleapis.com \
+  sqladmin.googleapis.com \
   generativelanguage.googleapis.com
 ```
 
@@ -183,12 +191,17 @@ gcloud iam service-accounts create "$RUNTIME_SA_NAME" \
 ```
 
 The build identity gets the project-level Cloud Run Builder role. The runtime
-identity receives no project-wide role.
+identity receives only the Cloud SQL Client role at project level; both secret
+bindings remain resource-scoped.
 
 ```sh
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
   --member="serviceAccount:${BUILD_SA}" \
   --role="roles/run.builder"
+
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:${RUNTIME_SA}" \
+  --role="roles/cloudsql.client"
 ```
 
 For a non-Owner deployer, grant the documented source-deploy permissions. An
@@ -249,6 +262,11 @@ SECRET_VERSION="$(gcloud secrets versions list "$SECRET_ID" \
 test -n "$SECRET_VERSION"
 ```
 
+The database connection secret, separate migration/runtime database identities,
+and strict `SELECT`/`INSERT` runtime grants are created through
+[`hotel_shoreline/CLOUD_SQL.md`](../../hotel_shoreline/CLOUD_SQL.md), never by
+granting database-owner credentials to Cloud Run.
+
 Cloud Run environment-variable secrets are resolved when an instance starts.
 The deployment pins `SECRET_VERSION` rather than using `latest`, making a bad
 rotation reversible through a normal revision rollback.
@@ -265,8 +283,10 @@ gcloud projects get-iam-policy "$PROJECT_ID" \
   --format='table(bindings.role)'
 ```
 
-The last command should show no broad project role for the runtime identity.
-Secret access should appear only on the single secret's policy.
+The last command should show only `roles/cloudsql.client` for the runtime
+identity. Secret access should appear only on the Gemini and database secret
+policies; the database role itself remains limited as documented in the Cloud
+SQL runbook.
 
 ## 9. Continue with the deployment runbook
 

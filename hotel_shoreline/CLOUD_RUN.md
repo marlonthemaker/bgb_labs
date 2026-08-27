@@ -1,143 +1,150 @@
-# Cloud Run Release Runbook — HSD-004
+# Cloud Run Release Runbook — Hotel Shoreline
 
-This runbook deploys and verifies the fictional Hotel Shoreline demonstration.
-Complete
-[`../docs/operations/GOOGLE_CLOUD_SETUP.md`](../docs/operations/GOOGLE_CLOUD_SETUP.md)
-first. Nothing in this document authorizes a deployment; run Google Cloud mutation commands only
-after confirming the active account, project, region, commit, and expected cost.
+This runbook deploys and verifies the current fictional Hotel Shoreline
+demonstration. Complete the [Google Cloud bootstrap](../docs/operations/GOOGLE_CLOUD_SETUP.md)
+and [Cloud SQL ledger setup](CLOUD_SQL.md) first. Nothing here grants deployment
+authority: reconfirm the approved issue, commit, account, project, region, and
+cost boundary before any mutation.
+
+As of 2026-08-27, merged-main revision
+`hotel-shoreline-hsd006-388f840` serves 100% of production traffic in
+`native-agent-poc` / `europe-west1`. Build
+`78c4bb63-6fa6-4eda-8aeb-1f4848feb660` produced image digest
+`sha256:6982c94812df2403eafda448d457b12ed199f29fa78392f89f78e3671f6da8dd`.
 
 ## Release invariants
 
-- Deploy only an approved, committed SHA from a clean working tree.
-- Build from the root `Dockerfile`; it produces a minimal Next.js standalone
-  runtime, runs as a non-root user, and includes the workspace SDK.
-- `.gcloudignore` controls uploaded source and `.dockerignore` controls the
-  container build context. Both exclude local environments, credentials, test
-  artifacts, Git metadata, the research canon, and dependencies.
-- `GEMINI_API_KEY` is a server-only Secret Manager environment variable pinned
-  to a numeric version. Never use `latest` for a release revision.
-- The custom build identity has `roles/run.builder`; the runtime identity has
-  access only to the one Gemini secret and no broad project role.
-- Cloud Run is public only because judges need the demo. The only mutation route
-  accepts a fixed synthetic event, projects an allowlisted response, and cannot
-  receive arbitrary hotel/tool input.
-- The application planner stops after 30 seconds. Cloud Run uses 60 seconds so
-  the app can return its typed failure before the platform closes the request.
-- Scale-to-zero, two maximum instances, four concurrent requests per instance,
-  one CPU, and 512 MiB memory bound hackathon cost and provider pressure.
+- Deploy only an approved committed SHA from a clean working tree after its
+  full deterministic gate and required PR check pass.
+- Build from the root `Dockerfile`; the runtime is a minimal standalone Next.js
+  server, runs as a non-root user, and includes the workspace SDK.
+- Inspect `.gcloudignore` before every source upload. Local environments,
+  credentials, dependencies, Git metadata, research, issue records, generated
+  reports, and unrelated documentation stay outside the upload boundary.
+- Pin `GEMINI_API_KEY` and `DATABASE_URL` to numeric Secret Manager versions.
+  Never use `latest`, print values, or pass payloads as command arguments.
+- The build identity has `roles/run.builder`. The runtime identity has only the
+  two scoped secret-access bindings and `roles/cloudsql.client`; the database
+  runtime login remains limited to `CONNECT`, schema `USAGE`, and table
+  `SELECT`/`INSERT`.
+- Public routes accept only synthetic bounded inputs and return sanitized typed
+  evidence/errors. They do not expose credentials, database types, raw
+  exceptions, provider prompts/responses, or hidden chain-of-thought.
+- Deploy a tagged zero-traffic candidate, verify it, then explicitly promote
+  that exact revision. Never let source deployment replace production traffic
+  before the candidate gate.
+- Cloud Run remains bounded at zero minimum/two maximum instances, concurrency
+  four, one CPU, 512 MiB, and a 60-second request timeout. The application does
+  not silently retry quota or provider failures.
+- The USD 20 budget is an alert, not a hard cap. Cloud SQL does not scale to
+  zero and currently has no HA, automated backups, or PITR claim.
 
 ## 1. Verify the release candidate locally
 
-From the repository root:
+From a clean repository root:
 
 ```sh
 git status --short
 git rev-parse HEAD
 pnpm install --frozen-lockfile
 pnpm check
+pnpm audit:prod
 pnpm typecheck
-pnpm test:all
+HSD_E2E_PORT=3110 pnpm test:all
 pnpm build
-pnpm test:e2e:gemini
 git diff --check
 ```
 
-`git status --short` must be empty before deployment. The credentialed smoke
-uses only the ignored `hotel_shoreline/.env.local` key.
+`git status --short` must be empty. Provider smokes are separate quota-bearing
+evidence; run only the test named by the active issue and never treat a provider
+failure as authorization to retry.
 
-Verify the same standalone artifact used by the container without Docker:
+To inspect the standalone artifact without Docker:
 
 ```sh
 HSD_PLANNER_MODE=deterministic \
+HSD_LEDGER_MODE=memory \
 PORT=8080 \
 HOSTNAME=127.0.0.1 \
 node hotel_shoreline/.next/standalone/hotel_shoreline/server.js
 ```
 
-In a second terminal, open `http://127.0.0.1:8080`, run the fixed request, and
-confirm the actual two-node candidate, three preserved constraints, bounded
-planning metadata, `execution.finished`, two successful nodes, and two
-operations. Stop the server with Ctrl-C.
+Verify the fixed Taskmaster run and one matched comparison, saved history,
+exact-record inspection, JSON download, failure state, disclosure, and 390 px
+layout. Stop the server with Ctrl-C.
 
-If Docker is installed, also verify the exact container:
+## 2. Reconfirm target, identities, and pinned versions
 
-```sh
-docker build --pull -t hotel-shoreline:hsd-004 .
-docker run --rm -p 8080:8080 \
-  -e HSD_PLANNER_MODE=deterministic \
-  hotel-shoreline:hsd-004
-```
-
-Docker is optional for a source deployment because Cloud Build builds the root
-Dockerfile remotely.
-
-## 2. Reconfirm the cloud target
-
-The bootstrap guide defines these shell values:
+Set non-secret release metadata in the current shell:
 
 ```sh
-PROJECT_ID="PROJECT_ID"
+PROJECT_ID="native-agent-poc"
 REGION="europe-west1"
 SERVICE="hotel-shoreline"
+ISSUE_LABEL="hsd-008"
+REVISION_PREFIX="hsd008"
 BUILD_SA="hotel-shoreline-builder@${PROJECT_ID}.iam.gserviceaccount.com"
 RUNTIME_SA="hotel-shoreline-runtime@${PROJECT_ID}.iam.gserviceaccount.com"
-SECRET_ID="hotel-shoreline-gemini-key"
-SECRET_VERSION="1"
-
+GEMINI_SECRET="hotel-shoreline-gemini-key"
+GEMINI_SECRET_VERSION="1"
+DATABASE_SECRET="hotel-shoreline-database-url"
+DATABASE_SECRET_VERSION="2"
+CLOUD_SQL_INSTANCE="${PROJECT_ID}:${REGION}:hotel-shoreline-ledger"
 COMMIT_SHA="$(git rev-parse HEAD)"
-SHORT_SHA="$(git rev-parse --short=8 HEAD)"
-REVISION_SUFFIX="hsd004-${SHORT_SHA}"
+SHORT_SHA="$(git rev-parse --short=7 HEAD)"
+REVISION_SUFFIX="${REVISION_PREFIX}-${SHORT_SHA}"
+CANDIDATE_TAG="candidate-${SHORT_SHA}"
 
 test "$(gcloud config get-value project)" = "$PROJECT_ID"
-test -n "$SECRET_VERSION"
+test "$(gcloud config get-value run/region)" = "$REGION"
 git diff --quiet
 git diff --cached --quiet
 ```
 
-Do not proceed when any assertion fails. Confirm the numeric secret version is
-enabled without reading its value:
+Confirm both numeric versions are enabled without reading either value:
 
 ```sh
-gcloud secrets versions describe "$SECRET_VERSION" \
-  --secret="$SECRET_ID" \
-  --format='value(state)'
+gcloud secrets versions describe "$GEMINI_SECRET_VERSION" \
+  --secret "$GEMINI_SECRET" --format='value(state)'
+gcloud secrets versions describe "$DATABASE_SECRET_VERSION" \
+  --secret "$DATABASE_SECRET" --format='value(state)'
 ```
 
-Expected output: `ENABLED`.
+Both commands must return `ENABLED`. Reinspect service-account IAM and the
+database grants when either identity or secret binding changed.
 
-## 3. Preview the upload boundary
-
-`gcloud meta list-files-for-upload` uses the active ignore configuration. Save
-the list outside the repository and inspect it before source deployment:
+## 3. Preview the source upload
 
 ```sh
-gcloud meta list-files-for-upload > /tmp/hotel-shoreline-upload.txt
+UPLOAD_MANIFEST="$(mktemp)"
+gcloud meta list-files-for-upload > "$UPLOAD_MANIFEST"
 
-test "$(grep -Ec '(^|/)\.env($|\.)' /tmp/hotel-shoreline-upload.txt)" -eq 0
-test "$(grep -Ec '(^|/)node_modules/' /tmp/hotel-shoreline-upload.txt)" -eq 0
-test "$(grep -Ec '(^|/)research/' /tmp/hotel-shoreline-upload.txt)" -eq 0
-
-sed -n '1,200p' /tmp/hotel-shoreline-upload.txt
+test "$(grep -Ec '(^|/)\.env($|\.)' "$UPLOAD_MANIFEST")" -eq 0
+test "$(grep -Ec '(^|/)node_modules/' "$UPLOAD_MANIFEST")" -eq 0
+test "$(grep -Ec '(^|/)research/' "$UPLOAD_MANIFEST")" -eq 0
+test "$(grep -Ec '(^|/)(issues|docs)/' "$UPLOAD_MANIFEST")" -eq 0
+sed -n '1,200p' "$UPLOAD_MANIFEST"
+rm "$UPLOAD_MANIFEST"
 ```
 
-The list should contain the Dockerfile, workspace manifests/configuration, and
-the two package source trees only.
+The list should contain only the Docker/workspace configuration and runtime
+package inputs expected by the root Dockerfile. Stop if a credential, local
+environment, report, unrelated study, or duplicate artifact appears.
 
-## 4. Deploy the release revision
-
-The following source deployment uses the root Dockerfile and the dedicated
-Cloud Build identity:
+## 4. Deploy a tagged zero-traffic candidate
 
 ```sh
 gcloud run deploy "$SERVICE" \
   --source . \
+  --project "$PROJECT_ID" \
   --region "$REGION" \
   --build-service-account "projects/${PROJECT_ID}/serviceAccounts/${BUILD_SA}" \
   --service-account "$RUNTIME_SA" \
   --revision-suffix "$REVISION_SUFFIX" \
-  --set-env-vars "HSD_PLANNER_MODE=gemini,GOOGLE_CLOUD_PROJECT=${PROJECT_ID}" \
-  --set-secrets "GEMINI_API_KEY=${SECRET_ID}:${SECRET_VERSION}" \
-  --labels "app=hotel-shoreline,issue=hsd-004,commit=${SHORT_SHA}" \
+  --set-env-vars "HSD_PLANNER_MODE=gemini,GOOGLE_CLOUD_PROJECT=${PROJECT_ID},HSD_LEDGER_MODE=postgres" \
+  --set-secrets "GEMINI_API_KEY=${GEMINI_SECRET}:${GEMINI_SECRET_VERSION},DATABASE_URL=${DATABASE_SECRET}:${DATABASE_SECRET_VERSION}" \
+  --set-cloudsql-instances "$CLOUD_SQL_INSTANCE" \
+  --labels "app=hotel-shoreline,issue=${ISSUE_LABEL},commit=${SHORT_SHA}" \
   --execution-environment gen2 \
   --cpu 1 \
   --memory 512Mi \
@@ -146,190 +153,139 @@ gcloud run deploy "$SERVICE" \
   --concurrency 4 \
   --timeout 60s \
   --ingress all \
-  --allow-unauthenticated
+  --allow-unauthenticated \
+  --no-traffic \
+  --tag "$CANDIDATE_TAG"
 ```
 
-Source deployment sends the filtered context to Cloud Build, builds and stores
-an image in Artifact Registry, creates a revision, and sends it 100% of service
-traffic. If IAM changes were just applied, allow several minutes for
-propagation before diagnosing a permissions failure.
+Record the Cloud Build ID, immutable image digest, revision name, and tagged
+URL. Confirm the previous production revision still has 100% traffic.
 
-## 5. Verify configuration without exposing secrets
+## 5. Inspect configuration without exposing secrets
 
 ```sh
-SERVICE_URL="$(gcloud run services describe "$SERVICE" \
-  --region "$REGION" \
-  --format='value(status.url)')"
+REVISION="${SERVICE}-${REVISION_SUFFIX}"
 
-SUCCESS_REVISION="$(gcloud run services describe "$SERVICE" \
+gcloud run revisions describe "$REVISION" \
   --region "$REGION" \
-  --format='value(status.latestReadyRevisionName)')"
-
-printf 'Service URL: %s\nRevision: %s\nCommit: %s\n' \
-  "$SERVICE_URL" "$SUCCESS_REVISION" "$COMMIT_SHA"
+  --format='yaml(metadata.labels,spec.serviceAccountName,spec.timeoutSeconds,spec.containerConcurrency,spec.containers[0].image,spec.containers[0].resources,status.conditions)'
 
 gcloud run services describe "$SERVICE" \
   --region "$REGION" \
-  --format='yaml(metadata.labels,status.url,status.latestReadyRevisionName,spec.template.spec.serviceAccountName,spec.template.spec.timeoutSeconds,spec.template.spec.containerConcurrency,spec.template.metadata.annotations.autoscaling\.knative\.dev/maxScale,spec.template.spec.containers[0].resources)'
-
-gcloud secrets get-iam-policy "$SECRET_ID"
+  --format='table(status.url,status.latestReadyRevisionName,status.traffic[].revisionName,status.traffic[].percent,status.traffic[].tag)'
 ```
 
-The output must identify the intended revision, runtime service account,
-60-second timeout, concurrency 4, maximum scale 2, and pinned secret reference.
-It must never contain the secret value.
+Verify commit/issue labels, runtime identity, immutable image digest, timeout,
+concurrency, resource bounds, healthy conditions, Cloud SQL attachment, and
+numeric secret references. Query selected fields only; never print a full
+environment dump.
 
-## 6. Verify the deployed success path
+## 6. Verify the tagged application and evidence boundary
 
-```sh
-curl --fail --silent --show-error "$SERVICE_URL/" > /tmp/hsd004-home.html
-
-HTTP_STATUS="$(curl --silent --show-error \
-  --output /tmp/hsd004-success.json \
-  --write-out '%{http_code}' \
-  --request POST \
-  "$SERVICE_URL/api/taskmaster")"
-
-test "$HTTP_STATUS" = "200"
-jq -e '
-  .status == "succeeded" and
-  .plannerFramework == "genkit" and
-  .plannerModel == "gemini-3.5-flash" and
-  .operationCount == 2 and
-  (.candidateGraph.nodes | length) == 2 and
-  (.candidateGraph.preservedConstraintIds | length) == 3 and
-  (.nodeResults | all(.status == "succeeded")) and
-  .lifecycle[-1] == "execution.finished"
-' /tmp/hsd004-success.json
-```
-
-Then perform the browser check at desktop and approximately 390 px width. The
-fictional, non-affiliation, and non-research disclosure must remain visible.
-
-Inspect only allowlisted structured telemetry:
+Resolve the tagged URL from the service description and choose a known
+synthetic `COMPARISON_ID` from sanitized history:
 
 ```sh
-gcloud logging read \
-  'resource.type="cloud_run_revision" AND resource.labels.service_name="hotel-shoreline" AND jsonPayload.event="taskmaster.run.completed"' \
-  --project "$PROJECT_ID" \
-  --limit 10 \
-  --freshness 1h \
-  --format='table(timestamp,severity,jsonPayload.requestId,jsonPayload.status,jsonPayload.errorCode,jsonPayload.operationCount,jsonPayload.candidateNodeCount,jsonPayload.terminalLifecycleEvent)'
-```
-
-Successful evidence is `INFO`, `succeeded`, two operations, two candidate
-nodes, and `execution.finished`. Logs must not contain a key, request text,
-node input, tool output, exception message, or stack.
-
-Cloud Logging ingestion is asynchronous. If a just-completed run is absent,
-repeat the read after a short propagation interval; do not rerun the model or
-weaken the query merely to obtain an immediate row.
-
-## 7. Capture a controlled deployed failure
-
-HSD4-P-003 requires external evidence that unavailable planning performs no
-operation. Create a temporary second service from the already-built immutable
-image, intentionally omit the secret binding, capture the typed failure, then
-delete only that temporary service.
-
-```sh
-DEPLOYED_IMAGE="$(gcloud run revisions describe "$SUCCESS_REVISION" \
+CANDIDATE_URL="$(gcloud run services describe "$SERVICE" \
   --region "$REGION" \
-  --format='value(spec.containers[0].image)')"
+  --format=json \
+  | jq -r --arg tag "$CANDIDATE_TAG" \
+    '.status.traffic[] | select(.tag == $tag) | .url')"
+COMPARISON_ID="CANONICAL_SYNTHETIC_COMPARISON_UUID"
 
-FAILURE_SERVICE="hotel-shoreline-failure-proof"
+test -n "$CANDIDATE_URL"
 
-gcloud run deploy "$FAILURE_SERVICE" \
-  --image "$DEPLOYED_IMAGE" \
-  --region "$REGION" \
-  --service-account "$RUNTIME_SA" \
-  --set-env-vars "HSD_PLANNER_MODE=gemini,GOOGLE_CLOUD_PROJECT=${PROJECT_ID}" \
-  --clear-secrets \
-  --min-instances 0 \
-  --max-instances 1 \
-  --concurrency 1 \
-  --timeout 60s \
-  --ingress all \
-  --allow-unauthenticated
+curl --fail --silent --show-error "$CANDIDATE_URL/" > /tmp/hsd-home.html
+curl --fail --silent --show-error \
+  "$CANDIDATE_URL/api/native-adoption?limit=20" > /tmp/hsd-history.json
+curl --fail --silent --show-error \
+  "$CANDIDATE_URL/api/native-adoption/$COMPARISON_ID" > /tmp/hsd-evidence-a.json
+curl --fail --silent --show-error \
+  "$CANDIDATE_URL/api/native-adoption/$COMPARISON_ID" > /tmp/hsd-evidence-b.json
 
-FAILURE_URL="$(gcloud run services describe "$FAILURE_SERVICE" \
-  --region "$REGION" \
-  --format='value(status.url)')"
-
-FAILURE_STATUS="$(curl --silent --show-error \
-  --output /tmp/hsd004-failure.json \
-  --write-out '%{http_code}' \
-  --request POST \
-  "$FAILURE_URL/api/taskmaster")"
-
-test "$FAILURE_STATUS" = "503"
-jq -e '
-  .status == "planning_failed" and
-  .plannerFramework == "genkit" and
-  .errorCode == "PLANNER_UNAVAILABLE" and
-  .operationCount == 0 and
-  (.nodeResults | length) == 0 and
-  .lifecycle[-1] == "planning.failed"
-' /tmp/hsd004-failure.json
+cmp /tmp/hsd-evidence-a.json /tmp/hsd-evidence-b.json
+jq -e --arg id "$COMPARISON_ID" '
+  .schemaVersion == "hotel-shoreline-public-evidence-v1" and
+  .comparison.comparisonId == $id and
+  .comparison.claimBoundary.environment == "fictional_synthetic_demo" and
+  (.comparison.arms | length == 2)
+' /tmp/hsd-evidence-a.json
 ```
 
-Capture the non-secret response and corresponding `WARNING` log, then remove
-the exact temporary service:
+Also prove malformed identity → typed 400, valid missing identity → typed 404,
+and repository unavailability → typed 503 in a controlled test environment.
+Search the export for database configuration, secret references, raw
+exceptions, and hidden prompts; none may be present.
 
-```sh
-gcloud run services delete "$FAILURE_SERVICE" --region "$REGION"
-```
+In a browser, refresh saved evidence, reopen the exact record, and verify:
 
-Deleting the named failure-proof service is destructive but does not affect the
-main `hotel-shoreline` service.
+- source turns, review status, versions, hashes, conditions, interventions,
+  candidates, validation, operations, lifecycle, first loss, and measure
+  definitions match the artifact;
+- rejected, provider-failed, partial, successful, excluded, and not-reached
+  states are not conflated;
+- the download works at desktop and 390 px without horizontal overflow or
+  keyboard/focus regression; and
+- fictional, non-affiliation, synthetic, and non-research limits remain visible.
 
-## 8. Record HSD-004 evidence
+Inspect only allowlisted structured logs and confirm there are no unexpected
+error-severity entries for the candidate revision. Logs must not contain keys,
+request prose, node/tool inputs, provider payloads, raw exception messages, or
+stack traces.
 
-Update the HSD-004 Completion Record with:
+## 7. Promote, reverify, or roll back
 
-- project ID and region;
-- full commit SHA and Cloud Run image digest;
-- service URL and successful revision name;
-- runtime and build service-account names plus sanitized IAM proof;
-- model, fixture, contract, and planner versions;
-- successful response assertions and allowlisted completion log;
-- temporary failure-proof revision/service evidence showing zero operations;
-- desktop/mobile screenshots with disclosure;
-- limitations, timestamp, PR check, and reviewer.
-
-Do not commit access tokens, secret values, full environment dumps, or logs
-containing provider payloads.
-
-## 9. Roll back or clean up
-
-List revisions before changing traffic:
-
-```sh
-gcloud run revisions list --service "$SERVICE" --region "$REGION"
-```
-
-To roll back, explicitly choose a previously verified revision:
+Promote only the verified immutable revision:
 
 ```sh
 gcloud run services update-traffic "$SERVICE" \
   --region "$REGION" \
-  --to-revisions VERIFIED_REVISION=100
+  --to-revisions "${REVISION}=100"
 ```
 
-After the hackathon, review Cloud Run, Artifact Registry, Secret Manager, and
-Cloud Build costs independently. Deleting the main service is optional and
-destructive, and does not delete images or secrets:
+Repeat homepage, disclosure, history, exact-export, typed-error, desktop/390 px,
+and revision-log checks on the normal service URL. Record the final traffic
+table. If any check fails, route 100% back to the explicitly named last verified
+revision; never use a moving alias:
 
 ```sh
-gcloud run services delete "$SERVICE" --region "$REGION"
+gcloud run services update-traffic "$SERVICE" \
+  --region "$REGION" \
+  --to-revisions "VERIFIED_REVISION=100"
 ```
+
+Application rollback does not roll back the database. Schema changes require a
+separately verified forward migration or controlled restore plan.
+
+## 8. Provider evidence is explicit and quota-bearing
+
+Run a real Gemini Taskmaster or matched-comparison proof only when the active
+issue requires it and quota/cost are approved. Capture allowlisted response and
+telemetry facts. A 429, 503, timeout, or malformed response must retain a typed
+zero-operation/invalid arm without a false completion claim; do not retry merely
+to manufacture a success. Existing HSD-004/HSD-005 Completion Records own prior
+provider proof.
+
+## 9. Record and clean up
+
+The active issue Completion Record must include commit, PR/CI, build ID, image
+digest, revision/tag/traffic, service URL, exact synthetic run or comparison
+ID, API/browser/log assertions, limitations, and reviewer. Never include access
+tokens, secret values, full environments, provider payloads, or raw database
+rows.
+
+After judging, review Cloud Run, Artifact Registry, Secret Manager, Cloud SQL,
+and Cloud Build costs separately. Deleting the main service or database is a
+destructive operation requiring explicit authorization and a retention/export
+decision.
 
 ## Primary references
 
 - [Deploy Cloud Run from source](https://cloud.google.com/run/docs/deploying-source-code)
 - [Configure a source build service account](https://cloud.google.com/run/docs/configuring/services/build-service-account)
 - [Configure Cloud Run secrets](https://cloud.google.com/run/docs/configuring/services/secrets)
+- [Connect Cloud Run to Cloud SQL](https://cloud.google.com/sql/docs/postgres/connect-run)
+- [Manage Cloud Run traffic](https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration)
 - [Cloud Run request timeout](https://cloud.google.com/run/docs/configuring/request-timeout)
 - [Cloud Run concurrency](https://cloud.google.com/run/docs/configuring/concurrency)
-- [Cloud Run ingress](https://cloud.google.com/run/docs/securing/ingress)
 - [`gcloud` ignore behavior](https://cloud.google.com/sdk/gcloud/reference/topic/gcloudignore)

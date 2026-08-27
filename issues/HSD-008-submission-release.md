@@ -1,6 +1,6 @@
 # HSD-008 — Submission Release
 
-**Status:** Planned
+**Status:** Ready for analysis
 **Repository:** both (separate branches if code changes are needed)
 **Depends on:** HSD-006 and HSD-007
 **Branch:** `docs/hsd-008-submission-release`

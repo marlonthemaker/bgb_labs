@@ -2,8 +2,8 @@
 
 ## Decision
 
-HSD-007 will use **Cloud SQL for PostgreSQL** for the deployed evidence ledger,
-not Firestore. PostgreSQL suits the required append-only run history,
+HSD-007 selected and deployed **Cloud SQL for PostgreSQL** for the evidence
+ledger, not Firestore. PostgreSQL suits the required append-only run history,
 comparisons, joins, constraints, reviewer annotations, and portable reporting
 better than a document database. The application stays portable by depending on
 an application-owned repository port and standard PostgreSQL behavior.

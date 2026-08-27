@@ -34,10 +34,11 @@ boundary is in [`DATA_ARCHITECTURE.md`](DATA_ARCHITECTURE.md).
 HSD-007 is complete: its record, in-memory/PostgreSQL repository, migration,
 sanitized API, bounded Cloud SQL instance, append-only runtime role, and
 merged-main Cloud Run persistence are locally, CI, and externally verified.
-HSD-006 is in review: saved history, exact-record inspection, lifecycle and
+HSD-006 is complete: saved history, exact-record inspection, lifecycle and
 provenance presentation, deterministic JSON export, and desktop/390 px failure
-flows are locally verified. CI and merged-main deployment proof remain before
-HSD-008 can become ready.
+flows are locally, CI, and externally verified on merged-main revision
+`hotel-shoreline-hsd006-388f840`. HSD-008 is Ready for analysis and is the only
+next delivery issue.
 
 ## Deferred until earned
 
