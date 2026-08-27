@@ -33,12 +33,12 @@ authenticated worker without changing this repository port.
 
 | Acceptance ID | State | Evidence or remaining gap |
 | --- | --- | --- |
-| HSD7-R-001 | Locally verified | Shared contract passed in memory and against PostgreSQL 17.8, including concurrent exact replay and conflict safety. |
-| HSD7-R-002 | Locally verified | Version/hash/failure/provenance tests pass without raw provider detail. |
-| HSD7-R-003 | Locally verified | Configuration, summary projection, POST persistence, GET history, and invalid-query examples pass. |
-| HSD7-R-004 | Locally verified | Migration applied twice and the adapter contract passed against a disposable PostgreSQL 17.8 cluster. CI service pending. |
-| HSD7-O-001 | Implemented | Runbook/migration guidance written; Cloud SQL API enabled, no instance created. |
-| HSD7-Q-001 | In progress | Full local gate and required CI/deployment evidence remain. |
+| HSD7-R-001 | Locally and CI verified | Shared contract passed in memory and pinned PostgreSQL 17.8; the zero-traffic Cloud Run/Cloud SQL append path also preserved invalid/failure evidence. |
+| HSD7-R-002 | Locally and CI verified | Version/hash/failure/provenance tests pass without raw provider detail. |
+| HSD7-R-003 | Externally verified | Tagged Cloud Run POST persistence, sanitized GET history, typed invalid query, and disclosure checks pass. |
+| HSD7-R-004 | In review | Migration and real PostgreSQL contract passed in CI; the SELECT/INSERT-only runtime-role regression passed locally and externally, with fix CI pending. |
+| HSD7-O-001 | Externally verified | Bounded Cloud SQL shape, separate identities, revoked `cloudsqlsuperuser`, Secret Manager v2, IAM, migration, least privilege, cost, and limitations are recorded. |
+| HSD7-Q-001 | In progress | Fix PR/CI, production traffic cutover, cross-revision retrieval, and final closeout remain. |
 
 ## Test and error strategy
 
@@ -90,23 +90,28 @@ until genuine review is recorded.
 
 ## Completion Record
 
-Complete only after the required CI PostgreSQL contract and deployed Cloud SQL
-persistence proof. Current state is locally verified and ready for code review.
+Complete only after the least-privilege fix passes CI and the verified Cloud SQL
+revision receives production traffic and retrieves its prior record.
 
-**Branch used:** `feat/hsd-007-evidence-ledger`
+**Branches used:** `feat/hsd-007-evidence-ledger` and
+`fix/hsd-007-least-privilege-runtime`.
 
-**Commits:** Pending creation; proposed boundaries are evidence domain/port,
-PostgreSQL/migration/CI, server history integration, and documentation/evidence.
+**Commits:** `62a2028`, `06065ce`, `e2919dd`, and `899395e` delivered the
+ledger through PR #12; `50e5ead` removes an UPDATE-requiring row lock and runs
+the PostgreSQL contract through a SELECT/INSERT-only role.
 
-**Review / PR:** Pending. Strict local review found no blocking record,
-append-only, SQL, server-only, or sanitization issue after the final local gate.
+**Review / PR:** PR #12 passed its pinned PostgreSQL CI service and merged.
+The least-privilege runtime fix is locally and externally verified; its PR is
+pending.
 
 **Acceptance evidence:** R001/R002 use one shared contract and version/hash
 record tests; R003 uses configuration/projection unit tests and live Route
-Handler E2E; R004 used PostgreSQL 17.8 and migration 001 twice; O001 is the Cloud
-SQL/migration runbook. The Cloud SQL Admin API was externally enabled on
-`native-agent-poc`; `europe-west1` supports `db-f1-micro`; no instance was
-created before code/CI review.
+Handler E2E; R004 uses PostgreSQL 17.8 and migration 001. Cloud SQL instance
+`hotel-shoreline-ledger` and zero-traffic revision
+`hotel-shoreline-hsd007-50e5ead` persisted comparison
+`c076d46e-1043-4073-a25f-66086d8a01d1` and retrieved its sanitized summary.
+The preserved arms were a typed baseline rejection and intervention planner
+timeout; pending human review correctly excluded the pair from aggregates.
 
 **QA commands and results:**
 
@@ -117,7 +122,7 @@ created before code/CI review.
   PostgreSQL adapter test (1) skipped by their explicit opt-in gates.
 - `pnpm test:postgres` with a disposable PostgreSQL 17.8 URL — 1 passed; shared
   contract covered insert, exact/concurrent replay, conflict, ordering, query
-  validation, integrity, and copy isolation.
+  validation, integrity, copy isolation, and a SELECT/INSERT-only runtime role.
 - Migration 001 applied twice successfully to the disposable PostgreSQL 17.8
   cluster; the cluster shut down cleanly and was moved to Trash.
 - SDK coverage — 92.17% statements, 88.26% branches, 97.14% functions, 92.11%
@@ -133,11 +138,12 @@ created before code/CI review.
 **Docs updated:** root/package README and roadmap, testing, data architecture,
 Cloud SQL/migration runbooks, environment example, issue/index.
 
-**Known limitations / follow-up:** Cloud SQL has not been provisioned or costed
-as a concrete instance and durable persistence is not deployed. Memory mode is
-process-local. Runtime authentication/multi-tenant isolation and Cloud Tasks are
-out of scope. PostgreSQL integration is local-only until the PR check proves the
-pinned CI service. Review annotations remain empty until genuine human review.
+**Known limitations / follow-up:** the provisioned shared-core instance has no
+HA, automated backup, PITR, or SLA claim and does not scale to zero. The USD 20
+alert is not a cap. Runtime authentication/multi-tenant isolation and Cloud
+Tasks remain out of scope. Review annotations remain empty until genuine human
+review. Production traffic still serves the prior revision until the fix passes
+CI.
 
 **Next issue readiness:** HSD-006 remains Planned. Do not begin it until HSD-007
 passes CI, deploys/retains one comparison across restart, and closes.
